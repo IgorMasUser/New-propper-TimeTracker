@@ -18,8 +18,6 @@ namespace TimeTracker.Models
 
         public int Role { get; set; }
 
-        public Guid? UserIdentityId { get; set; }
-
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime StartedWorkDayAt { get; set; }
 

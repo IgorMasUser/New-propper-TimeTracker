@@ -22,9 +22,7 @@ namespace TimeTracker.Data
         public DbSet<User> User { get; set; }
 
         public DbSet<Roles> Roles { get; set; }
-
-        public DbSet<AzureIdentityProvider> AzureIdentityProvider { get; set; }
-
+              
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(entity =>
@@ -44,10 +42,6 @@ namespace TimeTracker.Data
                 entity.HasNoKey();
             });
 
-            modelBuilder.Entity<AzureIdentityProvider>(entity =>
-            {
-                entity.HasNoKey();
-            });
         }
     }
 }
