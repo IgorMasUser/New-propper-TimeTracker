@@ -7,8 +7,6 @@ namespace TimeTracker.Models
     public class User
     {
         [Key]
-        public int Id { get; set; }
-
         [Range(1, int.MaxValue, ErrorMessage = "Out of acceptable range")]
         public int UserId { get; set; }
 
@@ -26,8 +24,8 @@ namespace TimeTracker.Models
         public int Role { get; set; }
 
         public Guid? UserIdentityId { get; set; }
-
         [Required]
+
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime Started { get; set; }
 

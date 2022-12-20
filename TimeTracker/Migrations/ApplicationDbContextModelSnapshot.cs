@@ -24,30 +24,27 @@ namespace TimeTracker.Migrations
 
             modelBuilder.Entity("TimeTracker.Models.AzureIdentityProvider", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<Guid>("AzurAuthenticationKey")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("AzureIdentityProvider");
                 });
 
             modelBuilder.Entity("TimeTracker.Models.Roles", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserRoleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserRoleId"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -60,24 +57,21 @@ namespace TimeTracker.Migrations
                     b.Property<DateTime>("RolesCreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserRoleId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserRoleId");
 
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("TimeTracker.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<int>("Break")
                         .HasColumnType("int");
@@ -112,13 +106,10 @@ namespace TimeTracker.Migrations
                     b.Property<DateTime>("TotalWorked")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("UserIdentityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("User");
                 });
