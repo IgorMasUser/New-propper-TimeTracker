@@ -13,13 +13,13 @@ namespace TimeTracker.Models
         public int UserId { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
-        public string Surname { get; set; }
+        public string Surname { get; set; } = string.Empty;
 
         [Required]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         public bool IsSystemAdmin { get; set; }
 
