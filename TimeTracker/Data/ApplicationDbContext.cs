@@ -27,7 +27,7 @@ namespace TimeTracker.Data
         {
             modelBuilder.Entity<User>(entity =>
                 {
-                    entity.HasNoKey();
+                    entity.HasKey(p => p.Id);
                     entity.Property(p => p.UserId).IsRequired().HasMaxLength(int.MaxValue);
                     entity.Property(p => p.Name).IsRequired();
                     entity.Property(p => p.Surname).IsRequired();
