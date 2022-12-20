@@ -1,0 +1,166 @@
+﻿@model IEnumerable<TimeTracker.Models.User>
+@{
+    ViewData["Title"] = "GetAttendance";
+
+}
+
+<style>
+
+    div {
+        width: auto;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table {
+        font-size: 18px;
+        width: auto;
+        height: auto;
+        border-right: 2px solid #708090;
+        border-left: 2px solid #708090;
+        border-top: 7px solid #708090;
+        border-bottom: 7px solid #708090;
+        background: #FFFAFA;
+        margin-top: 20px;
+    }
+
+    th {
+        width: auto;
+        height: auto;
+        font-size: 18px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 4px solid;
+        border-right: 2px solid #708090;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+
+    td {
+        width: auto;
+        height: auto;
+        font-size: 16px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 2px solid;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+
+    h1 {
+        text-align: center;
+        line-height: 100%;
+        /* box-shadow: 0 6px 0 0 rgba(0,0,0,.15)*/
+    }
+
+    #ID {
+        border-bottom: 4px solid;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+
+    hr {
+        margin-right: 8%;
+    }
+
+
+</style>
+
+<div>
+
+    <h1>ATTENDANCE</h1>
+    <hr />
+    <p>
+        <a asp-action="Create" class="btn btn-primary" style="width:250px;margin-top: 20px;"><i class="bi bi-plus-square"></i>&nbsp; Create New</a>
+    </p>
+    <form method="get" asp-action="GetAttendance">
+        <p>
+            <input type="search" placeholder="&nbsp;&nbsp;Enter user name or surname" value="@ViewData["GetUserDetails"]" name="search" style="width:500px;height:35px; border-radius:17px 17px 17px 17px;margin-left:5px" />
+
+            <input type="submit" value="Search" class="btn btn-primary" />
+
+            <a asp-action="GetAttendance" class="btn btn-success">View all users</a>
+        </p>
+    </form>
+
+    <table>
+
+        <thead>
+            <tr id="ID">
+                <th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Surname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Started)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Break)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Finished)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalWorked)
+                </th>
+
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Started)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Break)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Finished)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+
+                    <td style="border-right:3px solid #708090;">
+                        @Html.DisplayFor(modelItem => item.TotalWorked)
+                    <td />
+
+                    <td style="width:28%">
+                        <a asp-controller="User" asp-action="Edit" asp-route-id="@item.Id"
+                       class="btn btn-primary mx-2" id="li"><i class="bi bi-pencil-square"></i> Edit</a>
+
+                        <a asp-controller="User" asp-action="GetDetails" asp-route-id="@item.Id"
+                       class="btn btn-success mx-2" id="li"><i class="bi bi-question-circle-fill"></i> Details</a>
+
+                        <a asp-controller="User" asp-action="Delete" asp-route-id="@item.Id"
+                       class="btn btn-danger mx-2" id="li"><i class="bi bi-trash-fill"></i> Delete</a>
+
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
