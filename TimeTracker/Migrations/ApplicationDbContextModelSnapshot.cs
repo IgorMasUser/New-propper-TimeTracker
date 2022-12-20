@@ -24,28 +24,28 @@ namespace TimeTracker.Migrations
 
             modelBuilder.Entity("TimeTracker.Models.AzureIdentityProvider", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Audience")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
-
-                    b.Property<Guid>("AzurAuthenticationKey")
+                    b.Property<Guid?>("AzurAuthenticationKey")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("Issuer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("UserIdentityId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.ToTable("AzureIdentityProvider");
                 });
 
             modelBuilder.Entity("TimeTracker.Models.Roles", b =>
                 {
-                    b.Property<int>("UserRoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserRoleId"), 1L, 1);
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -57,23 +57,19 @@ namespace TimeTracker.Migrations
                     b.Property<DateTime>("RolesCreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserRoleId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
-
-                    b.HasKey("UserRoleId");
 
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("TimeTracker.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
-
                     b.Property<int>("Break")
+                        .HasMaxLength(59)
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -83,8 +79,8 @@ namespace TimeTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Finished")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("FinishedWorkDayAt")
+                        .HasColumnType("datetime");
 
                     b.Property<bool>("IsSystemAdmin")
                         .HasColumnType("bit");
@@ -96,20 +92,25 @@ namespace TimeTracker.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Started")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("StartedWorkDayAt")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TotalWorked")
+                    b.Property<DateTime>("TotalWorkedPerDay")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("UserIdentityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserId");
+                    b.Property<DateTime>("UserWorkedPerRequestedPeriod")
+                        .HasColumnType("datetime2");
 
                     b.ToTable("User");
                 });

@@ -4,9 +4,15 @@ namespace TimeTracker.Models
 {
     public class AzureIdentityProvider
     {
-        [Key]
         public int UserId { get; set; }
 
-        public Guid AzurAuthenticationKey { get; set; }
+        public Guid? UserIdentityId { get; set; } = new Guid();
+
+        public Guid? AzurAuthenticationKey { get; set; }
+
+        public string Issuer { get; set; }
+
+        public string Audience { get; set; }
     }
 }
+

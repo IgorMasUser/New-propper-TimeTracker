@@ -25,8 +25,8 @@ namespace TimeTracker.Controllers
         {
             DateTime breake = new DateTime().AddMinutes(user.Break);
             TimeSpan temp = new DateTime().Subtract(breake);
-            DateTime finished = user.Finished;
-            DateTime started = user.Started;
+            DateTime finished = user.FinishedWorkDayAt;
+            DateTime started = user.StartedWorkDayAt;
             TimeSpan workDay = finished.Subtract(started.Subtract(temp));
             DateTime total = Convert.ToDateTime(workDay.ToString());
 
@@ -58,8 +58,8 @@ namespace TimeTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.TotalWorked = TimeCalc(ref user);
-                user.Date = user.Started;
+                user.TotalWorkedPerDay = TimeCalc(ref user);
+                user.Date = user.StartedWorkDayAt;
                 db.User.Add(user);
                 await db.SaveChangesAsync();
 
@@ -85,8 +85,8 @@ namespace TimeTracker.Controllers
             if (ModelState.IsValid)
             {
                 db.User.Update(user);
-                user.TotalWorked = TimeCalc(ref user);
-                user.Date = user.Started;
+                user.TotalWorkedPerDay = TimeCalc(ref user);
+                user.Date = user.StartedWorkDayAt;
                 await db.SaveChangesAsync();
                 return RedirectToAction("GetAttendance");
             }
@@ -165,10 +165,10 @@ namespace TimeTracker.Controllers
                     {
                         if (item.UserId.Equals(item2.UserId))
                         {
-                            item.UserTotalWorked = item.UserTotalWorked.Add(item2.TotalWorked.TimeOfDay);
+                            item.TotalWorkedPerDay = item.TotalWorkedPerDay.Add(item2.TotalWorkedPerDay.TimeOfDay);
                         }
                     }
-                    userCalculatedTime.Add(item.UserTotalWorked);
+                    userCalculatedTime.Add(item.TotalWorkedPerDay);
                 }
                 foreach (var count in setOfUsers)
                 {

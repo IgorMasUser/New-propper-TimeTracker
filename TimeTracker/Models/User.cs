@@ -6,49 +6,38 @@ namespace TimeTracker.Models
 {
     public class User
     {
-        [Key]
-        [Range(1, int.MaxValue, ErrorMessage = "Out of acceptable range")]
         public int UserId { get; set; }
 
-        [Required]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         public string Surname { get; set; } = string.Empty;
 
-        [Required]
         public string Email { get; set; } = string.Empty;
 
-        public bool IsSystemAdmin { get; set; }
+        public bool IsSystemAdmin { get; set; } = false;
 
         public int Role { get; set; }
 
         public Guid? UserIdentityId { get; set; }
-        [Required]
 
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime Started { get; set; }
+        public DateTime StartedWorkDayAt { get; set; }
 
-        [Required]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime Finished { get; set; }
+        public DateTime FinishedWorkDayAt { get; set; }
 
-        [Required]
-        [Range(1, 59, ErrorMessage = "Out of acceptable range")]
         public int Break { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime Date { get; set; }
 
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime TotalWorked { get; set; }
+        public DateTime TotalWorkedPerDay { get; set; }
 
-        [NotMapped]
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime UserTotalWorked { get; set; }
+        public DateTime UserWorkedPerRequestedPeriod { get; set; }
 
         [NotMapped]
         public int Numeration { get; set; }
-
     }
 }

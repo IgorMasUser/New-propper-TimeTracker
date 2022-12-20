@@ -3,7 +3,7 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Data
 {
-    public class ApplicationDbContext:DbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -25,5 +25,29 @@ namespace TimeTracker.Data
 
         public DbSet<AzureIdentityProvider> AzureIdentityProvider { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>(entity =>
+                {
+                    entity.HasNoKey();
+                    entity.Property(p => p.UserId).IsRequired().HasMaxLength(int.MaxValue);
+                    entity.Property(p => p.Name).IsRequired();
+                    entity.Property(p => p.Surname).IsRequired();
+                    entity.Property(p => p.Email).IsRequired();
+                    entity.Property(p => p.StartedWorkDayAt).IsRequired().HasColumnType("datetime");
+                    entity.Property(p => p.FinishedWorkDayAt).IsRequired().HasColumnType("datetime");
+                    entity.Property(p => p.Break).IsRequired().HasMaxLength(59);
+                });
+
+            modelBuilder.Entity<Roles>(entity =>
+            {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<AzureIdentityProvider>(entity =>
+            {
+                entity.HasNoKey();
+            });
+        }
     }
 }

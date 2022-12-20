@@ -95,19 +95,19 @@
                     @Html.DisplayNameFor(model => model.Surname)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Started)
+                    @Html.DisplayNameFor(model => model.StartedWorkDayAt)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Break)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Finished)
+                    @Html.DisplayNameFor(model => model.FinishedWorkDayAt)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Date)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TotalWorked)
+                    @Html.DisplayNameFor(model => model.TotalWorkedPerDay)
                 </th>
 
 
@@ -130,13 +130,13 @@
                         @Html.DisplayFor(modelItem => item.Surname)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Started)
+                        @Html.DisplayFor(modelItem => item.StartedWorkDayAt)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Break)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Finished)
+                        @Html.DisplayFor(modelItem => item.FinishedWorkDayAt)
                     </td>
 
                     <td>
@@ -144,7 +144,7 @@
                     </td>
 
                     <td style="border-right:3px solid #708090;">
-                        @Html.DisplayFor(modelItem => item.TotalWorked)
+                        @Html.DisplayFor(modelItem => item.TotalWorkedPerDay)
                     <td />
 
                     <td style="width:28%">
