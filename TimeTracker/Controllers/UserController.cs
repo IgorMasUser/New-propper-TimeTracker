@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+using TimeTracker.BusinessLogic;
 using TimeTracker.Data;
 using TimeTracker.Models;
 
@@ -143,38 +141,38 @@ namespace TimeTracker.Controllers
         {
             using (db)
             {
-                int i = 0;
-                var data = db.User.Select(x => x);
-                var setOfUsers = new HashSet<User>(new UserComparer());
+                //    int i = 0;
+                var data = db.User.Select(x => x).ToList();
+                //    var setOfUsers = new HashSet<User>(new UserComparer());
+                var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(data);
+            //    foreach (var user in data)
+            //    {
+            //        setOfUsers.Add(user);
+            //    }
 
-                foreach (var user in data)
-                {
-                    setOfUsers.Add(user);
-                }
+                //    var listOfUsers = new List<User>();
+                //    var userCalculatedTime = new List<DateTime>();
 
-                var listOfUsers = new List<User>();
-                var userCalculatedTime = new List<DateTime>();
-
-                foreach (var user in data)
-                {
-                    listOfUsers.Add(user);
-                }
-                foreach (var item in listOfUsers)
-                {
-                    foreach (var item2 in listOfUsers)
-                    {
-                        if (item.UserId.Equals(item2.UserId))
-                        {
-                            item.TotalWorkedPerDay = item.TotalWorkedPerDay.Add(item2.TotalWorkedPerDay.TimeOfDay);
-                        }
-                    }
-                    userCalculatedTime.Add(item.TotalWorkedPerDay);
-                }
-                foreach (var count in setOfUsers)
-                {
-                    i++;
-                    count.Numeration = i;
-                }
+                //    foreach (var user in data)
+                //    {
+                //        listOfUsers.Add(user);
+                //    }
+                //    foreach (var item in listOfUsers)
+                //    {
+                //        foreach (var item2 in listOfUsers)
+                //        {
+                //            if (item.UserId.Equals(item2.UserId))
+                //            {
+                //                item.TotalWorkedPerDay = item.TotalWorkedPerDay.Add(item2.TotalWorkedPerDay.TimeOfDay);
+                //            }
+                //        }
+                //        userCalculatedTime.Add(item.TotalWorkedPerDay);
+                //    }
+                //    foreach (var count in setOfUsers)
+                //    {
+                //        i++;
+                //        count.Numeration = i;
+                //    }
                 return View(setOfUsers);
             }
         }
