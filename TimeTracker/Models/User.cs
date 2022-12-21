@@ -18,6 +18,8 @@ namespace TimeTracker.Models
 
         public bool IsSystemAdmin { get; set; } = false;
 
+        public Guid? UserAccessTokenPair { get; set; }
+
         public int Role { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
