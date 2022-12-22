@@ -8,26 +8,24 @@ namespace TimeTracker.BusinessLogic
         public HashSet<User> GetTotalWorkedTimeForAllUsers(List<User> allselectedusers)
         {
             var setOfUsers = new HashSet<User>(new UserComparer());
-            //var listOfUsers = new List<User>();
-            var userCalculatedTime = new List<DateTime>(); //?
+            var userCalculatedTime = new List<DateTime>(); 
 
+            AddUsersToHashSet(setOfUsers, allselectedusers);
             ChooseUniqueUsers(allselectedusers, userCalculatedTime);
             AsignRowNumberForUser(setOfUsers);
 
             return setOfUsers;
         }
 
-        private static void AsignRowNumberForUser(HashSet<User> setOfUsers)
+        private void AddUsersToHashSet(HashSet<User> setOfUsers, List<User> allselectedusers)
         {
-            foreach (var count in setOfUsers)
+            foreach (var user in allselectedusers)
             {
-                int i = 0;
-                i++;
-                count.Numeration = i;
+                setOfUsers.Add(user);
             }
         }
 
-        private static void ChooseUniqueUsers(List<User> allselectedusers, List<DateTime> userCalculatedTime)
+        private void ChooseUniqueUsers(List<User> allselectedusers, List<DateTime> userCalculatedTime)
         {
             foreach (var item in allselectedusers)
             {
@@ -35,10 +33,20 @@ namespace TimeTracker.BusinessLogic
                 {
                     if (item.UserId.Equals(item2.UserId))
                     {
-                        item.TotalWorkedPerDay = item.TotalWorkedPerDay.Add(item2.TotalWorkedPerDay.TimeOfDay);
+                        item.UserWorkedPerRequestedPeriod = item.UserWorkedPerRequestedPeriod.Add(item2.TotalWorkedPerDay.TimeOfDay);
                     }
                 }
-                userCalculatedTime.Add(item.TotalWorkedPerDay); //?
+                userCalculatedTime.Add(item.UserWorkedPerRequestedPeriod); //?
+            }
+        }
+
+        private void AsignRowNumberForUser(HashSet<User> setOfUsers)
+        {
+            int i = 0;
+            foreach (var count in setOfUsers)
+            {
+                i++;
+                count.Numeration = i;
             }
         }
     }

@@ -99,7 +99,7 @@ namespace TimeTracker.Controllers
             }
             var user = await db.User.FindAsync(id);
             return View(user);
-                    }
+        }
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -124,55 +124,12 @@ namespace TimeTracker.Controllers
             return NotFound(id);
         }
 
-        public class UserComparer : IEqualityComparer<User>
-        {
-            public bool Equals(User? x, User? y)
-            {
-                return String.Equals(x.UserId, y.UserId);
-            }
-
-            public int GetHashCode([DisallowNull] User obj)
-            {
-                return obj.UserId.GetHashCode();
-            }
-        }
-
         public IActionResult ViewUsers()
         {
             using (db)
             {
-                //    int i = 0;
                 var data = db.User.Select(x => x).ToList();
-                //    var setOfUsers = new HashSet<User>(new UserComparer());
                 var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(data);
-            //    foreach (var user in data)
-            //    {
-            //        setOfUsers.Add(user);
-            //    }
-
-                //    var listOfUsers = new List<User>();
-                //    var userCalculatedTime = new List<DateTime>();
-
-                //    foreach (var user in data)
-                //    {
-                //        listOfUsers.Add(user);
-                //    }
-                //    foreach (var item in listOfUsers)
-                //    {
-                //        foreach (var item2 in listOfUsers)
-                //        {
-                //            if (item.UserId.Equals(item2.UserId))
-                //            {
-                //                item.TotalWorkedPerDay = item.TotalWorkedPerDay.Add(item2.TotalWorkedPerDay.TimeOfDay);
-                //            }
-                //        }
-                //        userCalculatedTime.Add(item.TotalWorkedPerDay);
-                //    }
-                //    foreach (var count in setOfUsers)
-                //    {
-                //        i++;
-                //        count.Numeration = i;
-                //    }
                 return View(setOfUsers);
             }
         }
