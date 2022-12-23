@@ -3,16 +3,16 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Data
 {
+    //Repository pattern
     public interface IUserRepo
     {
-        IActionResult GetAttendance(string search);
-        public IActionResult CreateRole();
-        public Task<IActionResult> CreateRole(User user);
-        public Task<IActionResult> EditUserById(int id);
-        public Task<IActionResult> EditUserByName(User user);
-        public Task<IActionResult> GetDetails(int id);
-        public Task<IActionResult> Delete(int id);
-        public IActionResult GetAllEmployees();
-
+        IQueryable<User> GetAttendanceOfUser(string search);
+        Task<User> CreateUser(User user);
+        Task<User> GetUserToEditById(int? id);
+        Task<User> EditUserByName(User user);
+        Task<User> GetDetailsOfUser(int? id);
+        Task<User> FindUserToDelete(int? id);
+        Task DeleteUser(int? id);
+        HashSet<User> GetAllEmployeesInfo();
     }
 }

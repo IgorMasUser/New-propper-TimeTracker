@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 using TimeTracker.BusinessLogic;
 using TimeTracker.Data;
+using TimeTracker.DTOs;
 using TimeTracker.Models;
 
 
@@ -10,13 +12,17 @@ namespace TimeTracker.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext db;
-
+        private readonly IUserRepo repository;
+        private readonly IMapper mapper;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, ApplicationDbContext db)
+       // public UserController(ILogger<UserController> logger, ApplicationDbContext db, IUserRepo repository, IMapper mapper)
+       public UserController(ILogger<UserController> logger, ApplicationDbContext db, IUserRepo repository, IMapper mapper)
         {
             this.logger = logger;
             this.db = db;
+            this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -112,14 +118,11 @@ namespace TimeTracker.Controllers
             return NotFound(id);
         }
 
-        public IActionResult ViewUsers()
+        public ActionResult<UserDTO> GetAllEmployeesInfo()
         {
-            using (db)
-            {
-                var data = db.User.Select(x => x).ToList();
-                var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(data);
-                return View(setOfUsers);
-            }
+            var attendance = repository.GetAllEmployeesInfo();
+            return View(mapper.Map<HashSet<UserDTO>>(attendance));
+
         }
     }
 }
