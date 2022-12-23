@@ -19,18 +19,6 @@ namespace TimeTracker.Controllers
             this.db = db;
         }
 
-        public DateTime TimeCalc(ref User user)
-        {
-            DateTime breake = new DateTime().AddMinutes(user.Break);
-            TimeSpan temp = new DateTime().Subtract(breake);
-            DateTime finished = user.FinishedWorkDayAt;
-            DateTime started = user.StartedWorkDayAt;
-            TimeSpan workDay = finished.Subtract(started.Subtract(temp));
-            DateTime total = Convert.ToDateTime(workDay.ToString());
-
-            return total;
-        }
-
         [HttpGet]
         public IActionResult GetAttendance(string search)
         {
@@ -56,7 +44,7 @@ namespace TimeTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.TotalWorkedPerDay = TimeCalc(ref user);
+                user.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref user);
                 user.Date = user.StartedWorkDayAt;
                 db.User.Add(user);
                 await db.SaveChangesAsync();
@@ -83,7 +71,7 @@ namespace TimeTracker.Controllers
             if (ModelState.IsValid)
             {
                 db.User.Update(user);
-                user.TotalWorkedPerDay = TimeCalc(ref user);
+                user.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref user);
                 user.Date = user.StartedWorkDayAt;
                 await db.SaveChangesAsync();
                 return RedirectToAction("GetAttendance");
