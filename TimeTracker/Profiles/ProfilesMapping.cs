@@ -8,8 +8,8 @@ namespace TimeTracker.Profiles
     {
         public ProfilesMapping()
         {
-           CreateMap<User, UserDTO>();
+           CreateMap<User, UserReadDTO>();
+           CreateMap<UserCreateDTO, User>();
         }
-
     }
 }

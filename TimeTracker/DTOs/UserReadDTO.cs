@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace TimeTracker.DTOs
 
 {
-    public class UserDTO
+    public class UserReadDTO
     {
         public int Id { get; set; }
 

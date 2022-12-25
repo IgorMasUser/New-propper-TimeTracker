@@ -1,4 +1,6 @@
-﻿using TimeTracker.BusinessLogic;
+﻿using AutoMapper;
+using TimeTracker.BusinessLogic;
+using TimeTracker.DTOs;
 using TimeTracker.Models;
 
 namespace TimeTracker.Data
@@ -12,40 +14,38 @@ namespace TimeTracker.Data
             this.db = db;
         }
 
-        public async Task<User> CreateUser(User user)
+        public async Task CreateUser(User user)
         {
             user.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref user);
             user.Date = user.StartedWorkDayAt;
             db.User.Add(user);
             await db.SaveChangesAsync();
-
-            return user;
         }
 
-        public async Task DeleteUser(int? id)
+        public async Task DeleteUser(int id)
         {
-            var user = await db.User.FindAsync(id);
-            if (user != null)
-            {
-                db.User.Remove(user);
-                await db.SaveChangesAsync();
-            }
-        }
-
-        public async Task<User> EditUserByName(User user)
-        {
-            db.User.Update(user);
-            user.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref user);
-            user.Date = user.StartedWorkDayAt;
+            var result = await db.User.FindAsync(id);
+            db.User.Remove(result);
             await db.SaveChangesAsync();
+        }
 
+        public async Task<User> GetUserToDelete(int? id)
+        {
+            var user = await db.User.FindAsync(id);
             return user;
         }
 
-        public async Task<User> FindUserToDelete(int? id)
+        public async Task EditAttendanceOfUser(User mappedUser)
+        {
+            db.User.Update(mappedUser);
+            mappedUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref mappedUser);
+            mappedUser.Date = mappedUser.StartedWorkDayAt;
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<User> EditAttendanceOfUser(int? id)
         {
             var user = await db.User.FindAsync(id);
-
             return user;
         }
 
@@ -59,25 +59,17 @@ namespace TimeTracker.Data
             }
         }
 
-        public IQueryable<User> GetAttendanceOfUser(string search)
+        public IEnumerable<User> GetAttendanceOfUser(string search)
         {
-            var data = db.User.Select(x => x);
+            var listOfUsers = db.User.Select(x => x);
             if (!string.IsNullOrEmpty(search))
             {
-                data = data.Where(a => a.Name.Contains(search) || a.Surname.Contains(search));
+                listOfUsers = listOfUsers.Where(a => a.Name.Contains(search) || a.Surname.Contains(search));
             }
-
-            return data;
+            return listOfUsers;
         }
 
         public async Task<User> GetDetailsOfUser(int? id)
-        {
-            var user = await db.User.FindAsync(id);
-
-            return user;
-        }
-
-        public async Task<User> GetUserToEditById(int? id)
         {
             var user = await db.User.FindAsync(id);
             return user;

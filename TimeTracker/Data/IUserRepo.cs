@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TimeTracker.DTOs;
 using TimeTracker.Models;
 
 namespace TimeTracker.Data
@@ -6,13 +7,13 @@ namespace TimeTracker.Data
     //Repository pattern
     public interface IUserRepo
     {
-        IQueryable<User> GetAttendanceOfUser(string search);
-        Task<User> CreateUser(User user);
-        Task<User> GetUserToEditById(int? id);
-        Task<User> EditUserByName(User user);
+        IEnumerable<User> GetAttendanceOfUser(string search);
+        Task CreateUser(User user);
+        Task<User> EditAttendanceOfUser(int? id);
+        Task EditAttendanceOfUser(User user);
+        Task<User> GetUserToDelete(int? id);
+        Task DeleteUser(int id);
         Task<User> GetDetailsOfUser(int? id);
-        Task<User> FindUserToDelete(int? id);
-        Task DeleteUser(int? id);
         HashSet<User> GetAllEmployeesInfo();
     }
 }

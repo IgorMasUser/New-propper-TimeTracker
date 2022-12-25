@@ -16,8 +16,7 @@ namespace TimeTracker.Controllers
         private readonly IMapper mapper;
         private readonly ILogger<UserController> logger;
 
-       // public UserController(ILogger<UserController> logger, ApplicationDbContext db, IUserRepo repository, IMapper mapper)
-       public UserController(ILogger<UserController> logger, ApplicationDbContext db, IUserRepo repository, IMapper mapper)
+        public UserController(ILogger<UserController> logger, ApplicationDbContext db, IUserRepo repository, IMapper mapper)
         {
             this.logger = logger;
             this.db = db;
@@ -26,102 +25,91 @@ namespace TimeTracker.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAttendance(string search)
+        public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
         {
             ViewData["GetUserDetails"] = search;
-            var data = db.User.Select(x => x);
-            if (!string.IsNullOrEmpty(search))
-            {
-                data = data.Where(a => a.Name.Contains(search) || a.Surname.Contains(search));
-            }
-            return View(data);
+            var attendanceOfUser = repository.GetAttendanceOfUser(search);
+
+            return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
+
         }
 
         //get
-        public IActionResult Create()
+        public IActionResult CreateUser()
         {
             return View();
         }
 
-        //post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> CreateUser(User user)
         {
             if (ModelState.IsValid)
             {
-                user.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref user);
-                user.Date = user.StartedWorkDayAt;
-                db.User.Add(user);
-                await db.SaveChangesAsync();
+                await repository.CreateUser(user);
 
-                return RedirectToAction("GetAttendance");
+                return RedirectToAction("GetAttendanceOfUser");
             }
             return View(user);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditAttendanceOfUser(int? id)
         {
             if (id == null)
             {
-                return RedirectToAction("GetAttendance");
+                return RedirectToAction("GetAttendanceOfUser");
             }
-            var user = await db.User.FindAsync(id);
-            return View(user);
+            var getUserToEdit = await repository.EditAttendanceOfUser(id);
+            var userDTO = mapper.Map<UserReadDTO>(getUserToEdit);
+            return View(userDTO);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(User user)
+        public async Task<IActionResult> EditAttendanceOfUser(UserCreateDTO user)
         {
             if (ModelState.IsValid)
             {
-                db.User.Update(user);
-                user.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref user);
-                user.Date = user.StartedWorkDayAt;
-                await db.SaveChangesAsync();
-                return RedirectToAction("GetAttendance");
+                var mappedUser = mapper.Map<User>(user);
+                await repository.EditAttendanceOfUser(mappedUser);
+                return RedirectToAction("GetAttendanceOfUser");
             }
             return View(user);
         }
 
-        public async Task<IActionResult> GetDetails(int? id)
+        public async Task<IActionResult> GetDetailsOfUser(int? id)
         {
             if (id == null)
             {
-                return RedirectToAction("GetAttendance");
+                return RedirectToAction("GetAttendanceOfUser");
             }
-            var user = await db.User.FindAsync(id);
-            return View(user);
+            var foundUser = await repository.GetDetailsOfUser(id);
+            var mappedUser = mapper.Map<UserReadDTO>(foundUser);
+            return View(mappedUser);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> DeleteUser(int? id)
         {
             if (id == null)
             {
-                return RedirectToAction("GetAttendance");
+                return RedirectToAction("GetAttendanceOfUser");
             }
-            var user = await db.User.FindAsync(id);
-            return View(user);
+            var foundUser = await repository.GetUserToDelete(id);
+            var mappedUser = mapper.Map<UserReadDTO>(foundUser);
+            return View(mappedUser);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await db.User.FindAsync(id);
-            if (user != null)
-            {
-                db.User.Remove(user);
-                await db.SaveChangesAsync();
-                return RedirectToAction("GetAttendance");
-            }
-            return NotFound(id);
+            await repository.DeleteUser(id);
+            return RedirectToAction("GetAttendanceOfUser");
         }
 
-        public ActionResult<UserDTO> GetAllEmployeesInfo()
+        public ActionResult<UserReadDTO> GetAllEmployeesInfo()
         {
-            var attendance = repository.GetAllEmployeesInfo();
-            return View(mapper.Map<HashSet<UserDTO>>(attendance));
+            var totalAttendance = repository.GetAllEmployeesInfo();
+            return View(mapper.Map<HashSet<UserReadDTO>>(totalAttendance));
 
         }
     }
