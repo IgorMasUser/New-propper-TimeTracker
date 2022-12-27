@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TimeTracker.DTOs;
 using TimeTracker.Models;
 
 namespace TimeTracker.Data
 {
+    //Repository pattern
     public interface IUserRepo
     {
-        IActionResult GetAttendance(string search);
-        public IActionResult CreateRole();
-        public Task<IActionResult> CreateRole(User user);
-        public Task<IActionResult> EditUserById(int id);
-        public Task<IActionResult> EditUserByName(User user);
-        public Task<IActionResult> GetDetails(int id);
-        public Task<IActionResult> Delete(int id);
-        public IActionResult GetAllEmployees();
-
+        IEnumerable<User> GetAttendanceOfUser(string search);
+        Task CreateUser(User user);
+        Task<User> EditAttendanceOfUser(int? id);
+        Task EditAttendanceOfUser(User user);
+        Task<User> GetUserToDelete(int? id);
+        Task DeleteUser(int id);
+        Task<User> GetDetailsOfUser(int? id);
+        HashSet<User> GetAllEmployeesInfo();
     }
 }

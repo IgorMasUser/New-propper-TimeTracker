@@ -1,7 +1,9 @@
-﻿@model IEnumerable<TimeTracker.Models.User>
+﻿
+@model IEnumerable<TimeTracker.DTOs.UserReadDTO>
+
 
 @{
-    ViewData["Title"] = "View Users";
+    ViewData["Title"] = "GetAllEmployees";
 }
 
 <style>
@@ -51,7 +53,7 @@
 </style>
 
 <div>
-    <h1>listofUsers of users</h1>
+    <h1>List of users</h1>
     <hr />
 
     <table>
@@ -71,7 +73,7 @@
                 </th>
 
                 <th>
-                    @Html.DisplayNameFor(model => model.TotalWorked)
+                    @Html.DisplayNameFor(model => model.UserWorkedPerRequestedPeriod)
                 </th>
             </tr>
         </thead>
@@ -108,7 +110,7 @@
 
                     <td>
 
-                        @Html.DisplayFor(modelItem => item.UserTotalWorked)
+                        @Html.DisplayFor(modelItem => item.UserWorkedPerRequestedPeriod)
 
                     </td>
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeTracker.Data;
 
@@ -11,9 +12,10 @@ using TimeTracker.Data;
 namespace TimeTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221220191023_SimplifiedDB")]
+    partial class SimplifiedDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,27 +23,6 @@ namespace TimeTracker.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("TimeTracker.Models.RefreshTokenProvider", b =>
-                {
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("RefreshTokenExpires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("UserRefreshTokenPair")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.ToTable("RefreshTokenProvider");
-                });
 
             modelBuilder.Entity("TimeTracker.Models.Roles", b =>
                 {
@@ -67,12 +48,6 @@ namespace TimeTracker.Migrations
 
             modelBuilder.Entity("TimeTracker.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<int>("Break")
                         .HasMaxLength(59)
                         .HasColumnType("int");
@@ -82,8 +57,7 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FinishedWorkDayAt")
                         .HasColumnType("datetime");
@@ -93,8 +67,7 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -104,14 +77,10 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("TotalWorkedPerDay")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UserAccessTokenPair")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UserId")
                         .HasMaxLength(2147483647)
@@ -119,8 +88,6 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("UserWorkedPerRequestedPeriod")
                         .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
 
                     b.ToTable("User");
                 });

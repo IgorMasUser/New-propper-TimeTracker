@@ -1,7 +1,7 @@
-﻿@model TimeTracker.Models.User
+﻿@model TimeTracker.DTOs.UserReadDTO
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CreateUser";
 }
 <style>
 
@@ -30,7 +30,7 @@
     <div class="row" style="margin-left:auto;margin-right: auto;">
 
         <div class="col-md-4"  style="margin-left:auto;margin-right: auto;">
-            <form asp-action="Create">
+            <form asp-action="CreateUser">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="UserId" class="control-label"></label>
@@ -46,11 +46,12 @@
                     <label asp-for="Surname" class="control-label"></label>
                     <input asp-for="Surname" class="form-control" />
                     <span asp-validation-for="Surname" class="text-danger"></span>
+
                 </div>
                 <div class="form-group">
-                    <label asp-for="Started" class="control-label"></label>
-                    <input asp-for="Started" class="form-control" />
-                    <span asp-validation-for="Started" class="text-danger"></span>
+                    <label asp-for="StartedWorkDayAt" class="control-label"></label>
+                    <input asp-for="StartedWorkDayAt" class="form-control" />
+                    <span asp-validation-for="StartedWorkDayAt" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Break" class="control-label"></label>
@@ -58,13 +59,13 @@
                     <span asp-validation-for="Break" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Finished" class="control-label"></label>
-                    <input asp-for="Finished" class="form-control" />
-                    <span asp-validation-for="Finished" class="text-danger"></span>
+                    <label asp-for="FinishedWorkDayAt" class="control-label"></label>
+                    <input asp-for="FinishedWorkDayAt" class="form-control" />
+                    <span asp-validation-for="FinishedWorkDayAt" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
-                    <a asp-action="GetAttendance" class="btn btn-primary">Back to listofUsers</a>
+                    <a asp-action="GetAttendanceOfUser" class="btn btn-primary">Back to listofUsers</a>
                 </div>
 
             </form>

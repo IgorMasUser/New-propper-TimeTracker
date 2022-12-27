@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TimeTracker.Models
+
+namespace TimeTracker.DTOs
+
 {
-    public class User
+    public class UserReadDTO
     {
         public int Id { get; set; }
 
