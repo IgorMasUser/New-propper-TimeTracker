@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  timetracker:
+    container_name: timetracker_api
+    image: timetracker
+    build: ./
+    ports:
+      - "8080:80"
