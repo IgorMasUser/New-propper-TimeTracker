@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.CodeAnalysis;
-using TimeTracker.BusinessLogic;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -11,15 +9,13 @@ namespace TimeTracker.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext db;
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, ApplicationDbContext db, IUserRepo repository, IMapper mapper)
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper)
         {
             this.logger = logger;
-            this.db = db;
             this.repository = repository;
             this.mapper = mapper;
         }
@@ -31,7 +27,6 @@ namespace TimeTracker.Controllers
             var attendanceOfUser = repository.GetAttendanceOfUser(search);
 
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
-
         }
 
         //get
