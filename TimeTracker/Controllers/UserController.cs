@@ -29,6 +29,23 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
+        [HttpGet]
+        public IActionResult Authorization()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Authorization(User user)
+        {
+
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("GetAttendanceOfUser");
+            }
+            return View();
+        }
+
         //get
         public IActionResult CreateUser()
         {
