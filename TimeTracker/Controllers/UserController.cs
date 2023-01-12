@@ -1,5 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Xml.Linq;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -11,22 +18,15 @@ namespace TimeTracker.Controllers
     {
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper)
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
-        }
-
-        [HttpGet]
-        public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
-        {
-            ViewData["GetUserDetails"] = search;
-            var attendanceOfUser = repository.GetAttendanceOfUser(search);
-
-            return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
+            this.configuration = configuration;
         }
 
         [HttpGet]
@@ -38,15 +38,44 @@ namespace TimeTracker.Controllers
         [HttpPost]
         public IActionResult Authorization(User user)
         {
-
             if (ModelState.IsValid)
             {
-                return RedirectToAction("GetAttendanceOfUser");
+                User userFromDB = new User();
+                if (user.Email.Equals(userFromDB.Email) & user.Password.Equals(userFromDB.Password))
+                {
+                    //UserAuthenticationcs.ToAuthenticateUser(user.Name);
+
+                    List<Claim> claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Name)
+                    };
+
+                    var key = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
+                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
+                    var setToken = new JwtSecurityToken(
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(5),
+                        signingCredentials: creds);
+
+                    var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
+                    return Ok(jwt);
+                }
+                else BadRequest(StatusCodes.Status401Unauthorized);
             }
             return View();
         }
 
-        //get
+        [HttpGet]
+        public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
+        {
+            ViewData["GetUserDetails"] = search;
+            var attendanceOfUser = repository.GetAttendanceOfUser(search);
+
+            return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
+        }
+
+        [Authorize]
         public IActionResult CreateUser()
         {
             return View();

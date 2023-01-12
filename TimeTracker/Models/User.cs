@@ -13,9 +13,11 @@ namespace TimeTracker.Models
 
         public string Surname { get; set; } = string.Empty;
 
-        public string Email { get; set; } = string.Empty;
+        //public string Email { get; set; } = string.Empty;
+        public string Email { get; set; } = "igor@gmail.com";
 
-        public string Password { get; set; } = string.Empty;
+        //public string Password { get; set; } = string.Empty;
+        public string Password { get; set; } = "12345";
 
         public bool IsSystemAdmin { get; set; } = false;
 
