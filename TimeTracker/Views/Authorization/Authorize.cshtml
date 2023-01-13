@@ -1,0 +1,56 @@
+﻿@model TimeTracker.Models.User
+
+@{
+    ViewData["Title"] = "Authorize";
+}
+<style>
+    h1 {
+        height: auto;
+        margin-left:500px;
+        margin-right: auto;
+    }
+    hr {
+        width:450px;
+        height: auto;
+        margin-left:auto;
+        margin-right: auto;
+    }
+</style>
+
+<div>
+
+    <h1>Login</h1>
+    <hr/>
+
+    <div class="row" style="margin-left:auto;margin-right: auto;">
+
+        <div class="col-md-4"  style="margin-left:auto;margin-right: auto;">
+            <form asp-action="Authorize">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" class="btn btn-primary">
+                    <input type="submit" value="Cancel" class="btn btn-primary">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}
+

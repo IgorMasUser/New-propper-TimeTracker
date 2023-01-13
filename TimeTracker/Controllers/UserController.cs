@@ -29,42 +29,42 @@ namespace TimeTracker.Controllers
             this.configuration = configuration;
         }
 
-        [HttpGet]
-        public IActionResult Authorization()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult Authorization()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public IActionResult Authorization(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                User userFromDB = new User();
-                if (user.Email.Equals(userFromDB.Email) & user.Password.Equals(userFromDB.Password))
-                {
-                    //UserAuthenticationcs.ToAuthenticateUser(user.Name);
+        //[HttpPost]
+        //public IActionResult Authorization(User user)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        User userFromDB = new User();
+        //        if (user.Email.Equals(userFromDB.Email) & user.Password.Equals(userFromDB.Password))
+        //        {
+        //            //UserAuthenticationcs.ToAuthenticateUser(user.Name);
 
-                    List<Claim> claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Name)
-                    };
+        //            List<Claim> claims = new List<Claim>
+        //            {
+        //                new Claim(ClaimTypes.Name, user.Name)
+        //            };
 
-                    var key = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
-                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        //            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
+        //            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-                    var setToken = new JwtSecurityToken(
-                        claims: claims,
-                        expires: DateTime.Now.AddMinutes(5),
-                        signingCredentials: creds);
+        //            var setToken = new JwtSecurityToken(
+        //                claims: claims,
+        //                expires: DateTime.Now.AddMinutes(5),
+        //                signingCredentials: creds);
 
-                    var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
-                    return Ok(jwt);
-                }
-                else BadRequest(StatusCodes.Status401Unauthorized);
-            }
-            return View();
-        }
+        //            var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
+        //            return Ok(jwt);
+        //        }
+        //        else BadRequest(StatusCodes.Status401Unauthorized);
+        //    }
+        //    return View();
+        //}
 
         [HttpGet]
         public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
