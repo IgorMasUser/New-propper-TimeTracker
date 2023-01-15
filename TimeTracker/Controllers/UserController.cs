@@ -46,16 +46,16 @@ namespace TimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(UserCreateDTO user)
+        public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
         {
             if (ModelState.IsValid)
             {
-                var mappedUser = mapper.Map<User>(user);
-                await repository.CreateUser(mappedUser, user);
+                var mappedUser = mapper.Map<User>(requestedUser);
+                await repository.CreateUser(mappedUser, requestedUser);
 
                 return RedirectToAction("GetAttendanceOfUser");
             }
-            return View(user);
+            return View(requestedUser);
         }
         public async Task<IActionResult> EditAttendanceOfUser(int? id)
         {
