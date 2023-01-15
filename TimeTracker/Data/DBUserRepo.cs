@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Security.Cryptography;
 using TimeTracker.BusinessLogic;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -14,11 +15,17 @@ namespace TimeTracker.Data
             this.db = db;
         }
 
-        public async Task CreateUser(User user)
+        public async Task CreateUser(User createdUser, UserCreateDTO requestedUser)
         {
-            user.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref user);
-            user.Date = user.StartedWorkDayAt;
-            db.User.Add(user);
+            using (var hmac = new HMACSHA512())
+            {
+                createdUser.PasswordSalt = hmac.Key;
+                createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
+            }
+
+            //createdUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkTimePerDay(ref createdUser);
+            //createdUser.Date = createdUser.StartedWorkDayAt;
+            db.User.Add(createdUser);
             await db.SaveChangesAsync();
         }
 
@@ -75,5 +82,15 @@ namespace TimeTracker.Data
             return user;
         }
 
+        //public async Task RegisterUser(User createdUser, UserCreateDTO requestedUser)
+        //{
+        //    using (var hmac = new HMACSHA512())
+        //    {
+        //        createdUser.PasswordSalt = hmac.Key;
+        //        createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
+        //    }
+        //    db.User.Add(createdUser);
+        //    await db.SaveChangesAsync();
+        //}
     }
 }

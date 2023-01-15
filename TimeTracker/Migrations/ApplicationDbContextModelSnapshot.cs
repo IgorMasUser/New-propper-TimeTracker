@@ -28,17 +28,14 @@ namespace TimeTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RefreshTokenCreated")
+                    b.Property<DateTime>("RefreshTokenCreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("RefreshTokenExpires")
+                    b.Property<DateTime>("RefreshTokenExpiresAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<Guid?>("UserRefreshTokenPair")
-                        .HasColumnType("uniqueidentifier");
 
                     b.ToTable("RefreshTokenProvider");
                 });
@@ -55,6 +52,9 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("RolesCreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<float>("SalaryLimit")
+                        .HasColumnType("real");
 
                     b.Property<int>("UserRoleId")
                         .HasColumnType("int");
@@ -96,8 +96,19 @@ namespace TimeTracker.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
+
+                    b.Property<float>("Salary")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("StartedWorkDayAt")
                         .HasColumnType("datetime");
@@ -109,9 +120,6 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("TotalWorkedPerDay")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("UserAccessTokenPair")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UserId")
                         .HasMaxLength(2147483647)

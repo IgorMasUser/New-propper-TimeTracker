@@ -11,21 +11,19 @@ namespace TimeTracker.DTOs
 
         public int UserId { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
-        public string Surname { get; set; } = string.Empty;
+        public string Surname { get; set; }
 
-        //public string Email { get; set; } = string.Empty;
-        public string Email { get; set; } = "igor@gmail.com";
+        public string Email { get; set; }
 
-        //public string Password { get; set; } = string.Empty;
-        public string Password { get; set; } = "12345";
+        public string Password { get; set; }
 
-        public bool IsSystemAdmin { get; set; } = false;
-
-        public Guid? UserAccessTokenPair { get; set; }
+        public bool IsSystemAdmin { get; set; }
 
         public int Role { get; set; }
+
+        public float Salary { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime StartedWorkDayAt { get; set; }

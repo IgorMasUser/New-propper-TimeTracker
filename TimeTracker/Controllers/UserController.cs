@@ -29,43 +29,6 @@ namespace TimeTracker.Controllers
             this.configuration = configuration;
         }
 
-        //[HttpGet]
-        //public IActionResult Authorization()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public IActionResult Authorization(User user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        User userFromDB = new User();
-        //        if (user.Email.Equals(userFromDB.Email) & user.Password.Equals(userFromDB.Password))
-        //        {
-        //            //UserAuthenticationcs.ToAuthenticateUser(user.Name);
-
-        //            List<Claim> claims = new List<Claim>
-        //            {
-        //                new Claim(ClaimTypes.Name, user.Name)
-        //            };
-
-        //            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
-        //            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-        //            var setToken = new JwtSecurityToken(
-        //                claims: claims,
-        //                expires: DateTime.Now.AddMinutes(5),
-        //                signingCredentials: creds);
-
-        //            var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
-        //            return Ok(jwt);
-        //        }
-        //        else BadRequest(StatusCodes.Status401Unauthorized);
-        //    }
-        //    return View();
-        //}
-
         [HttpGet]
         public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
         {
@@ -75,7 +38,7 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
-        [Authorize]
+        //[Authorize]
         public IActionResult CreateUser()
         {
             return View();
@@ -83,17 +46,17 @@ namespace TimeTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(User user)
+        public async Task<IActionResult> CreateUser(UserCreateDTO user)
         {
             if (ModelState.IsValid)
             {
-                await repository.CreateUser(user);
+                var mappedUser = mapper.Map<User>(user);
+                await repository.CreateUser(mappedUser, user);
 
                 return RedirectToAction("GetAttendanceOfUser");
             }
             return View(user);
         }
-
         public async Task<IActionResult> EditAttendanceOfUser(int? id)
         {
             if (id == null)
@@ -151,7 +114,6 @@ namespace TimeTracker.Controllers
         {
             var totalAttendance = repository.GetAllEmployeesInfo();
             return View(mapper.Map<HashSet<UserReadDTO>>(totalAttendance));
-
         }
     }
 }
