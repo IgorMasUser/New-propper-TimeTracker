@@ -23,7 +23,7 @@ namespace TimeTracker.Data
                 createdUser.PasswordSalt = hmac.Key;
                 createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
             }
-            if (requestedUser.StartedWorkDayAt == DateTime.MinValue || requestedUser.Date == DateTime.MinValue || requestedUser.FinishedWorkDayAt == DateTime.MinValue)
+            if (!db.User.Any(x => x.Email.Contains(requestedUser.Email)))
             {
                 createdUser.StartedWorkDayAt = (DateTime)SqlDateTime.MinValue;
                 createdUser.Date = (DateTime)SqlDateTime.MinValue;
@@ -70,12 +70,9 @@ namespace TimeTracker.Data
 
         public HashSet<User> GetAllEmployeesInfo()
         {
-            using (db)
-            {
-                var data = db.User.Select(x => x).ToList();
-                var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(data);
-                return setOfUsers;
-            }
+            var data = db.User.Select(x => x).ToList();
+            var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(data);
+            return setOfUsers;
         }
 
         public IEnumerable<User> GetAttendanceOfUser(string search)
@@ -125,6 +122,18 @@ namespace TimeTracker.Data
             }
         }
 
+        public async Task<string> SaveRefreshToken(User user, string refreshToken)
+        {
+           // var foundUser = db.User.FirstOrDefault(x => x.UserId == user.UserId);
+            RefreshTokenProvider tokenProvider = new RefreshTokenProvider();
+            tokenProvider.RefreshTokenExpiresAt = DateTime.Now.AddDays(7);
+            tokenProvider.RefreshTokenCreatedAt = DateTime.Now;
+            tokenProvider.UserId = user.UserId;
+            tokenProvider.RefreshToken = refreshToken;
+            db.RefreshTokenProvider.Add(tokenProvider);
+            await db.SaveChangesAsync();
 
+            return tokenProvider.RefreshToken;
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace TimeTracker.Migrations
                 name: "RefreshTokenProvider",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RefreshTokenCreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),

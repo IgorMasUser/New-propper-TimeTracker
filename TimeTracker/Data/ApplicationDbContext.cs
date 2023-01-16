@@ -39,7 +39,7 @@ namespace TimeTracker.Data
 
             modelBuilder.Entity<RefreshTokenProvider>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(p => p.Id);
             });
 
         }

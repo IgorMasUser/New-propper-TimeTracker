@@ -38,7 +38,7 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult CreateUser()
         {
             return View();

@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
+using TimeTracker.Services;
 
 namespace TimeTrackerControllers
 {
@@ -20,13 +21,15 @@ namespace TimeTrackerControllers
         private readonly IConfiguration configuration;
         private readonly IMapper mapper;
         private readonly IUserRepo repository;
+        private readonly ITokenService tokenService;
 
-        public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper, IUserRepo repository)
+        public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper, IUserRepo repository, ITokenService tokenService)
         {
             this.logger = logger;
             this.configuration = configuration;
             this.mapper = mapper;
-            this.repository = repository;
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         }
 
         //[HttpGet]
@@ -55,8 +58,12 @@ namespace TimeTrackerControllers
         }
 
         [HttpPost]
-        public IActionResult Authorize(UserCreateDTO requestedUser)
+        public async Task<ActionResult<string[]>> Authorize(UserCreateDTO requestedUser)
         {
+            if (requestedUser is null)
+            {
+                return BadRequest("Invalid client request");
+            }
             var mappedUser = mapper.Map<User>(requestedUser);
             if (repository.CheckIfUserExists(mappedUser, requestedUser))
             {
@@ -68,21 +75,28 @@ namespace TimeTrackerControllers
                         new Claim(ClaimTypes.Email, obtainedUser.Email)
                     };
 
-                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+                string jwtAccessToken = tokenService.GenerateAccessToken(claims);
+                string jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser);
 
-                var setToken = new JwtSecurityToken(
-                    configuration["JWT:Issuer"],
-                    configuration["JWT:Audience"],
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(15),
-                    signingCredentials: creds); ;
+                string[] response = new string[2];
+                response[0] = jwtAccessToken;
+                response[1] = jwtRefreshToken;
+                //var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
+                //var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-                var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
-                return Ok(jwt);
+                //var setToken = new JwtSecurityToken(
+                //    configuration["JWT:Issuer"],
+                //    configuration["JWT:Audience"],
+                //    claims: claims,
+                //    expires: DateTime.Now.AddMinutes(15),
+                //    signingCredentials: creds); ;
+
+                // var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
+                return Ok(response);
+                
             }
 
-            return BadRequest("Wrong password!");
+            return Unauthorized("Wrong password!");
 
         }
     }      
