@@ -15,6 +15,7 @@ namespace TimeTracker.Data
         Task DeleteUser(int id);
         Task<User> GetDetailsOfUser(int? id);
         HashSet<User> GetAllEmployeesInfo();
-        Task AuthorizeUser(User user, UserCreateDTO requestedUser);
+        bool CheckIfUserExists(User user, UserCreateDTO requestedUser);
+        User GetUserClaims(User user, UserCreateDTO requestedUser);
     }
 }

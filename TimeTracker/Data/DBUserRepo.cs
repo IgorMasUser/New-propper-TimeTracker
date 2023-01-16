@@ -80,18 +80,8 @@ namespace TimeTracker.Data
 
         public IEnumerable<User> GetAttendanceOfUser(string search)
         {
-            var listOfUsers = db.User.Select(x => x).Where(y=>y.Date != (DateTime)SqlDateTime.MinValue);
-            //foreach(var user in listOfUsers)
-            //{
-            //    if(user.Date == (DateTime)SqlDateTime.MinValue)
-            //    {
-            //       user.StartedWorkDayAt = DateTime.MinValue;
-            //       user.Date = DateTime.MinValue;
-            //       user.FinishedWorkDayAt = DateTime.MinValue;
-            //       user.TotalWorkedPerDay = DateTime.MinValue;
-            //       user.UserWorkedPerRequestedPeriod = DateTime.MinValue;
-            //    }
-            //}
+            var listOfUsers = db.User.Select(x => x).Where(y => y.Date != (DateTime)SqlDateTime.MinValue);
+
             if (!string.IsNullOrEmpty(search))
             {
                 listOfUsers = listOfUsers.Where(a => a.Name.Contains(search) || a.Surname.Contains(search));
@@ -105,20 +95,36 @@ namespace TimeTracker.Data
             return user;
         }
 
-        public async Task AuthorizeUser(User user, UserCreateDTO requestedUser)
+        public bool CheckIfUserExists(User user, UserCreateDTO requestedUser)
         {
-           
+            if (db.User.Any(x => x.Email.Contains(requestedUser.Email)))
+            {
+                var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
+
+                if (VerifyPassword(requestedUser.Password, foundUser.PasswordHash, foundUser.PasswordSalt))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        //public async Task RegisterUser(User createdUser, UserCreateDTO requestedUser)
-        //{
-        //    using (var hmac = new HMACSHA512())
-        //    {
-        //        createdUser.PasswordSalt = hmac.Key;
-        //        createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
-        //    }
-        //    db.User.Add(createdUser);
-        //    await db.SaveChangesAsync();
-        //}
+        public User GetUserClaims(User user, UserCreateDTO requestedUser)
+        {
+            var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
+
+            return foundUser;
+        }
+
+        private bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computedHash.SequenceEqual(passwordHash);
+            }
+        }
+
+
     }
 }

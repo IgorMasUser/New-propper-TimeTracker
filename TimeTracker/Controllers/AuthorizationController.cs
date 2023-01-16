@@ -29,11 +29,11 @@ namespace TimeTrackerControllers
             this.repository = repository;
         }
 
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult Register()
+        //{
+        //    return View();
+        //}
 
         //[HttpPost]
         //public async Task<IActionResult> Register(UserCreateDTO requestedUser)
@@ -42,7 +42,7 @@ namespace TimeTrackerControllers
         //    {
         //        var mappedUser = mapper.Map<User>(requestedUser);
         //        await repository.RegisterUser(mappedUser, requestedUser);
-               
+
         //        return RedirectToAction("GetAttendanceOfUser");
         //    }
         //    return View(requestedUser);
@@ -55,78 +55,38 @@ namespace TimeTrackerControllers
         }
 
         [HttpPost]
-        public IActionResult Authorize(UserCreateDTO user)
+        public IActionResult Authorize(UserCreateDTO requestedUser)
         {
-            if (ModelState.IsValid)
+            var mappedUser = mapper.Map<User>(requestedUser);
+            if (repository.CheckIfUserExists(mappedUser, requestedUser))
             {
-                //User userFromDB = new User();
-                //if (user.Email.Equals(userFromDB.Email) & user.Password.Equals(userFromDB.Password))
-                //{
-                    List<Claim> claims = new List<Claim>
+                var obtainedUser = repository.GetUserClaims(mappedUser, requestedUser);
+
+                List<Claim> claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, user.Name),
-                        new Claim(ClaimTypes.Email, user.Email)
+                        new Claim(ClaimTypes.Name, obtainedUser.Name),
+                        new Claim(ClaimTypes.Email, obtainedUser.Email)
                     };
 
-                    var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
-                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-                    var setToken = new JwtSecurityToken(
-                        configuration["JWT:Issuer"],
-                        configuration["JWT:Audience"],
-                        claims: claims,
-                        expires: DateTime.Now.AddMinutes(15),
-                        signingCredentials: creds); ;
+                var setToken = new JwtSecurityToken(
+                    configuration["JWT:Issuer"],
+                    configuration["JWT:Audience"],
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(15),
+                    signingCredentials: creds); ;
 
-                    var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
-                    return Ok(jwt);
-                //}
-                //else BadRequest(StatusCodes.Status401Unauthorized);
+                var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
+                return Ok(jwt);
             }
-            return View();
+
+            return BadRequest("Wrong password!");
+
         }
-
-
-
-        //Worked!!
-        //[HttpGet]
-        //public IActionResult Authorize()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public IActionResult Authorize(User user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        User userFromDB = new User();
-        //        if (user.Email.Equals(userFromDB.Email) & user.Password.Equals(userFromDB.Password))
-        //        {
-        //            List<Claim> claims = new List<Claim>
-        //            {
-        //                new Claim(ClaimTypes.Name, user.Name),
-        //                new Claim(ClaimTypes.Email, user.Email)
-        //            };
-
-        //            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
-        //            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-
-        //            var setToken = new JwtSecurityToken(
-        //                configuration["JWT:Issuer"],
-        //                configuration["JWT:Audience"],
-        //                claims: claims,
-        //                expires: DateTime.Now.AddMinutes(15),
-        //                signingCredentials: creds); ;
-
-        //            var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
-        //            return Ok(jwt);
-        //        }
-        //        else BadRequest(StatusCodes.Status401Unauthorized);
-        //    }
-        //    return View();
-        //}
-    }
+    }      
+    
 }
 
 
@@ -144,29 +104,29 @@ namespace TimeTrackerControllers
 //    public static readonly string EmailType = "Email";
 //    public static readonly string LockedType = "Locked";
 
-    //public static Guid GetSub(this ClaimsPrincipal user)
-    //{
-    //    var sub = user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-    //    if (!Guid.TryParse(sub, out var subGuid)) throw new InvalidCastException("Invalid sub claim");
+//public static Guid GetSub(this ClaimsPrincipal user)
+//{
+//    var sub = user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+//    if (!Guid.TryParse(sub, out var subGuid)) throw new InvalidCastException("Invalid sub claim");
 
-    //    return subGuid;
-    //}
+//    return subGuid;
+//}
 
-    //public static int GetUserId(this ClaimsPrincipal user)
-    //{
-    //    var userIdValue = user.Claims.FirstOrDefault(c => c.Type == UserIdType)?.Value;
-    //    if (!int.TryParse(userIdValue, out var userId)) throw new InvalidCastException("Invalid userId claim");
+//public static int GetUserId(this ClaimsPrincipal user)
+//{
+//    var userIdValue = user.Claims.FirstOrDefault(c => c.Type == UserIdType)?.Value;
+//    if (!int.TryParse(userIdValue, out var userId)) throw new InvalidCastException("Invalid userId claim");
 
-    //    return userId;
-    //}
+//    return userId;
+//}
 
-    //public static string GetFirstName(this ClaimsPrincipal user)
-    //{
-    //    return user.Claims.FirstOrDefault(c => c.Type == FirstNameType)?.Value;
-    //}
+//public static string GetFirstName(this ClaimsPrincipal user)
+//{
+//    return user.Claims.FirstOrDefault(c => c.Type == FirstNameType)?.Value;
+//}
 
-    //public static string GetMiddleName(this ClaimsPrincipal user)
-    //{
-    //    return user.Claims.FirstOrDefault(c => c.Type == MiddleNameType)?.Value;
-    //}
-   //}
+//public static string GetMiddleName(this ClaimsPrincipal user)
+//{
+//    return user.Claims.FirstOrDefault(c => c.Type == MiddleNameType)?.Value;
+//}
+//}

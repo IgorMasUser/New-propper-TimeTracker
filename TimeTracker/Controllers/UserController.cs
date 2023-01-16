@@ -110,6 +110,7 @@ namespace TimeTracker.Controllers
             return RedirectToAction("GetAttendanceOfUser");
         }
 
+        [Authorize]
         public ActionResult<UserReadDTO> GetAllEmployeesInfo()
         {
             var totalAttendance = repository.GetAllEmployeesInfo();
