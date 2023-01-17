@@ -106,7 +106,7 @@ namespace TimeTracker.Data
             return false;
         }
 
-        public User GetUserClaims(User user, UserCreateDTO requestedUser)
+        public User GetUserClaims(User requestedUser)
         {
             var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
 
@@ -133,6 +133,21 @@ namespace TimeTracker.Data
             await db.SaveChangesAsync();
 
             return tokenProvider;
+        }
+
+        public RefreshTokenProvider GetUserTokenDetails(string cookiesToken)
+        {
+
+            var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(x=>x.RefreshToken.Equals(cookiesToken));
+
+            if (tokenDetails != null)
+
+            {
+                return tokenDetails;
+            }
+
+            return null;
+
         }
     }
 }

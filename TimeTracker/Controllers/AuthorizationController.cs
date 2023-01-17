@@ -32,25 +32,6 @@ namespace TimeTrackerControllers
             this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         }
 
-        //[HttpGet]
-        //public IActionResult Register()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> Register(UserCreateDTO requestedUser)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var mappedUser = mapper.Map<User>(requestedUser);
-        //        await repository.RegisterUser(mappedUser, requestedUser);
-
-        //        return RedirectToAction("GetAttendanceOfUser");
-        //    }
-        //    return View(requestedUser);
-        //}
-
         [HttpGet]
         public IActionResult Authorize()
         {
@@ -68,23 +49,33 @@ namespace TimeTrackerControllers
             var mappedUser = mapper.Map<User>(requestedUser);
             if (repository.CheckIfUserExists(mappedUser, requestedUser))
             {
-                var obtainedUser = repository.GetUserClaims(mappedUser, requestedUser);
+                var obtainedUser = repository.GetUserClaims(mappedUser);
 
                 List<Claim> claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, obtainedUser.Name),
                         new Claim(ClaimTypes.Email, obtainedUser.Email)
                     };
-
-                var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser);
-                string jwtAccessToken = tokenService.GenerateAccessToken(claims);
+               
                 var refreshToken = Request.Cookies["refreshToken"];
                 if (refreshToken != null)
                 {
-                    if (!tokenService.RegeneratedRefreshTokenAfterValidation(refreshToken))
+
+                    var tokenDetails = repository.GetUserTokenDetails(refreshToken);
+
+                    if (tokenDetails is null || tokenDetails.RefreshToken != refreshToken || tokenDetails.RefreshTokenExpiresAt <= DateTime.Now)
                     {
-                        SetRefreshToken(jwtRefreshToken);
+                        return BadRequest("Invalid client request");
                     }
+
+                    string jwtAccessToken = tokenService.GenerateAccessToken(claims);
+
+                    return Ok(jwtAccessToken);
+                }
+                else
+                {
+                    var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser);
+                    SetRefreshToken(jwtRefreshToken);
                 }
 
                 void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
@@ -97,12 +88,6 @@ namespace TimeTrackerControllers
                     };
                     Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
                 }
-
-                return Ok(new
-                {
-                    jwtAccessToken,
-                    jwtRefreshToken
-                });
 
             }
             return Unauthorized("Wrong password!");
