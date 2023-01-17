@@ -122,9 +122,8 @@ namespace TimeTracker.Data
             }
         }
 
-        public async Task<string> SaveRefreshToken(User user, string refreshToken)
+        public async Task<RefreshTokenProvider> SaveRefreshToken(User user, string refreshToken)
         {
-           // var foundUser = db.User.FirstOrDefault(x => x.UserId == user.UserId);
             RefreshTokenProvider tokenProvider = new RefreshTokenProvider();
             tokenProvider.RefreshTokenExpiresAt = DateTime.Now.AddDays(7);
             tokenProvider.RefreshTokenCreatedAt = DateTime.Now;
@@ -133,7 +132,7 @@ namespace TimeTracker.Data
             db.RefreshTokenProvider.Add(tokenProvider);
             await db.SaveChangesAsync();
 
-            return tokenProvider.RefreshToken;
+            return tokenProvider;
         }
     }
 }

@@ -64,6 +64,7 @@ namespace TimeTrackerControllers
             {
                 return BadRequest("Invalid client request");
             }
+
             var mappedUser = mapper.Map<User>(requestedUser);
             if (repository.CheckIfUserExists(mappedUser, requestedUser))
             {
@@ -75,32 +76,40 @@ namespace TimeTrackerControllers
                         new Claim(ClaimTypes.Email, obtainedUser.Email)
                     };
 
+                var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser);
                 string jwtAccessToken = tokenService.GenerateAccessToken(claims);
-                string jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser);
+                var refreshToken = Request.Cookies["refreshToken"];
+                if (refreshToken != null)
+                {
+                    if (!tokenService.RegeneratedRefreshTokenAfterValidation(refreshToken))
+                    {
+                        SetRefreshToken(jwtRefreshToken);
+                    }
+                }
 
-                string[] response = new string[2];
-                response[0] = jwtAccessToken;
-                response[1] = jwtRefreshToken;
-                //var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JWT:Key").Value));
-                //var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+                void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
+                {
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = jwtRefreshToken.RefreshTokenExpiresAt
+                    };
+                    Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
+                }
 
-                //var setToken = new JwtSecurityToken(
-                //    configuration["JWT:Issuer"],
-                //    configuration["JWT:Audience"],
-                //    claims: claims,
-                //    expires: DateTime.Now.AddMinutes(15),
-                //    signingCredentials: creds); ;
+                return Ok(new
+                {
+                    jwtAccessToken,
+                    jwtRefreshToken
+                });
 
-                // var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
-                return Ok(response);
-                
             }
-
             return Unauthorized("Wrong password!");
 
         }
-    }      
-    
+    }
+
 }
 
 

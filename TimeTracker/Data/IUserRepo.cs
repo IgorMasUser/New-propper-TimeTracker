@@ -17,6 +17,6 @@ namespace TimeTracker.Data
         HashSet<User> GetAllEmployeesInfo();
         bool CheckIfUserExists(User user, UserCreateDTO requestedUser);
         User GetUserClaims(User user, UserCreateDTO requestedUser);
-        Task<string> SaveRefreshToken(User user, string refreshToken);
+        Task<RefreshTokenProvider> SaveRefreshToken(User user, string refreshToken);
     }
 }

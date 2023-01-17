@@ -44,7 +44,7 @@ namespace TimeTracker.Services
             }
         }
 
-        public async Task<string> AssignRefreshToken(User user)
+        public async Task<RefreshTokenProvider> AssignRefreshToken(User user)
         {
             var refreshToken = GenerateRefreshToken();
 
@@ -53,9 +53,7 @@ namespace TimeTracker.Services
             return refreshTokenProvider;
         }
 
-
-
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public bool RegeneratedRefreshTokenAfterValidation(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -74,8 +72,8 @@ namespace TimeTracker.Services
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
-            return principal;
-        }
+            return true;
+        }       
 
     }
 }
