@@ -39,6 +39,7 @@ namespace TimeTrackerControllers
         }
 
         [HttpPost]
+        [Route("/Authorization/Authorize")]
         public async Task<ActionResult<string[]>> Authorize(UserCreateDTO requestedUser)
         {
             if (requestedUser is null)
@@ -69,13 +70,26 @@ namespace TimeTrackerControllers
                     }
 
                     string jwtAccessToken = tokenService.GenerateAccessToken(claims);
+                    SetAccessToken(jwtAccessToken);
 
-                    return Ok(jwtAccessToken);
+                    //return Ok(jwtAccessToken);
+                   return Ok();
                 }
                 else
                 {
                     var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser);
                     SetRefreshToken(jwtRefreshToken);
+                }
+
+                void SetAccessToken(string jwtAccessToken)
+                {
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTime.Now.AddMinutes(15)
+                    };
+                    Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
                 }
 
                 void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)

@@ -7,6 +7,5 @@ namespace TimeTracker.Services
     {
         string GenerateAccessToken(IEnumerable<Claim> claims);
         Task<RefreshTokenProvider> AssignRefreshToken(User user);
-        bool RegeneratedRefreshTokenAfterValidation(string token);
     }
 }
