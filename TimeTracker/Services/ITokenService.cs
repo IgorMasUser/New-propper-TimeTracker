@@ -5,7 +5,8 @@ namespace TimeTracker.Services
 {
     public interface ITokenService
     {
-        string GenerateAccessToken(IEnumerable<Claim> claims);
-        Task<RefreshTokenProvider> AssignRefreshToken(User user);
+        string GenerateAccessToken(IEnumerable<Claim> claims, int tokenExpirationTimeInMinutes);
+        Task<RefreshTokenProvider> AssignRefreshToken(int user);
+        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }

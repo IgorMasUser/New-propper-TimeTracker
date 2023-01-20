@@ -18,18 +18,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     ));
 builder.Services.AddScoped<IUserRepo, DBUserRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddCookie(x =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddCookie(x =>
 {
     x.Cookie.Name = "accessToken";
-
-}).AddJwtBearer(x =>
+})
+.AddJwtBearer(x =>
 {
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
@@ -41,6 +36,7 @@ builder.Services.AddAuthentication(x =>
         ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
         ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
     };
+
     x.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
@@ -50,6 +46,39 @@ builder.Services.AddAuthentication(x =>
         }
     };
 });
+
+//builder.Services.AddAuthentication(x =>
+//{
+//    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//}).AddCookie(x =>
+//{
+//    x.Cookie.Name = "accessToken";
+
+//}).AddJwtBearer(x =>
+//{
+//    x.RequireHttpsMetadata = false;
+//    x.SaveToken = true;
+//    x.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidateIssuerSigningKey = true,
+//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+//                        .GetBytes(builder.Configuration.GetSection("JWT:Key").Value)),
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = true,
+//        ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
+//        ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
+//    };
+//    x.Events = new JwtBearerEvents
+//    {
+//        OnMessageReceived = context =>
+//        {
+//            context.Token = context.Request.Cookies["accessToken"];
+//            return Task.CompletedTask;
+//        }
+//    };
+//});
 
 
 
