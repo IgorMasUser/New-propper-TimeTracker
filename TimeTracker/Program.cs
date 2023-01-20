@@ -43,8 +43,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             context.Token = context.Request.Cookies["accessToken"];
             return Task.CompletedTask;
+        },
+
+        OnChallenge = context =>
+        {
+            context.Response.Redirect("https://localhost:7062/Authorization/Refresh");
+            context.HandleResponse();
+
+            return Task.FromResult(0);
+
+            //context.HandleResponse();
+            //context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //context.Response.Redirect("/Authorization/Refresh");
+            //return Task.CompletedTask;
+        },
+
+        OnAuthenticationFailed = context =>
+        {
+            context.Response.Redirect("/Authorization/Refresh");
+            return Task.CompletedTask;
+
         }
-    };
+};
 });
 
 //builder.Services.AddAuthentication(x =>
