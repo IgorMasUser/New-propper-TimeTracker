@@ -51,13 +51,13 @@ namespace TimeTrackerControllers
             if (repository.CheckIfUserExists(mappedUser, requestedUser))
             {
                 var obtainedUser = repository.GetUserClaims(mappedUser);
-
+                const int tokenExpirationTimeInMinutes = 15;
                 List<Claim> claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, obtainedUser.Name),
                         new Claim(ClaimTypes.Email, obtainedUser.Email)
                     };
-               
+
                 var refreshToken = Request.Cookies["refreshToken"];
                 if (refreshToken != null)
                 {
@@ -69,25 +69,25 @@ namespace TimeTrackerControllers
                         return BadRequest("Invalid client request");
                     }
 
-                    string jwtAccessToken = tokenService.GenerateAccessToken(claims);
-                    SetAccessToken(jwtAccessToken);
+                    string jwtAccessToken = tokenService.GenerateAccessToken(claims, tokenExpirationTimeInMinutes);
+                    SetAccessToken(jwtAccessToken, tokenExpirationTimeInMinutes);
 
                     //return Ok(jwtAccessToken);
-                   return Ok();
+                    return Ok();
                 }
                 else
                 {
-                    var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser);
+                    var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser.UserId);
                     SetRefreshToken(jwtRefreshToken);
                 }
 
-                void SetAccessToken(string jwtAccessToken)
+                void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
                 {
                     var cookieOptions = new CookieOptions
                     {
                         HttpOnly = true,
                         SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.Now.AddMinutes(15)
+                        Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes)
                     };
                     Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
                 }
@@ -107,6 +107,60 @@ namespace TimeTrackerControllers
             return Unauthorized("Wrong password!");
 
         }
+
+        [HttpPost]
+        [Route("/Authorization/Refresh")]
+        public async Task<ActionResult<string[]>> Refresh()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var jwtAccessToken = Request.Cookies["accessToken"];
+
+            const int tokenExpirationTimeInMinutes = 15;
+
+            var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
+            var username = principal.Identity.Name;
+
+            var tokenDetails = repository.GetUserTokenDetails(username);
+      
+
+            if (tokenDetails is null || tokenDetails.RefreshToken != refreshToken || tokenDetails.RefreshTokenExpiresAt <= DateTime.Now)
+            {
+                return BadRequest("Invalid client request");
+            }
+
+            string newJwtAccessToken = tokenService.GenerateAccessToken(principal.Claims, tokenExpirationTimeInMinutes);
+            SetAccessToken(newJwtAccessToken, tokenExpirationTimeInMinutes);
+            var jwtRefreshToken = await tokenService.AssignRefreshToken(tokenDetails.UserId);
+            SetRefreshToken(jwtRefreshToken);
+
+            //return Ok(jwtAccessToken);
+            return Ok();
+            void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
+            {
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes)
+                };
+                Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
+            }
+
+
+            void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
+            {
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = jwtRefreshToken.RefreshTokenExpiresAt
+                };
+                Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
+            }
+
+            return Ok();
+        }
+
     }
 
 }

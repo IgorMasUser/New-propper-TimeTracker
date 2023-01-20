@@ -122,12 +122,12 @@ namespace TimeTracker.Data
             }
         }
 
-        public async Task<RefreshTokenProvider> SaveRefreshToken(User user, string refreshToken)
+        public async Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken)
         {
             RefreshTokenProvider tokenProvider = new RefreshTokenProvider();
             tokenProvider.RefreshTokenExpiresAt = DateTime.Now.AddDays(7);
             tokenProvider.RefreshTokenCreatedAt = DateTime.Now;
-            tokenProvider.UserId = user.UserId;
+            tokenProvider.UserId = userId;
             tokenProvider.RefreshToken = refreshToken;
             db.RefreshTokenProvider.Add(tokenProvider);
             await db.SaveChangesAsync();
@@ -135,13 +135,13 @@ namespace TimeTracker.Data
             return tokenProvider;
         }
 
-        public RefreshTokenProvider GetUserTokenDetails(string cookiesToken)
+        public RefreshTokenProvider GetUserTokenDetails(string userName)
         {
-
-            var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(x=>x.RefreshToken.Equals(cookiesToken));
+            var obtainedUser = db.User.Where(p=>p.Name.All(x=>x.Equals(userName)));
+            //var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(x=>x.RefreshToken.Equals(cookiesToken));
+            var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(p=> obtainedUser.All(p2=>p2.UserId == p.UserId));
 
             if (tokenDetails != null)
-
             {
                 return tokenDetails;
             }

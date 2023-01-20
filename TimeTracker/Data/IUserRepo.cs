@@ -18,6 +18,6 @@ namespace TimeTracker.Data
         bool CheckIfUserExists(User user, UserCreateDTO requestedUser);
         User GetUserClaims(User user);
         RefreshTokenProvider GetUserTokenDetails(string userName);
-        Task<RefreshTokenProvider> SaveRefreshToken(User user, string refreshToken);
+        Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken);
     }
 }
