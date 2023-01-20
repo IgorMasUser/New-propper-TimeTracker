@@ -44,10 +44,10 @@ namespace TimeTracker.Services
             }
         }
 
-        public async Task<RefreshTokenProvider> AssignRefreshToken(User user)
+        public async Task<RefreshTokenProvider> AssignRefreshToken(int userId)
         {
             var refreshToken = GenerateRefreshToken();
-            var refreshTokenProvider = await repository.SaveRefreshToken(user, refreshToken);
+            var refreshTokenProvider = await repository.SaveRefreshToken(userId, refreshToken);
 
             return refreshTokenProvider;
         }

@@ -22,6 +22,7 @@ namespace TimeTrackerControllers
         private readonly IMapper mapper;
         private readonly IUserRepo repository;
         private readonly ITokenService tokenService;
+        const int tokenExpirationTimeInMinutes = 1;
 
         public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper, IUserRepo repository, ITokenService tokenService)
         {
@@ -51,35 +52,23 @@ namespace TimeTrackerControllers
             if (repository.CheckIfUserExists(mappedUser, requestedUser))
             {
                 var obtainedUser = repository.GetUserClaims(mappedUser);
-                const int tokenExpirationTimeInMinutes = 15;
+
                 List<Claim> claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, obtainedUser.Name),
                         new Claim(ClaimTypes.Email, obtainedUser.Email)
                     };
 
-                var refreshToken = Request.Cookies["refreshToken"];
-                if (refreshToken != null)
-                {
+                string jwtAccessToken = tokenService.GenerateAccessToken(claims, tokenExpirationTimeInMinutes);
+                SetAccessToken(jwtAccessToken, tokenExpirationTimeInMinutes);
 
-                    var tokenDetails = repository.GetUserTokenDetails(refreshToken);
+                //return Ok(jwtAccessToken);
 
-                    if (tokenDetails is null || tokenDetails.RefreshToken != refreshToken || tokenDetails.RefreshTokenExpiresAt <= DateTime.Now)
-                    {
-                        return BadRequest("Invalid client request");
-                    }
 
-                    string jwtAccessToken = tokenService.GenerateAccessToken(claims, tokenExpirationTimeInMinutes);
-                    SetAccessToken(jwtAccessToken, tokenExpirationTimeInMinutes);
+                var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser.UserId);
+                SetRefreshToken(jwtRefreshToken);
 
-                    //return Ok(jwtAccessToken);
-                    return Ok();
-                }
-                else
-                {
-                    var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser.UserId);
-                    SetRefreshToken(jwtRefreshToken);
-                }
+                return Ok();
 
                 void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
                 {
@@ -108,20 +97,18 @@ namespace TimeTrackerControllers
 
         }
 
-        [HttpPost]
+        //[HttpPost]
         [Route("/Authorization/Refresh")]
-        public async Task<ActionResult<string[]>> Refresh()
+        public async Task<ActionResult> Refresh()
         {
             var refreshToken = Request.Cookies["refreshToken"];
             var jwtAccessToken = Request.Cookies["accessToken"];
-
-            const int tokenExpirationTimeInMinutes = 15;
 
             var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
             var username = principal.Identity.Name;
 
             var tokenDetails = repository.GetUserTokenDetails(username);
-      
+
 
             if (tokenDetails is null || tokenDetails.RefreshToken != refreshToken || tokenDetails.RefreshTokenExpiresAt <= DateTime.Now)
             {
@@ -142,6 +129,7 @@ namespace TimeTrackerControllers
                     HttpOnly = true,
                     SameSite = SameSiteMode.Strict,
                     Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes)
+                    //Expires = DateTime.UtcNow.AddSeconds(tokenExpirationTimeInMinutes)
                 };
                 Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
             }
@@ -158,7 +146,6 @@ namespace TimeTrackerControllers
                 Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
             }
 
-            return Ok();
         }
 
     }
