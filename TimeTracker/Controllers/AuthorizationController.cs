@@ -22,15 +22,18 @@ namespace TimeTrackerControllers
         private readonly IMapper mapper;
         private readonly IUserRepo repository;
         private readonly ITokenService tokenService;
+        private readonly IHttpContextAccessor httpContextAccessor;
         const int tokenExpirationTimeInMinutes = 1;
 
-        public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper, IUserRepo repository, ITokenService tokenService)
+        public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper, 
+            IUserRepo repository, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             this.logger = logger;
             this.configuration = configuration;
             this.mapper = mapper;
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -41,7 +44,7 @@ namespace TimeTrackerControllers
 
         [HttpPost]
         [Route("/Authorization/Authorize")]
-        public async Task<ActionResult<string[]>> Authorize(UserCreateDTO requestedUser)
+        public async Task<ActionResult> Authorize(UserCreateDTO requestedUser)
         {
             if (requestedUser is null)
             {
@@ -61,13 +64,14 @@ namespace TimeTrackerControllers
 
                 string jwtAccessToken = tokenService.GenerateAccessToken(claims, tokenExpirationTimeInMinutes);
                 SetAccessToken(jwtAccessToken, tokenExpirationTimeInMinutes);
+                SetAccessTokenForDataRetriving(jwtAccessToken, tokenExpirationTimeInMinutes);
 
                 //return Ok(jwtAccessToken);
 
 
                 var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser.UserId);
                 SetRefreshToken(jwtRefreshToken);
-
+                
                 return Ok();
 
                 void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
@@ -76,9 +80,20 @@ namespace TimeTrackerControllers
                     {
                         HttpOnly = true,
                         SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes)
+                        Expires = DateTime.UtcNow.AddSeconds(tokenExpirationTimeInMinutes),
                     };
                     Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
+                }
+
+                void SetAccessTokenForDataRetriving(string jwtAccessToken, int tokenExpirationTimeInMinutes)
+                {
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes).AddSeconds(20),
+                    };
+                    Response.Cookies.Append("accessTokenForDataRetriving", jwtAccessToken, cookieOptions);
                 }
 
                 void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
@@ -97,13 +112,16 @@ namespace TimeTrackerControllers
 
         }
 
-        //[HttpPost]
+        [HttpGet]
         [Route("/Authorization/Refresh")]
         public async Task<ActionResult> Refresh()
         {
+            var jwtAccessToken = Request.Cookies["accessTokenForDataRetriving"];
+            //if(string.IsNullOrEmpty(jwtAccessToken))
+            //{
+            //    return RedirectToAction("Authorize");
+            //}
             var refreshToken = Request.Cookies["refreshToken"];
-            var jwtAccessToken = Request.Cookies["accessToken"];
-
             var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
             var username = principal.Identity.Name;
 
@@ -141,7 +159,7 @@ namespace TimeTrackerControllers
                 {
                     HttpOnly = true,
                     SameSite = SameSiteMode.Strict,
-                    Expires = jwtRefreshToken.RefreshTokenExpiresAt
+                    Expires = jwtRefreshToken.RefreshTokenExpiresAt,
                 };
                 Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
             }

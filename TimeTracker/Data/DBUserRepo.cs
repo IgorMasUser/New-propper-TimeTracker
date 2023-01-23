@@ -137,9 +137,9 @@ namespace TimeTracker.Data
 
         public RefreshTokenProvider GetUserTokenDetails(string userName)
         {
-            var obtainedUser = db.User.Where(p=>p.Name.All(x=>x.Equals(userName)));
+            var obtainedUser = db.User.Where(p=>p.Name.Contains(userName));
             //var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(x=>x.RefreshToken.Equals(cookiesToken));
-            var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(p=> obtainedUser.All(p2=>p2.UserId == p.UserId));
+            var tokenDetails = db.RefreshTokenProvider.Where(p=> obtainedUser.Any(p2=>p2.UserId == p.UserId)).FirstOrDefault();
 
             if (tokenDetails != null)
             {

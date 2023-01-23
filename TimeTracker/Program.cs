@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Text;
 using TimeTracker.Data;
@@ -18,13 +18,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     ));
 builder.Services.AddScoped<IUserRepo, DBUserRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddCookie(x =>
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthentication(x =>
 {
-    x.Cookie.Name = "accessToken";
-})
-.AddJwtBearer(x =>
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
 {
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
@@ -36,7 +39,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
         ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
     };
-
     x.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
@@ -45,27 +47,32 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             return Task.CompletedTask;
         },
 
+        //OnAuthenticationFailed = context =>
+        //{
+
+        //    context.Response.Redirect("/Authorization/Authorize");
+        //    return Task.FromResult(0);
+
+        //},
+
         OnChallenge = context =>
         {
-            context.Response.Redirect("https://localhost:7062/Authorization/Refresh");
+            var dataToken = context.Request.Cookies["accessTokenForDataRetriving"];
+            if (string.IsNullOrEmpty(dataToken))
+            {
+                context.Response.Redirect("/Authorization/Authorize");
+            }
+            else
+            {
+                context.Response.Redirect("/Authorization/Refresh");
+            }
             context.HandleResponse();
-
             return Task.FromResult(0);
-
-            //context.HandleResponse();
-            //context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            //context.Response.Redirect("/Authorization/Refresh");
-            //return Task.CompletedTask;
-        },
-
-        OnAuthenticationFailed = context =>
-        {
-            context.Response.Redirect("/Authorization/Refresh");
-            return Task.CompletedTask;
-
         }
-};
+
+    };
 });
+
 
 //builder.Services.AddAuthentication(x =>
 //{
@@ -100,8 +107,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    };
 //});
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -112,22 +117,21 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStatusCodePages(async context =>
-{
-    var response = context.HttpContext.Response;
+//app.UseStatusCodePages(async context =>
+//{
+//    var response = context.HttpContext.Response;
 
-    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-    {
-        response.Redirect("/Authorization/Authorize");
-    }
-});
+//    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+//    {
+//        response.Redirect("/Authorization/Authorize");
+//    }
+//});
+
 
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Authorization}/{action=Authorize}/{id?}");

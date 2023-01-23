@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,7 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepo repository;
@@ -39,6 +41,7 @@ namespace TimeTracker.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult CreateUser()
         {
             return View();

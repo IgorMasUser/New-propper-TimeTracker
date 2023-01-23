@@ -28,7 +28,8 @@ namespace TimeTracker.Services
                 configuration["JWT:Issuer"],
                 configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes),
+                expires: DateTime.UtcNow.AddSeconds(10),
+                //expires: DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
@@ -64,13 +65,13 @@ namespace TimeTracker.Services
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidIssuer = configuration.GetSection("JWT:Issuer").Value,
-                ValidAudience = configuration.GetSection("JWT:Audience").Value
+                ValidAudience = configuration.GetSection("JWT:Audience").Value,
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
