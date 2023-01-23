@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using System.Data.SqlTypes;
+﻿using System.Data.SqlTypes;
 using System.Security.Cryptography;
 using TimeTracker.BusinessLogic;
 using TimeTracker.DTOs;
@@ -15,29 +14,33 @@ namespace TimeTracker.Data
         {
             this.db = db;
         }
-
         public async Task CreateUser(User createdUser, UserCreateDTO requestedUser)
         {
-            using (var hmac = new HMACSHA512())
+            if (!db.User.Any(x => x.Email.Contains(requestedUser.Email)) || !db.User.Any(x => x.UserId.Equals(requestedUser.UserId)))
             {
-                createdUser.PasswordSalt = hmac.Key;
-                createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
-            }
-            if (!db.User.Any(x => x.Email.Contains(requestedUser.Email)))
-            {
+                using (var hmac = new HMACSHA512())
+                {
+                    createdUser.PasswordSalt = hmac.Key;
+                    createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
+                }
                 createdUser.StartedWorkDayAt = (DateTime)SqlDateTime.MinValue;
                 createdUser.Date = (DateTime)SqlDateTime.MinValue;
                 createdUser.FinishedWorkDayAt = (DateTime)SqlDateTime.MinValue;
                 createdUser.TotalWorkedPerDay = (DateTime)SqlDateTime.MinValue;
                 createdUser.UserWorkedPerRequestedPeriod = (DateTime)SqlDateTime.MinValue;
+                db.User.Add(createdUser);
             }
             else
             {
-                createdUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(ref createdUser);
-                createdUser.Date = createdUser.StartedWorkDayAt;
-            }
-
-            db.User.Add(createdUser);
+                var foundExistingUser = db.User.FirstOrDefault(x=>x.UserId.Equals(requestedUser.UserId));
+                db.User.Update(foundExistingUser);
+                foundExistingUser.Name = requestedUser.Name;
+                foundExistingUser.UserId = requestedUser.UserId;
+                foundExistingUser.Role = requestedUser.Role;
+                foundExistingUser.Email = requestedUser.Email;
+                foundExistingUser.Salary = requestedUser.Salary;
+                foundExistingUser.Surname = requestedUser.Surname;
+              }
             await db.SaveChangesAsync();
         }
 
@@ -145,9 +148,7 @@ namespace TimeTracker.Data
             {
                 return tokenDetails;
             }
-
             return null;
-
         }
     }
 }

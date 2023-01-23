@@ -25,7 +25,7 @@ namespace TimeTrackerControllers
         private readonly IHttpContextAccessor httpContextAccessor;
         const int tokenExpirationTimeInMinutes = 1;
 
-        public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper, 
+        public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper,
             IUserRepo repository, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
         {
             this.logger = logger;
@@ -50,28 +50,23 @@ namespace TimeTrackerControllers
             {
                 return BadRequest("Invalid client request");
             }
-
             var mappedUser = mapper.Map<User>(requestedUser);
             if (repository.CheckIfUserExists(mappedUser, requestedUser))
             {
                 var obtainedUser = repository.GetUserClaims(mappedUser);
-
                 List<Claim> claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, obtainedUser.Name),
                         new Claim(ClaimTypes.Email, obtainedUser.Email)
                     };
-
                 string jwtAccessToken = tokenService.GenerateAccessToken(claims, tokenExpirationTimeInMinutes);
                 SetAccessToken(jwtAccessToken, tokenExpirationTimeInMinutes);
                 SetAccessTokenForDataRetriving(jwtAccessToken, tokenExpirationTimeInMinutes);
 
-                //return Ok(jwtAccessToken);
-
-
+                //return Ok(jwtAccessToken); //If we want to expose token to frontend so it cares about token
                 var jwtRefreshToken = await tokenService.AssignRefreshToken(obtainedUser.UserId);
                 SetRefreshToken(jwtRefreshToken);
-                
+
                 return Ok();
 
                 void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
@@ -84,7 +79,6 @@ namespace TimeTrackerControllers
                     };
                     Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
                 }
-
                 void SetAccessTokenForDataRetriving(string jwtAccessToken, int tokenExpirationTimeInMinutes)
                 {
                     var cookieOptions = new CookieOptions
@@ -95,7 +89,6 @@ namespace TimeTrackerControllers
                     };
                     Response.Cookies.Append("accessTokenForDataRetriving", jwtAccessToken, cookieOptions);
                 }
-
                 void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
                 {
                     var cookieOptions = new CookieOptions
@@ -106,10 +99,8 @@ namespace TimeTrackerControllers
                     };
                     Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
                 }
-
             }
             return Unauthorized("Wrong password!");
-
         }
 
         [HttpGet]
@@ -117,16 +108,10 @@ namespace TimeTrackerControllers
         public async Task<ActionResult> Refresh()
         {
             var jwtAccessToken = Request.Cookies["accessTokenForDataRetriving"];
-            //if(string.IsNullOrEmpty(jwtAccessToken))
-            //{
-            //    return RedirectToAction("Authorize");
-            //}
             var refreshToken = Request.Cookies["refreshToken"];
             var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
-            var username = principal.Identity.Name;
-
+            var username = principal?.Identity?.Name;
             var tokenDetails = repository.GetUserTokenDetails(username);
-
 
             if (tokenDetails is null || tokenDetails.RefreshToken != refreshToken || tokenDetails.RefreshTokenExpiresAt <= DateTime.Now)
             {
@@ -138,7 +123,6 @@ namespace TimeTrackerControllers
             var jwtRefreshToken = await tokenService.AssignRefreshToken(tokenDetails.UserId);
             SetRefreshToken(jwtRefreshToken);
 
-            //return Ok(jwtAccessToken);
             return Ok();
             void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
             {
@@ -147,11 +131,9 @@ namespace TimeTrackerControllers
                     HttpOnly = true,
                     SameSite = SameSiteMode.Strict,
                     Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes)
-                    //Expires = DateTime.UtcNow.AddSeconds(tokenExpirationTimeInMinutes)
                 };
                 Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
             }
-
 
             void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
             {
