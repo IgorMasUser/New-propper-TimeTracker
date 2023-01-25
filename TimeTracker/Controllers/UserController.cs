@@ -15,7 +15,7 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepo repository;
@@ -40,7 +40,7 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult CreateUser()
         {

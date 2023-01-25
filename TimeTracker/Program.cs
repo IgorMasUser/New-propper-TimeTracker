@@ -46,15 +46,6 @@ builder.Services.AddAuthentication(x =>
             context.Token = context.Request.Cookies["accessToken"];
             return Task.CompletedTask;
         },
-
-        //OnAuthenticationFailed = context =>
-        //{
-
-        //    context.Response.Redirect("/Authorization/Authorize");
-        //    return Task.FromResult(0);
-
-        //},
-
         OnChallenge = context =>
         {
             var dataToken = context.Request.Cookies["accessTokenForDataRetriving"];
@@ -74,39 +65,6 @@ builder.Services.AddAuthentication(x =>
 });
 
 
-//builder.Services.AddAuthentication(x =>
-//{
-//    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddCookie(x =>
-//{
-//    x.Cookie.Name = "accessToken";
-
-//}).AddJwtBearer(x =>
-//{
-//    x.RequireHttpsMetadata = false;
-//    x.SaveToken = true;
-//    x.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuerSigningKey = true,
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-//                        .GetBytes(builder.Configuration.GetSection("JWT:Key").Value)),
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
-//        ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
-//    };
-//    x.Events = new JwtBearerEvents
-//    {
-//        OnMessageReceived = context =>
-//        {
-//            context.Token = context.Request.Cookies["accessToken"];
-//            return Task.CompletedTask;
-//        }
-//    };
-//});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -116,17 +74,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-//app.UseStatusCodePages(async context =>
-//{
-//    var response = context.HttpContext.Response;
-
-//    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-//    {
-//        response.Redirect("/Authorization/Authorize");
-//    }
-//});
-
 
 app.UseStaticFiles();
 app.UseRouting();

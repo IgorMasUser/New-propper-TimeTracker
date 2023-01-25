@@ -28,8 +28,7 @@ namespace TimeTracker.Services
                 configuration["JWT:Issuer"],
                 configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddSeconds(10),
-                //expires: DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(setToken);
@@ -45,7 +44,7 @@ namespace TimeTracker.Services
             }
         }
 
-        public async Task<RefreshTokenProvider> AssignRefreshToken(int userId)
+        public async Task<RefreshTokenProvider> GenerateAndAssignRefreshToken(int userId)
         {
             var refreshToken = GenerateRefreshToken();
             var refreshTokenProvider = await repository.SaveRefreshToken(userId, refreshToken);

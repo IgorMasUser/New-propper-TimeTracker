@@ -109,7 +109,7 @@ namespace TimeTracker.Data
             return false;
         }
 
-        public User GetUserClaims(User requestedUser)
+        public User GetUserDetails(User requestedUser)
         {
             var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
 
@@ -128,14 +128,21 @@ namespace TimeTracker.Data
         public async Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken)
         {
             RefreshTokenProvider tokenProvider = new RefreshTokenProvider();
-            tokenProvider.RefreshTokenExpiresAt = DateTime.Now.AddDays(7);
-            tokenProvider.RefreshTokenCreatedAt = DateTime.Now;
-            tokenProvider.UserId = userId;
-            tokenProvider.RefreshToken = refreshToken;
-            db.RefreshTokenProvider.Add(tokenProvider);
-            await db.SaveChangesAsync();
-
-            return tokenProvider;
+            if (!db.RefreshTokenProvider.Any(x => x.UserId.Equals(userId)))
+            {
+                tokenProvider.RefreshTokenExpiresAt = DateTime.Now.AddDays(7);
+                tokenProvider.RefreshTokenCreatedAt = DateTime.Now;
+                tokenProvider.UserId = userId;
+                tokenProvider.RefreshToken = refreshToken;
+                db.RefreshTokenProvider.Add(tokenProvider);
+                await db.SaveChangesAsync();
+                return tokenProvider;
+            }
+            else
+            {
+                var foundExistingToken = db.RefreshTokenProvider.FirstOrDefault(x => x.UserId.Equals(userId));
+                return foundExistingToken;
+            }      
         }
 
         public RefreshTokenProvider GetUserTokenDetails(string userName)
