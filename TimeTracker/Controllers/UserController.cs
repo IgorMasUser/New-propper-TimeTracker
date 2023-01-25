@@ -15,7 +15,7 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepo repository;
@@ -31,6 +31,7 @@ namespace TimeTracker.Controllers
             this.configuration = configuration;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
         {
@@ -40,14 +41,14 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
-        //[Authorize]
+        [Authorize(Policy = "RequireRole")]
         [HttpGet]
         public IActionResult CreateUser()
         {
             return View();
         }
 
-        [HttpPost]
+        [Authorize(Policy = "RequireRole")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
         {
@@ -84,6 +85,7 @@ namespace TimeTracker.Controllers
             return View(user);
         }
 
+        [Authorize(Policy = "TeamAccess")]
         public async Task<IActionResult> GetDetailsOfUser(int? id)
         {
             if (id == null)
@@ -113,7 +115,7 @@ namespace TimeTracker.Controllers
             return RedirectToAction("GetAttendanceOfUser");
         }
 
-        [Authorize]
+        [Authorize(Policy = "Developer")]
         public ActionResult<UserReadDTO> GetAllEmployeesInfo()
         {
             var totalAttendance = repository.GetAllEmployeesInfo();

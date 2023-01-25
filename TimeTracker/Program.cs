@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Net;
 using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Services;
@@ -64,6 +61,13 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireRole",
+         policy => policy.RequireRole("1"));
+    options.AddPolicy("Developer", policy => policy.RequireRole("3"));
+    options.AddPolicy("TeamAccess", policy => policy.RequireRole("1","2"));
+});
 
 var app = builder.Build();
 

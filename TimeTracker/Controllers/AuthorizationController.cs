@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using NuGet.Common;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using System.Xml.Linq;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -35,7 +28,6 @@ namespace TimeTrackerControllers
             this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
             this.httpContextAccessor = httpContextAccessor;
         }
-
         [HttpGet]
         public IActionResult Authorize()
         {
@@ -57,7 +49,8 @@ namespace TimeTrackerControllers
                 List<Claim> claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, obtainedUser.Name),
-                        new Claim(ClaimTypes.Email, obtainedUser.Email)
+                        new Claim(ClaimTypes.Email, obtainedUser.Email),
+                        new Claim(ClaimTypes.Role, obtainedUser.Role.ToString())
                     };
                 string jwtAccessToken = tokenService.GenerateAccessToken(claims, tokenExpirationTimeInMinutes);
                 SetAccessToken(jwtAccessToken, tokenExpirationTimeInMinutes);
@@ -67,40 +60,7 @@ namespace TimeTrackerControllers
                 var jwtRefreshToken = await tokenService.GenerateAndAssignRefreshToken(obtainedUser.UserId);
                 SetRefreshToken(jwtRefreshToken);
 
-              
-                   return Ok(string.Format("Hello {0} {1}",obtainedUser.Name,obtainedUser.Surname));
-
-
-                void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
-                {
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes),
-                    };
-                    Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
-                }
-                void SetAccessTokenForDataRetriving(string jwtAccessToken, int tokenExpirationTimeInMinutes)
-                {
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes).AddSeconds(20),
-                    };
-                    Response.Cookies.Append("accessTokenForDataRetriving", jwtAccessToken, cookieOptions);
-                }
-                void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
-                {
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = jwtRefreshToken.RefreshTokenExpiresAt
-                    };
-                    Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
-                }
+                return Ok(string.Format("Hello {0} {1}", obtainedUser.Name, obtainedUser.Surname));
             }
             return Unauthorized("Wrong password!");
         }
@@ -109,7 +69,7 @@ namespace TimeTrackerControllers
         [Route("/Authorization/Refresh")]
         public async Task<ActionResult> Refresh()
         {
-           
+
             var jwtAccessToken = Request.Cookies["accessTokenForDataRetriving"];
             var refreshToken = Request.Cookies["refreshToken"];
             var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
@@ -125,86 +85,42 @@ namespace TimeTrackerControllers
             SetAccessToken(newJwtAccessToken, tokenExpirationTimeInMinutes);
             SetAccessTokenForDataRetriving(newJwtAccessToken, tokenExpirationTimeInMinutes);
             var newJwtRefreshToken = await tokenService.GenerateAndAssignRefreshToken(tokenDetails.UserId);
-            if(!newJwtRefreshToken.Equals(refreshToken))
+            if (!newJwtRefreshToken.Equals(refreshToken))
             {
                 SetRefreshToken(newJwtRefreshToken);
             }
-           return Ok();
+            return Ok();
+        }
 
-            void SetAccessToken(string newJwtAccessToken, int tokenExpirationTimeInMinutes)
+        void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
+        {
+            var cookieOptions = new CookieOptions
             {
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes)
-                };
-                Response.Cookies.Append("accessToken", newJwtAccessToken, cookieOptions);
-            }
-
-            void SetAccessTokenForDataRetriving(string newJwtAccessToken, int tokenExpirationTimeInMinutes)
+                HttpOnly = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes),
+            };
+            Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
+        }
+        void SetAccessTokenForDataRetriving(string jwtAccessToken, int tokenExpirationTimeInMinutes)
+        {
+            var cookieOptions = new CookieOptions
             {
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes).AddSeconds(20),
-                };
-                Response.Cookies.Append("accessTokenForDataRetriving", newJwtAccessToken, cookieOptions);
-            }
-
-            void SetRefreshToken(RefreshTokenProvider newJwtRefreshToken)
+                HttpOnly = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes).AddSeconds(20),
+            };
+            Response.Cookies.Append("accessTokenForDataRetriving", jwtAccessToken, cookieOptions);
+        }
+        void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
+        {
+            var cookieOptions = new CookieOptions
             {
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    SameSite = SameSiteMode.Strict,
-                    Expires = newJwtRefreshToken.RefreshTokenExpiresAt,
-                };
-                Response.Cookies.Append("refreshToken", newJwtRefreshToken.RefreshToken, cookieOptions);
-            }
+                HttpOnly = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = jwtRefreshToken.RefreshTokenExpiresAt
+            };
+            Response.Cookies.Append("refreshToken", jwtRefreshToken.RefreshToken, cookieOptions);
         }
     }
 }
-
-
-
-
-//public static class ClaimsExtensions
-//{
-//    public const string SystemAdminRole = "System Admin";
-
-//    public static readonly string UserIdType = "UserId";
-//    public static readonly string FirstNameType = "FirstName";
-//    public static readonly string MiddleNameType = "MiddleName";
-//    public static readonly string LastNameType = "LastName";
-//    public static readonly string UserNameType = "UserName";
-//    public static readonly string EmailType = "Email";
-//    public static readonly string LockedType = "Locked";
-
-//public static Guid GetSub(this ClaimsPrincipal user)
-//{
-//    var sub = user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-//    if (!Guid.TryParse(sub, out var subGuid)) throw new InvalidCastException("Invalid sub claim");
-
-//    return subGuid;
-//}
-
-//public static int GetUserId(this ClaimsPrincipal user)
-//{
-//    var userIdValue = user.Claims.FirstOrDefault(c => c.Type == UserIdType)?.Value;
-//    if (!int.TryParse(userIdValue, out var userId)) throw new InvalidCastException("Invalid userId claim");
-
-//    return userId;
-//}
-
-//public static string GetFirstName(this ClaimsPrincipal user)
-//{
-//    return user.Claims.FirstOrDefault(c => c.Type == FirstNameType)?.Value;
-//}
-
-//public static string GetMiddleName(this ClaimsPrincipal user)
-//{
-//    return user.Claims.FirstOrDefault(c => c.Type == MiddleNameType)?.Value;
-//}
-//}
