@@ -11,22 +11,17 @@ namespace TimeTrackerControllers
     public class AuthorizationController : Controller
     {
         private readonly ILogger<AuthorizationController> logger;
-        private readonly IConfiguration configuration;
         private readonly IMapper mapper;
         private readonly IUserRepo repository;
         private readonly ITokenService tokenService;
-        private readonly IHttpContextAccessor httpContextAccessor;
         const int tokenExpirationTimeInMinutes = 1;
 
-        public AuthorizationController(ILogger<AuthorizationController> logger, IConfiguration configuration, IMapper mapper,
-            IUserRepo repository, ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
+        public AuthorizationController(ILogger<AuthorizationController> logger, IMapper mapper, IUserRepo repository, ITokenService tokenService)
         {
             this.logger = logger;
-            this.configuration = configuration;
             this.mapper = mapper;
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
-            this.httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         public IActionResult Authorize()

@@ -80,7 +80,8 @@ namespace TimeTracker.Data
 
         public IEnumerable<User> GetAttendanceOfUser(string search)
         {
-            var listOfUsers = db.User.Select(x => x).Where(y => y.Date != (DateTime)SqlDateTime.MinValue);
+            //var listOfUsers = db.User.Select(x => x).Where(y => y.Date != (DateTime)SqlDateTime.MinValue); //if we want to see only users with filled attendance
+            var listOfUsers = db.User.Select(x => x);
 
             if (!string.IsNullOrEmpty(search))
             {
