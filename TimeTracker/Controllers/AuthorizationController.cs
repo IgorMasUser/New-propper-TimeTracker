@@ -14,7 +14,7 @@ namespace TimeTrackerControllers
         private readonly IMapper mapper;
         private readonly IUserRepo repository;
         private readonly ITokenService tokenService;
-        const int tokenExpirationTimeInMinutes = 1;
+        const int tokenExpirationTimeInMinutes = 15;
 
         public AuthorizationController(ILogger<AuthorizationController> logger, IMapper mapper, IUserRepo repository, ITokenService tokenService)
         {
@@ -103,7 +103,7 @@ namespace TimeTrackerControllers
             {
                 HttpOnly = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes).AddSeconds(20),
+                Expires = DateTime.UtcNow.AddMinutes(tokenExpirationTimeInMinutes).AddMinutes(5),
             };
             Response.Cookies.Append("accessTokenForDataRetriving", jwtAccessToken, cookieOptions);
         }
