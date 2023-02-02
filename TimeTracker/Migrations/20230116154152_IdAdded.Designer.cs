@@ -12,8 +12,8 @@ using TimeTracker.Data;
 namespace TimeTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221220192708_IdIncluded")]
-    partial class IdIncluded
+    [Migration("20230116154152_IdAdded")]
+    partial class IdAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,31 @@ namespace TimeTracker.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("TimeTracker.Models.RefreshTokenProvider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenCreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RefreshTokenExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokenProvider");
+                });
 
             modelBuilder.Entity("TimeTracker.Models.Roles", b =>
                 {
@@ -36,6 +61,9 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("RolesCreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<float>("SalaryLimit")
+                        .HasColumnType("real");
 
                     b.Property<int>("UserRoleId")
                         .HasColumnType("int");
@@ -63,7 +91,8 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("FinishedWorkDayAt")
                         .HasColumnType("datetime");
@@ -73,17 +102,30 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
+
+                    b.Property<float>("Salary")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("StartedWorkDayAt")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("TotalWorkedPerDay")
                         .HasColumnType("datetime2");

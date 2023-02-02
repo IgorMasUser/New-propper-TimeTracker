@@ -1,5 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Xml.Linq;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -7,19 +15,23 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper)
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
+            this.configuration = configuration;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
         {
@@ -29,25 +41,26 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
-        //get
+        [Authorize(Policy = "RequireRole")]
+        [HttpGet]
         public IActionResult CreateUser()
         {
             return View();
         }
 
-        [HttpPost]
+        [Authorize(Policy = "RequireRole")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(User user)
+        public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
         {
             if (ModelState.IsValid)
             {
-                await repository.CreateUser(user);
+                var mappedUser = mapper.Map<User>(requestedUser);
+                await repository.CreateUser(mappedUser, requestedUser);
 
                 return RedirectToAction("GetAttendanceOfUser");
             }
-            return View(user);
+            return View(requestedUser);
         }
-
         public async Task<IActionResult> EditAttendanceOfUser(int? id)
         {
             if (id == null)
@@ -72,6 +85,7 @@ namespace TimeTracker.Controllers
             return View(user);
         }
 
+        [Authorize(Policy = "TeamAccess")]
         public async Task<IActionResult> GetDetailsOfUser(int? id)
         {
             if (id == null)
@@ -101,11 +115,11 @@ namespace TimeTracker.Controllers
             return RedirectToAction("GetAttendanceOfUser");
         }
 
+        [Authorize(Policy = "Developer")]
         public ActionResult<UserReadDTO> GetAllEmployeesInfo()
         {
             var totalAttendance = repository.GetAllEmployeesInfo();
             return View(mapper.Map<HashSet<UserReadDTO>>(totalAttendance));
-
         }
     }
 }

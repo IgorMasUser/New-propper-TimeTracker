@@ -7,6 +7,7 @@ namespace TimeTracker.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+
         }
         
         public DbSet<User> User { get; set; }
@@ -24,6 +25,8 @@ namespace TimeTracker.Data
                     entity.Property(p => p.Name).IsRequired().HasMaxLength(255);
                     entity.Property(p => p.Surname).IsRequired().HasMaxLength(255);
                     entity.Property(p => p.Email).IsRequired().HasMaxLength(255);
+                    entity.Property(p => p.PasswordHash).IsRequired().HasColumnType("varbinary(max)");
+                    entity.Property(p => p.PasswordSalt).IsRequired().HasColumnType("varbinary(max)");
                     entity.Property(p => p.StartedWorkDayAt).IsRequired().HasColumnType("datetime");
                     entity.Property(p => p.FinishedWorkDayAt).IsRequired().HasColumnType("datetime");
                     entity.Property(p => p.Break).IsRequired().HasMaxLength(59);
@@ -36,7 +39,7 @@ namespace TimeTracker.Data
 
             modelBuilder.Entity<RefreshTokenProvider>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(p => p.Id);
             });
 
         }

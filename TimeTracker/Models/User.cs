@@ -9,17 +9,21 @@ namespace TimeTracker.Models
 
         public int UserId { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
-        public string Surname { get; set; } = string.Empty;
+        public string Surname { get; set; }
 
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; }
+
+        public byte[] PasswordHash { get; set; }
+
+        public byte[] PasswordSalt { get; set; }
 
         public bool IsSystemAdmin { get; set; } = false;
 
-        public Guid? UserAccessTokenPair { get; set; }
-
         public int Role { get; set; }
+
+        public float Salary { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime StartedWorkDayAt { get; set; }

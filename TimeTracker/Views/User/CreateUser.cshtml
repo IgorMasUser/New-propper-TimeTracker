@@ -1,4 +1,4 @@
-﻿@model TimeTracker.DTOs.UserReadDTO
+﻿@model TimeTracker.DTOs.UserCreateDTO
 
 @{
     ViewData["Title"] = "CreateUser";
@@ -6,30 +6,28 @@
 <style>
 
     h1 {
-        
         height: auto;
-        margin-left:500px;
-        margin-right: auto;
-    }
-    
-    hr {
-        width:450px;
-        height: auto;
-        margin-left:auto;
+        margin-left: 500px;
         margin-right: auto;
     }
 
+    hr {
+        width: 450px;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
 </style>
 
 <div>
 
     <h1>Create user</h1>
-    <hr/>
+    <hr />
 
     <div class="row" style="margin-left:auto;margin-right: auto;">
 
-        <div class="col-md-4"  style="margin-left:auto;margin-right: auto;">
+        <div class="col-md-4" style="margin-left:auto;margin-right: auto;">
             <form asp-action="CreateUser">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
@@ -46,26 +44,30 @@
                     <label asp-for="Surname" class="control-label"></label>
                     <input asp-for="Surname" class="form-control" />
                     <span asp-validation-for="Surname" class="text-danger"></span>
-
                 </div>
                 <div class="form-group">
-                    <label asp-for="StartedWorkDayAt" class="control-label"></label>
-                    <input asp-for="StartedWorkDayAt" class="form-control" />
-                    <span asp-validation-for="StartedWorkDayAt" class="text-danger"></span>
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Break" class="control-label"></label>
-                    <input asp-for="Break" class="form-control" />
-                    <span asp-validation-for="Break" class="text-danger"></span>
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="FinishedWorkDayAt" class="control-label"></label>
-                    <input asp-for="FinishedWorkDayAt" class="form-control" />
-                    <span asp-validation-for="FinishedWorkDayAt" class="text-danger"></span>
+                    <label asp-for="Role" class="control-label"></label>
+                    <input asp-for="Role" class="form-control" />
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Salary" class="control-label"></label>
+                    <input asp-for="Salary" class="form-control" />
+                    <span asp-validation-for="Salary" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
-                    <a asp-action="GetAttendanceOfUser" class="btn btn-primary">Back to listofUsers</a>
+                    <a asp-action="CreateUser" class="btn btn-primary">Cancel</a>
                 </div>
 
             </form>
@@ -79,3 +81,4 @@
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
 }
+

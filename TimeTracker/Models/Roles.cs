@@ -12,6 +12,8 @@ namespace TimeTracker.Models
 
         public bool isActive { get; set; }
 
+        public float SalaryLimit { get; set; }
+
         public DateTime RolesCreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

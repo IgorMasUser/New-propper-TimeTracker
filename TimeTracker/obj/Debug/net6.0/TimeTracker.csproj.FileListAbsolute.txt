@@ -1335,6 +1335,7 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\AutoMapper.Ext
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Humanizer.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MessagePack.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MessagePack.Annotations.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Build.Locator.dll

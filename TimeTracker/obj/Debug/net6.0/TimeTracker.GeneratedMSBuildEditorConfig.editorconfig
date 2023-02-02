@@ -15,12 +15,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = E:\MyProject\New-propper-TimeTracker\TimeTracker
 build_property._RazorSourceGeneratorDebug = 
 
+[E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/Authorization/Authorize.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yaXphdGlvblxBdXRob3JpemUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/User/Authorize.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxBdXRob3JpemUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/User/CreateUser.cshtml]
