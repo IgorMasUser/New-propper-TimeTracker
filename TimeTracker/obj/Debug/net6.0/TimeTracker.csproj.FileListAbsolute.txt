@@ -1593,3 +1593,5 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.dl
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\client_secret_540570907294-560ohv55uj1g94nlluva335sp4or4vkt.apps.googleusercontent.com.json
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.csproj.AssemblyReference.cache

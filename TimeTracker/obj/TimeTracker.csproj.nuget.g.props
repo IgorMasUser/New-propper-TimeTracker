@@ -25,5 +25,6 @@
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\Igor Maslov\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.2</PkgMicrosoft_CodeAnalysis_Analyzers>
     <PkgMicrosoft_CodeAnalysis_AnalyzerUtilities Condition=" '$(PkgMicrosoft_CodeAnalysis_AnalyzerUtilities)' == '' ">C:\Users\Igor Maslov\.nuget\packages\microsoft.codeanalysis.analyzerutilities\3.3.0</PkgMicrosoft_CodeAnalysis_AnalyzerUtilities>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\Igor Maslov\.nuget\packages\microsoft.entityframeworkcore.tools\6.0.2</PkgMicrosoft_EntityFrameworkCore_Tools>
+    <PkgMassTransit_Analyzers Condition=" '$(PkgMassTransit_Analyzers)' == '' ">C:\Users\Igor Maslov\.nuget\packages\masstransit.analyzers\8.0.3</PkgMassTransit_Analyzers>
   </PropertyGroup>
 </Project>

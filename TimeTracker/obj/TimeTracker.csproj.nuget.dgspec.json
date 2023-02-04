@@ -52,6 +52,22 @@
               "target": "Package",
               "version": "[12.0.0, )"
             },
+            "MassTransit.Analyzers": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "MassTransit.AspNetCore": {
+              "target": "Package",
+              "version": "[7.3.1, )"
+            },
+            "MassTransit.RabbitMQ": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
+            "MassTransit.RabbitMq.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[1.0.29, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[6.0.12, )"
