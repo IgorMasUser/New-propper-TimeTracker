@@ -22,7 +22,7 @@ IConfigurationRoot configuration = configBuilder.Build();
 
 builder.Services.AddAuthenticationServices(configuration);
 
-builder.Services.AddMassTransitServices(configuration);
+//builder.Services.AddMassTransitServices(configuration);
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireRole",

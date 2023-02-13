@@ -2,6 +2,8 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace TimeTracker.Extensions
 {
@@ -54,28 +56,8 @@ namespace TimeTracker.Extensions
             });
 
             return services;
-        }
-
-        public static IServiceCollection AddMassTransitServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddMassTransit(cfg =>
-            {
-                cfg.SetKebabCaseEndpointNameFormatter();
-                cfg.UsingRabbitMq((cxt, cfg) =>
-                {
-                    cfg.Host("localhost", "/", h =>
-                    {
-                        h.Username("guest");
-                        h.Password("guest");
-                    });
-                    cfg.ConfigureEndpoints(cxt);
-
-                });
-                // cfg.AddRequestClient<SimpleRequest>();
-            });
-
-
-            return services;
-        }
+        }    
     }
 }
+
+

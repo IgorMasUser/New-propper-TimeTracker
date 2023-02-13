@@ -1,4 +1,5 @@
-version: '3.8'
+version: latest
+
 services:
   sqlserver:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
@@ -11,13 +12,21 @@ services:
     ports:
       - "1455:1433"
   timetracker:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     depends_on:
       - sqlserver
     container_name: timetracker_api
     image: timetracker
     ports:
       - "8080:80"
+  backgroundservice:
+    build:
+      context: .
+      dockerfile: ../BackgroundService/Dockerfile
+    depends_on:
+      - sqlserver
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbit
