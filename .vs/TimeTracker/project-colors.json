@@ -1,51 +1,31 @@
 {
   "Version": 1,
   "ProjectMap": {
-    "c62eb217-53a5-4bcd-9c4f-f13f8d670831": {
-      "ProjectGuid": "c62eb217-53a5-4bcd-9c4f-f13f8d670831",
-      "DisplayName": "TimeTracker",
+    "cbade9a5-753e-4261-a8fd-f37b4d6a5d7c": {
+      "ProjectGuid": "cbade9a5-753e-4261-a8fd-f37b4d6a5d7c",
+      "DisplayName": "BackgroundService.Host",
       "ColorIndex": 0
+    },
+    "b2174df5-dfbf-403e-9e0c-59ac5db377f5": {
+      "ProjectGuid": "b2174df5-dfbf-403e-9e0c-59ac5db377f5",
+      "DisplayName": "Contracts",
+      "ColorIndex": 1
     },
     "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Miscellaneous Files",
       "ColorIndex": -1
     },
-    "13737345-ed19-418b-8a88-29f179c9590d": {
-      "ProjectGuid": "13737345-ed19-418b-8a88-29f179c9590d",
-      "DisplayName": "Solution Items",
-      "ColorIndex": 1
-    },
-    "b8766368-fdd1-4f08-9673-ed7d2c8a71b9": {
-      "ProjectGuid": "b8766368-fdd1-4f08-9673-ed7d2c8a71b9",
-      "DisplayName": "Solution Items",
+    "c62eb217-53a5-4bcd-9c4f-f13f8d670831": {
+      "ProjectGuid": "c62eb217-53a5-4bcd-9c4f-f13f8d670831",
+      "DisplayName": "TimeTracker",
       "ColorIndex": 2
     },
-    "cbade9a5-753e-4261-a8fd-f37b4d6a5d7c": {
-      "ProjectGuid": "cbade9a5-753e-4261-a8fd-f37b4d6a5d7c",
-      "DisplayName": "BackgroundService.Host",
+    "ee50df36-d318-436d-a36f-67a1e73e497a": {
+      "ProjectGuid": "ee50df36-d318-436d-a36f-67a1e73e497a",
+      "DisplayName": "BS",
       "ColorIndex": 3
-    },
-    "b2174df5-dfbf-403e-9e0c-59ac5db377f5": {
-      "ProjectGuid": "b2174df5-dfbf-403e-9e0c-59ac5db377f5",
-      "DisplayName": "Contracts",
-      "ColorIndex": 4
-    },
-    "2e400c14-cfcb-48c5-a3a6-7f84643df865": {
-      "ProjectGuid": "2e400c14-cfcb-48c5-a3a6-7f84643df865",
-      "DisplayName": "MassTransit",
-      "ColorIndex": 5
-    },
-    "02e7911f-d62f-4e6b-8519-305788440b41": {
-      "ProjectGuid": "02e7911f-d62f-4e6b-8519-305788440b41",
-      "DisplayName": "MassTransit",
-      "ColorIndex": 6
-    },
-    "6f8c6ea5-e2a4-47d8-a8b0-1928a6283b61": {
-      "ProjectGuid": "6f8c6ea5-e2a4-47d8-a8b0-1928a6283b61",
-      "DisplayName": "BackgroundService.Host",
-      "ColorIndex": 7
     }
   },
-  "NextColorIndex": 8
+  "NextColorIndex": 4
 }

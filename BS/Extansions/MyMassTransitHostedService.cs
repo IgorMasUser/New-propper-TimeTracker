@@ -17,13 +17,13 @@ namespace BackgroundService.Host.Extensions
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Starting bus");
+            logger.LogInformation("Servise started!!!!!!!!!!!!!!!");
             await bus.StartAsync(cancellationToken).ConfigureAwait(false);
 
         }
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Stopping bus");
+            logger.LogInformation("Service stoped");
             return bus.StopAsync(cancellationToken);
         }
 

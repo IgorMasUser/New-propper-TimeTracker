@@ -24,9 +24,9 @@ services:
   backgroundservice:
     build:
       context: .
-      dockerfile: ../BackgroundService/Dockerfile
-    depends_on:
-      - sqlserver
+      dockerfile: ../BS/Dockerfile
+    ports:
+      - "9090:80"
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbit
