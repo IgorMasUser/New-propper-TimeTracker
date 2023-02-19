@@ -21,12 +21,12 @@ services:
     image: timetracker
     ports:
       - "8080:80"
-  backgroundservice:
+  notification:
     build:
       context: .
-      dockerfile: ./BS/Dockerfile
+      dockerfile: ./Notification.Host/Dockerfile
     ports:
-      - "9091:80"
+      - "9090:80"
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbit
@@ -35,4 +35,7 @@ services:
      - "15672:15672"
 
 volumes:
-  mssql_data: {}
+  mssql_data:
+    driver: local
+    driver_opts:
+      o: "size=100m,uid=1000"
