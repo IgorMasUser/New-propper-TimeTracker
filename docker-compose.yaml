@@ -14,9 +14,9 @@ services:
   timetracker:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./TimeTracker/Dockerfile
     depends_on:
-      - sqlserver
+    - sqlserver
     container_name: timetracker_api
     image: timetracker
     ports:
@@ -24,9 +24,9 @@ services:
   backgroundservice:
     build:
       context: .
-      dockerfile: ../BS/Dockerfile
+      dockerfile: ./BS/Dockerfile
     ports:
-      - "9090:80"
+      - "9091:80"
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbit
