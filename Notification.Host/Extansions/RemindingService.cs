@@ -19,8 +19,6 @@ namespace Notification.Host.Extensions
                 logger.LogInformation("it's been 5 seconds");
                 await Task.Delay(5000);
             }
-            
-
         }
         public Task StopAsync(CancellationToken cancellationToken)
         {
