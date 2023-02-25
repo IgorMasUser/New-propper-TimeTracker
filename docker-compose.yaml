@@ -31,9 +31,12 @@ services:
       - BD_HOST=sqlserver
       - DB_NAME=NewPropperTimeTracker
       - DB_SA_PASSWORD=Ig9379992
+  notification:
+    build:
+      context: .
+      dockerfile: ./Notification.Host/Dockerfile
+    ports:
+      - "9090:80"    
 
 volumes:
-  mssql_data:
-    driver: local
-    driver_opts:
-      o: "size=100m,uid=1000"         
+  mssql_data: {}      
