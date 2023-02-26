@@ -14,7 +14,7 @@ namespace TimeTrackerControllers
         private readonly IMapper mapper;
         private readonly IUserRepo repository;
         private readonly ITokenService tokenService;
-        const int tokenExpirationTimeInMinutes = 15;
+        const int tokenExpirationTimeInMinutes = 1;
 
         public AuthorizationController(ILogger<AuthorizationController> logger, IMapper mapper, IUserRepo repository, ITokenService tokenService)
         {
@@ -64,7 +64,6 @@ namespace TimeTrackerControllers
         [Route("/Authorization/Refresh")]
         public async Task<ActionResult> Refresh()
         {
-
             var jwtAccessToken = Request.Cookies["accessTokenForDataRetriving"];
             var refreshToken = Request.Cookies["refreshToken"];
             var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
