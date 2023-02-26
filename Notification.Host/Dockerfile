@@ -3,10 +3,9 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ./Notification.Host/Notification.Host.csproj .
+COPY ./Notification.Host.csproj .
 RUN dotnet restore Notification.Host.csproj
 COPY . .
-WORKDIR /src/Notification.Host
 RUN dotnet build "Notification.Host.csproj" -o /app/build
 
 FROM build AS publish
