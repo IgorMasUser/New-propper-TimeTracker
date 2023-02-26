@@ -11,26 +11,28 @@ services:
       SA_PASSWORD: "Ig9379992"
     ports:
       - "1455:1433"
+
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbit
     ports:
       - "5672:5672"
       - "15672:15672"
+
   timetracker:
     build:
       context: .
       dockerfile: ./TimeTracker/Dockerfile
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: "service_started"
     container_name: timetracker_api
     image: timetracker
     ports:
       - "8080:80"
     environment:
-      - BD_HOST=sqlserver
-      - DB_NAME=NewPropperTimeTracker
-      - DB_SA_PASSWORD=Ig9379992
+      ASPNETCORE_ENVIRONMENT: "Production"
+
   notification:
     build:
       context: .
