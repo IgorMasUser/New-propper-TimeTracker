@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker", "TimeTracker\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{5E3456BB-4E07-4FC2-8879-AFB79E014A83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Host", "Notification.Host\Notification.Host.csproj", "{89F223F1-8518-4E2A-8F20-6DF36E42D487}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Host", "Notification.Host\Notification.Host.csproj", "{89F223F1-8518-4E2A-8F20-6DF36E42D487}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{48FFBC73-F608-4BEA-BBBB-477C1B86A9CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{89F223F1-8518-4E2A-8F20-6DF36E42D487}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89F223F1-8518-4E2A-8F20-6DF36E42D487}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89F223F1-8518-4E2A-8F20-6DF36E42D487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48FFBC73-F608-4BEA-BBBB-477C1B86A9CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FFBC73-F608-4BEA-BBBB-477C1B86A9CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FFBC73-F608-4BEA-BBBB-477C1B86A9CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FFBC73-F608-4BEA-BBBB-477C1B86A9CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Contracts;
+using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Notification.Host;
 using System.Text;
 
 namespace TimeTracker.Extensions
@@ -64,6 +67,31 @@ namespace TimeTracker.Extensions
                 options.AddPolicy("Manager", policy => policy.RequireRole("1", "3"));
                 options.AddPolicy("TeamAccess", policy => policy.RequireRole("1", "3", "2"));
                 options.AddPolicy("HR", policy => policy.RequireRole("1", "2"));
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddMassTransitServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMassTransit(cfg =>
+            {
+                cfg.SetKebabCaseEndpointNameFormatter();
+                cfg.AddConsumer<RequestConsumer>();
+                cfg.UsingRabbitMq((cxt, cfg) =>
+            {
+                    cfg.Host("localhost", "/", h =>
+                    {
+                        h.Username("guest");
+                        h.Password("guest");
+
+                    });
+
+                    cfg.ConfigureEndpoints(cxt);
+
+                });
+
+                cfg.AddRequestClient<ISimpleRequest>();
             });
 
             return services;

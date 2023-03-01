@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeTracker.Data;
@@ -11,17 +13,24 @@ namespace TimeTracker.Controllers
     [Authorize]
     public class UserController : Controller
     {
+        public static class Temp
+        {
+            public static string tempstore;
+        }
+
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
+        private readonly IRequestClient<ISimpleRequest> client;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration)
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration, IRequestClient<ISimpleRequest> client)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
             this.configuration = configuration;
+            this.client = client;
         }
 
         [Authorize(Policy = "Manager")]
@@ -47,10 +56,20 @@ namespace TimeTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var mappedUser = mapper.Map<User>(requestedUser);
-                await repository.CreateUser(mappedUser, requestedUser);
+                //var mappedUser = mapper.Map<User>(requestedUser);
+                //await repository.CreateUser(mappedUser, requestedUser);
+                Console.WriteLine("Message sent");
+                logger.LogInformation("Message sent");
+               var response = await client.GetResponse<ISimpleResponse>(new
+                {
+                    Timestamp = DateTime.Now,
+                    SentMessage = requestedUser.Name
+               });
+                
+                logger.LogInformation($"Response from consumer: {response.Message}");
 
-                return RedirectToAction("GetAttendanceOfUser");
+                //return RedirectToAction("GetAttendanceOfUser");
+                return Ok(response);
             }
             return View(requestedUser);
         }

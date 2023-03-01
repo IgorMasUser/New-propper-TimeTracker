@@ -279,3 +279,14 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.dl
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Contracts.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Contracts.pdb
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.csproj.AssemblyReference.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.deps.json
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.runtimeconfig.json
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.exe
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.pdb

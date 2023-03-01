@@ -61,12 +61,12 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-//IConfigurationBuilder configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true);
-//IConfigurationRoot configuration = configBuilder.Build();
+IConfigurationBuilder configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true);
+IConfigurationRoot configuration = configBuilder.Build();
 
 //builder.Services.AddAuthenticationServices(configuration);
 
-//builder.Services.AddMassTransitServices(configuration);
+builder.Services.AddMassTransitServices(configuration);
 builder.Services.AddAuthorizationServices();
 
 var app = builder.Build();

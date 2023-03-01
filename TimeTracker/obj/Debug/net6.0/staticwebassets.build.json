@@ -1,11 +1,23 @@
 {
   "Version": 1,
-  "Hash": "dPdQyY7sPSG/6dA+TX2v+ioeRM57SJVnQ3v9pNxl5b4=",
+  "Hash": "7ol8/BnyRnAh81Ud5+diYMbEGlLTB/W966tYFoIDu0g=",
   "Source": "TimeTracker",
   "BasePath": "_content/TimeTracker",
   "Mode": "Default",
   "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
+      "Version": 2,
+      "Source": "Notification.Host",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier"
+    }
+  ],
   "DiscoveryPatterns": [
     {
       "Name": "TimeTracker\\wwwroot",
