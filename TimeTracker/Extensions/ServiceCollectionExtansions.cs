@@ -63,7 +63,7 @@ namespace TimeTracker.Extensions
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Developers",
-                     policy => policy.RequireRole("1","4"));
+                     policy => policy.RequireRole("1", "4"));
                 options.AddPolicy("Manager", policy => policy.RequireRole("1", "3"));
                 options.AddPolicy("TeamAccess", policy => policy.RequireRole("1", "3", "2"));
                 options.AddPolicy("HR", policy => policy.RequireRole("1", "2"));
@@ -79,17 +79,17 @@ namespace TimeTracker.Extensions
                 cfg.SetKebabCaseEndpointNameFormatter();
                 cfg.AddConsumer<RequestConsumer>();
                 cfg.UsingRabbitMq((cxt, cfg) =>
-            {
-                    cfg.Host("localhost", "/", h =>
-                    {
-                        h.Username("guest");
-                        h.Password("guest");
+                 {
+                     string hostName = configuration.GetSection("RabbitMQ:HostName").Value;
+                     Console.WriteLine(hostName);
+                     cfg.Host(hostName, "/", h =>
+                     {
+                         h.Username("guest");
+                         h.Password("guest");
+                     });
 
-                    });
-
-                    cfg.ConfigureEndpoints(cxt);
-
-                });
+                     cfg.ConfigureEndpoints(cxt);
+                 });
 
                 cfg.AddRequestClient<ISimpleRequest>();
             });

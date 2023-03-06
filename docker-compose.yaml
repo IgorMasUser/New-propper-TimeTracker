@@ -22,12 +22,12 @@ services:
   timetracker:
     build:
       context: .
-      dockerfile: ./TimeTracker/Dockerfile
+      dockerfile: Dockerfile.API
     depends_on:
       sqlserver:
         condition: "service_started"
     container_name: timetracker_api
-    image: timetracker
+    image: timetracker_api
     ports:
       - "8080:80"
     environment:
@@ -36,7 +36,9 @@ services:
   notification:
     build:
       context: .
-      dockerfile: ./Notification.Host/Dockerfile
+      dockerfile: Dockerfile.Service
+    container_name: notification_service
+    image: notification_service
     ports:
       - "9090:80"    
 

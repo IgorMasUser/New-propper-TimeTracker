@@ -65,12 +65,10 @@ IConfigurationBuilder configBuilder = new ConfigurationBuilder().AddJsonFile("ap
 IConfigurationRoot configuration = configBuilder.Build();
 
 //builder.Services.AddAuthenticationServices(configuration);
-
 builder.Services.AddMassTransitServices(configuration);
 builder.Services.AddAuthorizationServices();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
