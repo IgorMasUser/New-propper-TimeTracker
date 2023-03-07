@@ -61,7 +61,17 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-IConfigurationBuilder configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true);
+IConfigurationBuilder configBuilder;
+
+if (builder.Environment.IsDevelopment())
+{
+    configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json", false, true);
+}
+else
+{
+    configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true);
+}
+
 IConfigurationRoot configuration = configBuilder.Build();
 
 //builder.Services.AddAuthenticationServices(configuration);

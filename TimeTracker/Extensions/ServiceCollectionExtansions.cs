@@ -74,7 +74,7 @@ namespace TimeTracker.Extensions
 
         public static IServiceCollection AddMassTransitServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMassTransit(cfg =>
+        services.AddMassTransit(cfg =>
             {
                 cfg.SetKebabCaseEndpointNameFormatter();
                 cfg.AddConsumer<RequestConsumer>();
@@ -82,6 +82,7 @@ namespace TimeTracker.Extensions
                  {
                      string hostName = configuration.GetSection("RabbitMQ:HostName").Value;
                      Console.WriteLine(hostName);
+
                      cfg.Host(hostName, "/", h =>
                      {
                          h.Username("guest");
