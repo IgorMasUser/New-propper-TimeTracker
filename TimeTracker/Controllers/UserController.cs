@@ -10,7 +10,7 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         public static class Temp
@@ -43,14 +43,14 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
-        [Authorize(Policy = "HR")]
+        //[Authorize(Policy = "HR")]
         [HttpGet]
         public IActionResult CreateUser()
         {
             return View();
         }
 
-        [Authorize(Policy = "HR")]
+        //[Authorize(Policy = "HR")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
         {

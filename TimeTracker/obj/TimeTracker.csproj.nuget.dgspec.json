@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repos\\New folder\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj": {}
+    "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj": {}
   },
   "projects": {
-    "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
+    "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\Contracts.csproj",
+        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj",
         "projectName": "Contracts",
-        "projectPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\Contracts.csproj",
-        "packagesPath": "C:\\Users\\maslovi\\.nuget\\packages\\",
-        "outputPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\obj\\",
+        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj",
+        "packagesPath": "C:\\Users\\Igor Maslov\\.nuget\\packages\\",
+        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\maslovi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Igor Maslov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,8 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Repos\\MyNugetPackages": {},
-          "https://www.nuget.org/api/v2": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
@@ -46,8 +49,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -56,21 +58,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.114\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repos\\New folder\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
+    "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
+        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
         "projectName": "Notification.Host",
-        "projectPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
-        "packagesPath": "C:\\Users\\maslovi\\.nuget\\packages\\",
-        "outputPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Notification.Host\\obj\\",
+        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
+        "packagesPath": "C:\\Users\\Igor Maslov\\.nuget\\packages\\",
+        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\maslovi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Igor Maslov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -78,15 +84,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Repos\\MyNugetPackages": {},
-          "https://www.nuget.org/api/v2": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
-                "projectPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\Contracts.csproj"
+              "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
+                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj"
               }
             }
           }
@@ -112,8 +117,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -125,21 +129,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.114\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repos\\New folder\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj": {
+    "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repos\\New folder\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
+        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
         "projectName": "TimeTracker",
-        "projectPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
-        "packagesPath": "C:\\Users\\maslovi\\.nuget\\packages\\",
-        "outputPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\TimeTracker\\obj\\",
+        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
+        "packagesPath": "C:\\Users\\Igor Maslov\\.nuget\\packages\\",
+        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\maslovi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Igor Maslov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -147,18 +155,17 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Repos\\MyNugetPackages": {},
-          "https://www.nuget.org/api/v2": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
-                "projectPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Contracts\\Contracts.csproj"
+              "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
+                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj"
               },
-              "C:\\Repos\\New folder\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
-                "projectPath": "C:\\Repos\\New folder\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj"
+              "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
+                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj"
               }
             }
           }
@@ -238,8 +245,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -251,7 +257,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.114\\RuntimeIdentifierGraph.json"
         }
       }
     }
