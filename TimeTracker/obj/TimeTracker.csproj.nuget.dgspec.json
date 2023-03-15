@@ -110,6 +110,10 @@
               "target": "Package",
               "version": "[8.0.13, )"
             },
+            "MassTransit.Quartz": {
+              "target": "Package",
+              "version": "[8.0.13, )"
+            },
             "MassTransit.RabbitMQ": {
               "target": "Package",
               "version": "[8.0.12, )"
