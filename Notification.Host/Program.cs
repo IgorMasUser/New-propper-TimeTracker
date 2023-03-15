@@ -1,56 +1,84 @@
-
 using MassTransit;
 using Notification.Host;
 using Notification.Host.Extansions;
 using Notification.Host.Extensions;
 
-//var builder = WebApplication.CreateBuilder(args);
-////builder.Services.AddHostedService<RemindingService>();
-//builder.Services.AddHostedService<Worker>();
-
-//builder.Services.AddMassTransit(x =>
-//{
-//    Uri schedulerEndpoint = new Uri("queue:scheduler");
-
-//    x.AddMessageScheduler(schedulerEndpoint);
-
-//    x.AddConsumer<ScheduleNotificationConsumer>();
-
-//    x.UsingRabbitMq((context, cfg) =>
-//    {
-//        cfg.UseMessageScheduler(schedulerEndpoint);
-//        cfg.ConfigureEndpoints(context);
-//    });
-
-//});
-
-//var app = builder.Build();
-//app.Run();
-
-IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+namespace Notification.Host
+{
+    public class Program
     {
-        services.AddMassTransit(x =>
+        public static async Task<int> Main(string[] args)
         {
-            Uri schedulerEndpoint = new Uri("queue:scheduler");
 
-            x.AddMessageScheduler(schedulerEndpoint);
-            // x.AddDelayedMessageScheduler();
-
-            x.AddConsumer<ScheduleNotificationConsumer>();
-
-            x.UsingRabbitMq((context, cfg) =>
+            try
             {
-                cfg.UseDelayedMessageScheduler();
-                cfg.ConfigureEndpoints(context);
-            });
+                await CreateHostBuilder(args)
+                    .Build()
+                    .RunAsync();
 
-        });
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                return 1;
+            }
 
-        services.AddHostedService<RemindingService>();
-        services.AddHostedService<Worker>();
-    })
-    .Build();
+        }
 
-await host.RunAsync();
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
+                .ConfigureServices(services =>
+                {
+                    services.AddMassTransit(x =>
+                    {
+                        Uri schedulerEndpoint = new Uri("queue:scheduler");
+                        Console.WriteLine($"queue {nameof(schedulerEndpoint)}");
+                        x.AddMessageScheduler(schedulerEndpoint);
+
+                        x.AddConsumer<ScheduledMessageConsumer>();
+
+                        x.UsingRabbitMq((context, cfg) =>
+                        {
+                            cfg.UseDelayedMessageScheduler();
+                            cfg.UseMessageScheduler(schedulerEndpoint);
+                            cfg.ConfigureEndpoints(context);
+                        });
+
+                    });
+
+                    //services.AddHostedService<Worker>();
+                    services.AddHostedService<RemindingService>();
+                });
+
+        }
+    }
+}
+
+
+//IHost host = Host.CreateDefaultBuilder(args)
+//    .ConfigureServices(services =>
+//    {
+//        services.AddMassTransit(x =>
+//        {
+//            Uri schedulerEndpoint = new Uri("queue:scheduler");
+
+//            x.AddMessageScheduler(schedulerEndpoint);
+
+//            x.AddConsumer<ScheduledMessageConsumer>();
+
+//            x.UsingRabbitMq((context, cfg) =>
+//            {
+//                cfg.UseDelayedMessageScheduler();
+//                cfg.ConfigureEndpoints(context);
+//            });
+
+//        });
+
+//        //services.AddHostedService<RemindingService>();
+//        services.AddHostedService<Worker>();
+//    })
+//    .Build();
+
+//await host.RunAsync();
 

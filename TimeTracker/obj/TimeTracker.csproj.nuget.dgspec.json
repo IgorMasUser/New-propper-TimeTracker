@@ -109,6 +109,14 @@
             "MassTransit": {
               "target": "Package",
               "version": "[8.0.13, )"
+            },
+            "MassTransit.RabbitMQ": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
+            "MassTransit.RabbitMq.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[1.0.29, )"
             }
           },
           "imports": [

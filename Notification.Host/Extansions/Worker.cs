@@ -1,34 +1,52 @@
-﻿namespace Notification.Host.Extansions
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MassTransit;
+using Microsoft.Extensions.Hosting;
+using Notification.Host;
+using Notification.Host.Extansions;
+
+
+
+namespace Notification.Host.Extansions
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using MassTransit;
-    using Microsoft.Extensions.Hosting;
 
-
-    public class Worker : BackgroundService
+    public class Worker : IHostedService
     {
-        readonly IMessageScheduler _scheduler;
-        private readonly ILogger<Worker> logger;
+        private readonly IBusControl bus;
+        private readonly ILogger logger;
 
-        public Worker(IMessageScheduler scheduler, ILogger<Worker> logger)
+        public Worker(IBusControl bus, ILoggerFactory loggerFactory)
         {
-            _scheduler = scheduler;
-            this.logger = logger;
+            this.bus = bus;
+            this.logger = loggerFactory.CreateLogger<Worker>();
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Worker service started!!!!!");
+            logger.LogInformation("Starting bus");
 
-            await _scheduler.SchedulePublish<ScheduleNotification>(DateTime.UtcNow + TimeSpan.FromSeconds(30), new
-            {
-                EmailAddress = "frank@nul.org",
-                Body = "Thank you for signing up for our awesome newsletter!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Worker"
-            }, stoppingToken);
+            logger.LogInformation("---------------- SETTING UP RECURRING SCHEDULE -----------------");
+
+            Uri sendEndpointUri = new("queue:scheduler");
+
+            var sendEndpoint = await bus.GetSendEndpoint(sendEndpointUri);
+
+            string consumerEndpointName = DefaultEndpointNameFormatter.Instance.Consumer<ScheduledMessageConsumer>();
+            //string cron = "0 0/2 * 1/1 * ? *";
+            string cron = "0/10 * * ? * *";
+
+            await sendEndpoint.ScheduleRecurringSend(new Uri($"queue:{consumerEndpointName}"), new TaskScheduler(cron), new SimpleRequest("Hello world!"), cancellationToken);
+            await bus.StartAsync(cancellationToken).ConfigureAwait(false);
 
         }
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            logger.LogInformation("Stopping bus");
+            return bus.StopAsync(cancellationToken);
+        }
+
+
     }
 }
 

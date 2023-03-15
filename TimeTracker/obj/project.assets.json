@@ -3483,7 +3483,9 @@
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "Contracts": "1.0.0",
-          "MassTransit": "8.0.13"
+          "MassTransit": "8.0.13",
+          "MassTransit.RabbitMQ": "8.0.12",
+          "MassTransit.RabbitMq.Extensions.Hosting": "1.0.29"
         },
         "compile": {
           "bin/placeholder/Notification.Host.dll": {}

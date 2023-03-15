@@ -30,7 +30,12 @@
       "ProjectGuid": "89f223f1-8518-4e2a-8f20-6df36e42d487",
       "DisplayName": "Notification.Host",
       "ColorIndex": 4
+    },
+    "79b96c51-e9df-405b-83c5-434f351464e9": {
+      "ProjectGuid": "79b96c51-e9df-405b-83c5-434f351464e9",
+      "DisplayName": "Service",
+      "ColorIndex": 5
     }
   },
-  "NextColorIndex": 5
+  "NextColorIndex": 6
 }
