@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using MassTransit;
+using MassTransitSchedulingTest;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Notification.Host;
@@ -78,6 +79,7 @@ namespace TimeTracker.Extensions
             {
                 cfg.SetKebabCaseEndpointNameFormatter();
                 cfg.AddConsumer<RequestConsumer>();
+                cfg.AddConsumer<ScheduledNotificationConsumer>();
                 cfg.UsingRabbitMq((cxt, cfg) =>
                  {
                      string hostName = configuration.GetSection("RabbitMQ:HostName").Value;

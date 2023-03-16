@@ -1,6 +1,6 @@
 ﻿namespace MassTransitSchedulingTest
 {
-    public class Message
+    public class ScheduledNotification : IScheduledNotification
     {
         public string Value { get; set; }
     }

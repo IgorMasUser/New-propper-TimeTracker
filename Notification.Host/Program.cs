@@ -27,9 +27,10 @@ namespace Notification.Host
                     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("test", false));
                     x.AddPublishMessageScheduler();
                     x.AddQuartzConsumers();
-                    x.AddConsumer<MessageConsumer>();
+                    //x.AddConsumer<MessageConsumer>();
                     x.UsingRabbitMq((cxt, cfg) =>
                     {
+                        //string hostName = "rabbit";
                         string hostName = "localhost";
                         Console.WriteLine(hostName);
 
@@ -55,7 +56,7 @@ namespace Notification.Host
                     options.WaitForJobsToComplete = true;
                 });
 
-                services.AddHostedService<SchedulerInitService>();
+                services.AddHostedService<RemindingService>();
             });
     }
 }
