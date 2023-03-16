@@ -1,4 +1,4 @@
-﻿namespace MassTransitSchedulingTest
+﻿namespace Contracts
 {
     public interface IScheduledNotification
     {

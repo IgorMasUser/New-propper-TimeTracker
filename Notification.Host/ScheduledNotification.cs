@@ -1,4 +1,6 @@
-﻿namespace MassTransitSchedulingTest
+﻿using Contracts;
+
+namespace Notification.Host.Notification
 {
     public class ScheduledNotification : IScheduledNotification
     {

@@ -1,7 +1,5 @@
 using MassTransit;
-using MassTransitSchedulingTest;
-using Notification.Host;
-using Notification.Host.Extensions;
+using Notification.Host.HostedServices;
 using Quartz;
 
 namespace Notification.Host
@@ -10,10 +8,26 @@ namespace Notification.Host
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var builder = WebApplication.CreateBuilder(args);
+
+            IConfigurationBuilder configBuilder;
+
+            if (builder.Environment.IsDevelopment())
+            {
+                configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.Development_Host.json", false, true);
+            }
+            else
+            {
+                configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings_Host.json", false, true);
+            }
+
+            IConfigurationRoot configuration = configBuilder.Build();
+
+            CreateHostBuilder(args, configuration).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+
+        public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>
            Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
@@ -21,18 +35,12 @@ namespace Notification.Host
                 {
                     q.UseMicrosoftDependencyInjectionJobFactory();
                 });
-
                 services.AddMassTransit(x =>
                 {
-                    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("test", false));
-                    x.AddPublishMessageScheduler();
                     x.AddQuartzConsumers();
-                    //x.AddConsumer<MessageConsumer>();
                     x.UsingRabbitMq((cxt, cfg) =>
                     {
-                        //string hostName = "rabbit";
-                        string hostName = "localhost";
-                        Console.WriteLine(hostName);
+                        string hostName = configuration.GetSection("RabbitMQHost:HostName").Value;
 
                         cfg.Host(hostName, "/", h =>
                         {
@@ -43,17 +51,6 @@ namespace Notification.Host
                         cfg.ConfigureEndpoints(cxt);
                     });
 
-                });
-
-                services.Configure<MassTransitHostOptions>(opt =>
-                {
-                    opt.WaitUntilStarted = true;
-                });
-
-                services.AddQuartzHostedService(options =>
-                {
-                    options.StartDelay = TimeSpan.FromSeconds(5);
-                    options.WaitForJobsToComplete = true;
                 });
 
                 services.AddHostedService<RemindingService>();

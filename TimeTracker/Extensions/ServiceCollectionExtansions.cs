@@ -83,7 +83,6 @@ namespace TimeTracker.Extensions
                 cfg.UsingRabbitMq((cxt, cfg) =>
                  {
                      string hostName = configuration.GetSection("RabbitMQ:HostName").Value;
-                     Console.WriteLine(hostName);
 
                      cfg.Host(hostName, "/", h =>
                      {

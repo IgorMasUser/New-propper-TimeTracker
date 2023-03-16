@@ -1,7 +1,9 @@
-﻿using MassTransit;
-using MassTransitSchedulingTest;
+﻿using Contracts;
+using MassTransit;
+using Notification.Host.Notification;
+using Notification.Host.NotificationInterval;
 
-namespace Notification.Host.Extensions
+namespace Notification.Host.HostedServices
 {
     public class RemindingService : IHostedService
     {
@@ -16,13 +18,12 @@ namespace Notification.Host.Extensions
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Service started!!!!!");
+            logger.LogInformation("Service started");
 
-            string notification = "It's been 10 sec please perform the task";
+            string notificationMessage = "It's been 10 sec please perform the task";
 
-            //Uri sendEndpointUri = new("queue:scheduler");
-            bus.Topology.TryGetPublishAddress<IScheduledNotification>(out var address);
-            await bus.ScheduleRecurringSend(address, new MessageSchedule(), new ScheduledNotification { Value = notification });
+            bus.Topology.TryGetPublishAddress<IScheduledNotification>(out var sendEndpointUri);
+            await bus.ScheduleRecurringSend(sendEndpointUri, new ScheduledNotificationInterval(), new ScheduledNotification { Value = notificationMessage });
 
         }
         public Task StopAsync(CancellationToken cancellationToken)

@@ -591,3 +591,5 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.dl
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\appsettings.Development_Host.json
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\appsettings_Host.json

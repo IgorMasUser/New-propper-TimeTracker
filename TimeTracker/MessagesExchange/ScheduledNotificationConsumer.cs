@@ -1,22 +1,20 @@
-﻿using MassTransit;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+﻿using Contracts;
+using MassTransit;
 
 namespace MassTransitSchedulingTest
 {
     public class ScheduledNotificationConsumer : IConsumer<IScheduledNotification>
     {
-        readonly ILogger<ScheduledNotificationConsumer> myLogger;
+        private readonly ILogger<ScheduledNotificationConsumer> logger;
 
         public ScheduledNotificationConsumer(ILogger<ScheduledNotificationConsumer> logger)
         {
-            myLogger = logger;
+            this.logger = logger;
         }
 
         public async Task Consume(ConsumeContext<IScheduledNotification> context)
         {
-            myLogger.LogDebug(context.Message.Value);
-            myLogger.LogInformation($"Message {context.Message.Value} consumed by API");
+            logger.LogInformation($"Message {context.Message.Value} consumed by API");
         }
     }
 }
