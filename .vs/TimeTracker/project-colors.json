@@ -35,7 +35,12 @@
       "ProjectGuid": "79b96c51-e9df-405b-83c5-434f351464e9",
       "DisplayName": "Service",
       "ColorIndex": 5
+    },
+    "48ffbc73-f608-4bea-bbbb-477c1b86a9cf": {
+      "ProjectGuid": "48ffbc73-f608-4bea-bbbb-477c1b86a9cf",
+      "DisplayName": "Contracts",
+      "ColorIndex": 6
     }
   },
-  "NextColorIndex": 6
+  "NextColorIndex": 7
 }

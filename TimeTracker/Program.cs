@@ -1,6 +1,8 @@
+using CacheService.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Extensions;
@@ -16,6 +18,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     ));
 builder.Services.AddScoped<IUserRepo, DBUserRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(opt =>
+    ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("DockerRedisConnection")));
+builder.Services.AddScoped<IPlatformRepo, RedisPlatformRepo>();
 
 builder.Services.AddAuthentication(x =>
 {
