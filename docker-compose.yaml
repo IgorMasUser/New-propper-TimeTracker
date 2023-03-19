@@ -20,6 +20,9 @@ services:
       - "15672:15672"
   redis:
     image: redis
+    hostname: redis
+    volumes:
+      - redis-data:/data
     ports:
       - "6379:6379"    
 
@@ -47,4 +50,6 @@ services:
       - "9090:80"    
 
 volumes:
-  mssql_data: {}      
+  mssql_data: {}
+  redis-data:
+    driver: local      

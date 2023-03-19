@@ -1,7 +1,8 @@
-﻿using CacheService.Models;
-using Contracts;
+﻿using Contracts;
 using MassTransit;
 using StackExchange.Redis;
+using System.Text.Json;
+using TimeTracker.Models;
 
 namespace MassTransitSchedulingTest
 {
@@ -12,21 +13,27 @@ namespace MassTransitSchedulingTest
 
         public ScheduledNotificationConsumer(ILogger<ScheduledNotificationConsumer> logger, IConnectionMultiplexer redis)
         {
+            if (redis == null)
+            {
+                throw new ArgumentNullException(nameof(redis));
+            }
             this.logger = logger;
             this.redis = redis;
         }
 
         public async Task Consume(ConsumeContext<IScheduledNotification> context)
         {
-            var message = new { Id = $"message:{Guid.NewGuid().ToString()}"};
-        
-            logger.LogInformation($"Notification id:{message.Id}");
-            logger.LogInformation($"Message: {context.Message.Value} consumed by API");
+            NotificationMessage message = new NotificationMessage();
+            message.Message = context.Message.Value;
+            //logger.LogInformation($"Notification id:{message.Id}");
+            //logger.LogInformation($"Message: {context.Message.Value} consumed by API");
 
             var db = redis.GetDatabase();
-            db.StringSet(message.Id, context.Message.Value);
-            var platGet = db.StringGet(message.Id);
-            logger.LogInformation($"Get saved Platform:{platGet}");
+            var serialMessage = JsonSerializer.Serialize(message);
+            db.HashSet($"message", new HashEntry[] {new HashEntry(message.Id, serialMessage) });
+            //db.StringSet(message.Id, context.Message.Value);
+            //var getMessage = db.StringGet(message.Id);
+            //logger.LogInformation($"Get saved Platform:{getMessage}");
         }
     }
 }

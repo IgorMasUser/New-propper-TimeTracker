@@ -1,4 +1,3 @@
-using CacheService.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,10 +16,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddScoped<IUserRepo, DBUserRepo>();
+builder.Services.AddScoped<INotificationRepo, NotificationRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(opt =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("DockerRedisConnection")));
-builder.Services.AddScoped<IPlatformRepo, RedisPlatformRepo>();
 
 builder.Services.AddAuthentication(x =>
 {
