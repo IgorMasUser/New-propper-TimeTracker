@@ -4,14 +4,14 @@
     "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj": {}
   },
   "projects": {
-    "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj": {
+    "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
-        "projectName": "TimeTracker",
-        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
+        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj",
+        "projectName": "Contracts",
+        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj",
         "packagesPath": "C:\\Users\\Igor Maslov\\.nuget\\packages\\",
-        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\obj\\",
+        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -43,48 +43,84 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.115\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
+        "projectName": "Notification.Host",
+        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
+        "packagesPath": "C:\\Users\\Igor Maslov\\.nuget\\packages\\",
+        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Igor Maslov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
+                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
-            "AutoMapper": {
+            "MassTransit": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[8.0.13, )"
             },
-            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+            "MassTransit.Quartz": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[8.0.13, )"
             },
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+            "MassTransit.RabbitMQ": {
               "target": "Package",
-              "version": "[6.0.12, )"
+              "version": "[8.0.12, )"
             },
-            "Microsoft.EntityFrameworkCore": {
+            "MassTransit.RabbitMq.Extensions.Hosting": {
               "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.Extensions.Configuration": {
-              "target": "Package",
-              "version": "[6.0.1, )"
-            },
-            "Microsoft.Extensions.Configuration.UserSecrets": {
-              "target": "Package",
-              "version": "[6.0.1, )"
-            },
-            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.2.3, )"
+              "version": "[1.0.29, )"
             }
           },
           "imports": [
@@ -105,7 +141,139 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.113\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.115\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
+        "projectName": "TimeTracker",
+        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
+        "packagesPath": "C:\\Users\\Igor Maslov\\.nuget\\packages\\",
+        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Igor Maslov\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
+                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj"
+              },
+              "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
+                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "MassTransit.Analyzers": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "MassTransit.AspNetCore": {
+              "target": "Package",
+              "version": "[7.3.1, )"
+            },
+            "MassTransit.RabbitMQ": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
+            "MassTransit.RabbitMq.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[1.0.29, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "Microsoft.Extensions.Configuration.UserSecrets": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[6.0.13, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.3.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.115\\RuntimeIdentifierGraph.json"
         }
       }
     }

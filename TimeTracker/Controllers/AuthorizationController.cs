@@ -64,7 +64,6 @@ namespace TimeTrackerControllers
         [Route("/Authorization/Refresh")]
         public async Task<ActionResult> Refresh()
         {
-
             var jwtAccessToken = Request.Cookies["accessTokenForDataRetriving"];
             var refreshToken = Request.Cookies["refreshToken"];
             var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);

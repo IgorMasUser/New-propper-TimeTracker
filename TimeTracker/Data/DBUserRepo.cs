@@ -32,7 +32,7 @@ namespace TimeTracker.Data
             }
             else
             {
-                var foundExistingUser = db.User.FirstOrDefault(x=>x.UserId.Equals(requestedUser.UserId));
+                var foundExistingUser = db.User.FirstOrDefault(x => x.UserId.Equals(requestedUser.UserId));
                 db.User.Update(foundExistingUser);
                 foundExistingUser.Name = requestedUser.Name;
                 foundExistingUser.UserId = requestedUser.UserId;
@@ -40,7 +40,7 @@ namespace TimeTracker.Data
                 foundExistingUser.Email = requestedUser.Email;
                 foundExistingUser.Salary = requestedUser.Salary;
                 foundExistingUser.Surname = requestedUser.Surname;
-              }
+            }
             await db.SaveChangesAsync();
         }
 
@@ -143,14 +143,14 @@ namespace TimeTracker.Data
             {
                 var foundExistingToken = db.RefreshTokenProvider.FirstOrDefault(x => x.UserId.Equals(userId));
                 return foundExistingToken;
-            }      
+            }
         }
 
         public RefreshTokenProvider GetUserTokenDetails(string userName)
         {
-            var obtainedUser = db.User.Where(p=>p.Name.Contains(userName));
+            var obtainedUser = db.User.Where(p => p.Name.Contains(userName));
             //var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(x=>x.RefreshToken.Equals(cookiesToken));
-            var tokenDetails = db.RefreshTokenProvider.Where(p=> obtainedUser.Any(p2=>p2.UserId == p.UserId)).FirstOrDefault();
+            var tokenDetails = db.RefreshTokenProvider.Where(p => obtainedUser.Any(p2 => p2.UserId == p.UserId)).FirstOrDefault();
 
             if (tokenDetails != null)
             {

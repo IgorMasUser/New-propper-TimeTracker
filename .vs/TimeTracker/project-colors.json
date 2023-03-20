@@ -1,21 +1,46 @@
 {
   "Version": 1,
   "ProjectMap": {
-    "c62eb217-53a5-4bcd-9c4f-f13f8d670831": {
-      "ProjectGuid": "c62eb217-53a5-4bcd-9c4f-f13f8d670831",
-      "DisplayName": "TimeTracker",
+    "cbade9a5-753e-4261-a8fd-f37b4d6a5d7c": {
+      "ProjectGuid": "cbade9a5-753e-4261-a8fd-f37b4d6a5d7c",
+      "DisplayName": "BackgroundService.Host",
       "ColorIndex": 0
+    },
+    "b2174df5-dfbf-403e-9e0c-59ac5db377f5": {
+      "ProjectGuid": "b2174df5-dfbf-403e-9e0c-59ac5db377f5",
+      "DisplayName": "Contracts",
+      "ColorIndex": 1
     },
     "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Miscellaneous Files",
       "ColorIndex": -1
     },
-    "13737345-ed19-418b-8a88-29f179c9590d": {
-      "ProjectGuid": "13737345-ed19-418b-8a88-29f179c9590d",
-      "DisplayName": "Solution Items",
-      "ColorIndex": 1
+    "c62eb217-53a5-4bcd-9c4f-f13f8d670831": {
+      "ProjectGuid": "c62eb217-53a5-4bcd-9c4f-f13f8d670831",
+      "DisplayName": "TimeTracker",
+      "ColorIndex": 2
+    },
+    "ee50df36-d318-436d-a36f-67a1e73e497a": {
+      "ProjectGuid": "ee50df36-d318-436d-a36f-67a1e73e497a",
+      "DisplayName": "NotificationService",
+      "ColorIndex": 3
+    },
+    "89f223f1-8518-4e2a-8f20-6df36e42d487": {
+      "ProjectGuid": "89f223f1-8518-4e2a-8f20-6df36e42d487",
+      "DisplayName": "Notification.Host",
+      "ColorIndex": 4
+    },
+    "79b96c51-e9df-405b-83c5-434f351464e9": {
+      "ProjectGuid": "79b96c51-e9df-405b-83c5-434f351464e9",
+      "DisplayName": "Service",
+      "ColorIndex": 5
+    },
+    "48ffbc73-f608-4bea-bbbb-477c1b86a9cf": {
+      "ProjectGuid": "48ffbc73-f608-4bea-bbbb-477c1b86a9cf",
+      "DisplayName": "Contracts",
+      "ColorIndex": 6
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 7
 }

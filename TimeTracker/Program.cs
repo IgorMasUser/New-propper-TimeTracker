@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 using TimeTracker.Data;
+using TimeTracker.Extensions;
 using TimeTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +16,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddScoped<IUserRepo, DBUserRepo>();
+builder.Services.AddScoped<INotificationRepo, NotificationRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IConnectionMultiplexer>(opt =>
+    ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("DockerRedisConnection")));
 
 builder.Services.AddAuthentication(x =>
 {
@@ -61,21 +65,28 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-builder.Services.AddAuthorization(options =>
+IConfigurationBuilder configBuilder;
+
+if (builder.Environment.IsDevelopment())
 {
-    options.AddPolicy("RequireRole",
-         policy => policy.RequireRole("1"));
-    options.AddPolicy("Developer", policy => policy.RequireRole("3"));
-    options.AddPolicy("TeamAccess", policy => policy.RequireRole("1","2"));
-});
+    configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json", false, true);
+}
+else
+{
+    configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true);
+}
+
+IConfigurationRoot configuration = configBuilder.Build();
+
+//builder.Services.AddAuthenticationServices(configuration);
+builder.Services.AddMassTransitServices(configuration);
+builder.Services.AddAuthorizationServices();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

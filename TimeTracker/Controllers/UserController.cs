@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using NuGet.Common;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Xml.Linq;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -15,23 +10,30 @@ using TimeTracker.Models;
 
 namespace TimeTracker.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
+        public static class Temp
+        {
+            public static string tempstore;
+        }
+
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
+        private readonly IRequestClient<ISimpleRequest> client;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration)
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration, IRequestClient<ISimpleRequest> client)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
             this.configuration = configuration;
+            this.client = client;
         }
 
-        [AllowAnonymous]
+        [Authorize(Policy = "Manager")]
         [HttpGet]
         public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
         {
@@ -41,26 +43,38 @@ namespace TimeTracker.Controllers
             return View(mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
         }
 
-        [Authorize(Policy = "RequireRole")]
+        //[Authorize(Policy = "HR")]
         [HttpGet]
         public IActionResult CreateUser()
         {
             return View();
         }
 
-        [Authorize(Policy = "RequireRole")]
+        //[Authorize(Policy = "HR")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
         {
             if (ModelState.IsValid)
             {
-                var mappedUser = mapper.Map<User>(requestedUser);
-                await repository.CreateUser(mappedUser, requestedUser);
+                //var mappedUser = mapper.Map<User>(requestedUser);
+                //await repository.CreateUser(mappedUser, requestedUser);
+                Console.WriteLine("Message sent");
+                logger.LogInformation("Message sent");
+               var response = await client.GetResponse<ISimpleResponse>(new
+                {
+                    Timestamp = DateTime.Now,
+                    SentMessage = requestedUser.Name
+               });
+                
+                logger.LogInformation($"Response from consumer: {response.Message}");
 
-                return RedirectToAction("GetAttendanceOfUser");
+                //return RedirectToAction("GetAttendanceOfUser");
+                return Ok(response);
             }
             return View(requestedUser);
         }
+
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> EditAttendanceOfUser(int? id)
         {
             if (id == null)
@@ -72,6 +86,7 @@ namespace TimeTracker.Controllers
             return View(userDTO);
         }
 
+        [Authorize(Policy = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAttendanceOfUser(UserCreateDTO user)
@@ -85,7 +100,7 @@ namespace TimeTracker.Controllers
             return View(user);
         }
 
-        [Authorize(Policy = "TeamAccess")]
+        [Authorize(Policy = "Developers")]
         public async Task<IActionResult> GetDetailsOfUser(int? id)
         {
             if (id == null)
@@ -97,6 +112,7 @@ namespace TimeTracker.Controllers
             return View(mappedUser);
         }
 
+        [Authorize(Policy = "HR")]
         public async Task<IActionResult> DeleteUser(int? id)
         {
             if (id == null)
@@ -108,6 +124,7 @@ namespace TimeTracker.Controllers
             return View(mappedUser);
         }
 
+        [Authorize(Policy = "HR")]
         [HttpPost]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -115,7 +132,7 @@ namespace TimeTracker.Controllers
             return RedirectToAction("GetAttendanceOfUser");
         }
 
-        [Authorize(Policy = "Developer")]
+        [Authorize(Policy = "TeamAccess")]
         public ActionResult<UserReadDTO> GetAllEmployeesInfo()
         {
             var totalAttendance = repository.GetAllEmployeesInfo();
