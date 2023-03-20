@@ -20,7 +20,7 @@ namespace Notification.Host.HostedServices
         {
             logger.LogInformation("Service started");
 
-            string notificationMessage = "It's been 1 minute please perform the task";
+            string notificationMessage = "Please, do not forget to submit your monthly attendance";
 
             bus.Topology.TryGetPublishAddress<IScheduledNotification>(out var sendEndpointUri);
             await bus.ScheduleRecurringSend(sendEndpointUri, new ScheduledNotificationInterval(), new ScheduledNotification { Value = notificationMessage });

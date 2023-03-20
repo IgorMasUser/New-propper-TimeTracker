@@ -14,13 +14,20 @@ namespace TimeTracker.Controllers
         }
 
         [HttpGet]
-            public IEnumerable<NotificationMessage> GetNotifications()
+        public ActionResult<IEnumerable<NotificationMessage>> GetNotifications()
         {
-           var notifications =  repository.GetAllNotifications();
+            var notifications = repository.GetAllNotifications();
 
-            return notifications;
+            if(notifications != null)
+            {
+                return View(notifications);
+            }
+            else
+            {
+                List<NotificationMessage> noNotificationsReply = new List<NotificationMessage>();
+                noNotificationsReply.Add(new NotificationMessage {Message = "You don't have any notifications"});
+                return View(noNotificationsReply);
+            }
         }
-
-
     }
 }
