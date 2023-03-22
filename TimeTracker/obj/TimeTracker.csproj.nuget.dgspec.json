@@ -62,14 +62,14 @@
         }
       }
     },
-    "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
+    "E:\\MyProject\\New-propper-TimeTracker\\Notification.Service\\Notification.Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
-        "projectName": "Notification.Host",
-        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj",
+        "projectUniqueName": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Service\\Notification.Service.csproj",
+        "projectName": "Notification.Service",
+        "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Service\\Notification.Service.csproj",
         "packagesPath": "C:\\Users\\Igor Maslov\\.nuget\\packages\\",
-        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\obj\\",
+        "outputPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Service\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -108,7 +108,7 @@
           "dependencies": {
             "MassTransit": {
               "target": "Package",
-              "version": "[8.0.13, )"
+              "version": "[8.0.14, )"
             },
             "MassTransit.Quartz": {
               "target": "Package",
@@ -116,11 +116,11 @@
             },
             "MassTransit.RabbitMQ": {
               "target": "Package",
-              "version": "[8.0.12, )"
+              "version": "[8.0.5, )"
             },
-            "MassTransit.RabbitMq.Extensions.Hosting": {
+            "Microsoft.Extensions.Hosting": {
               "target": "Package",
-              "version": "[1.0.29, )"
+              "version": "[6.0.1, )"
             }
           },
           "imports": [
@@ -134,9 +134,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -176,8 +173,8 @@
               "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj": {
                 "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Contracts\\Contracts.csproj"
               },
-              "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj": {
-                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Host\\Notification.Host.csproj"
+              "E:\\MyProject\\New-propper-TimeTracker\\Notification.Service\\Notification.Service.csproj": {
+                "projectPath": "E:\\MyProject\\New-propper-TimeTracker\\Notification.Service\\Notification.Service.csproj"
               }
             }
           }

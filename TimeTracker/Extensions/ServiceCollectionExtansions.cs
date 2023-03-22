@@ -3,7 +3,7 @@ using MassTransit;
 using MassTransitSchedulingTest;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Notification.Host;
+using Notification.Service;
 using System.Text;
 
 namespace TimeTracker.Extensions

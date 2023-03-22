@@ -1,7 +1,7 @@
 ﻿using MassTransit.Scheduling;
 using System;
 
-namespace Notification.Host.NotificationInterval
+namespace Notification.Service.NotificationInterval
 {
     public class ScheduledNotificationInterval : DefaultRecurringSchedule
     {

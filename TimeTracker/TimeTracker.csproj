@@ -34,7 +34,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Contracts\Contracts.csproj" />
-	  <ProjectReference Include="..\Notification.Host\Notification.Host.csproj" />
+	  <ProjectReference Include="..\Notification.Service\Notification.Service.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Contracts;
 
-namespace Notification.Host.Notification
+namespace Notification.Service.Notification
 {
     public class ScheduledNotification : IScheduledNotification
     {

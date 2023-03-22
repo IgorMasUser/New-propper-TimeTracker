@@ -1,7 +1,8 @@
 ﻿using Contracts;
 using MassTransit;
+using Microsoft.Extensions.Logging;
 
-namespace Notification.Host
+namespace Notification.Service
 {
     public class RequestConsumer : IConsumer<ISimpleRequest>
     {
