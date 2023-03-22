@@ -1,14 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "djLRZPIsER0TC7NThCBb4BUufONM00WxdRpmEZMC0THRvh63H+h9VZNGhphxH32lqOnv9Yusz2VCIl4mo1NdPw==",
+  "dgSpecHash": "0/4egem9AuxfRis8cK9orH4HZ76343zpv0lg+iVcRWvmOsNoCMuH6u/Od0IQIBmPu29UVD1hKEJ2SoTm3yLNYg==",
   "success": true,
   "projectFilePath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit\\8.0.14\\masstransit.8.0.14.nupkg.sha512",
-    "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.abstractions\\8.0.14\\masstransit.abstractions.8.0.14.nupkg.sha512",
+    "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit\\8.0.13\\masstransit.8.0.13.nupkg.sha512",
+    "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.abstractions\\8.0.13\\masstransit.abstractions.8.0.13.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.analyzers\\8.0.3\\masstransit.analyzers.8.0.3.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.aspnetcore\\7.3.1\\masstransit.aspnetcore.7.3.1.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.extensions.dependencyinjection\\7.3.1\\masstransit.extensions.dependencyinjection.7.3.1.nupkg.sha512",

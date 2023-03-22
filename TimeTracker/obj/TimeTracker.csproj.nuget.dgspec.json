@@ -108,7 +108,7 @@
           "dependencies": {
             "MassTransit": {
               "target": "Package",
-              "version": "[8.0.14, )"
+              "version": "[8.0.13, )"
             },
             "MassTransit.Quartz": {
               "target": "Package",
@@ -116,7 +116,11 @@
             },
             "MassTransit.RabbitMQ": {
               "target": "Package",
-              "version": "[8.0.5, )"
+              "version": "[8.0.12, )"
+            },
+            "MassTransit.RabbitMq.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[1.0.29, )"
             },
             "Microsoft.Extensions.Hosting": {
               "target": "Package",

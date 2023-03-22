@@ -25,8 +25,8 @@ namespace MassTransitSchedulingTest
         {
             NotificationMessage message = new NotificationMessage();
             message.Message = context.Message.Value;
-            //logger.LogInformation($"Notification id:{message.Id}");
-            //logger.LogInformation($"Message: {context.Message.Value} consumed by API");
+            logger.LogInformation($"Notification id:{message.Id}");
+            logger.LogInformation($"Message: {context.Message.Value} consumed by API");
 
             var db = redis.GetDatabase();
             var serialMessage = JsonSerializer.Serialize(message);
