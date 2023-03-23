@@ -1,11 +1,10 @@
 ﻿
 namespace Contracts
 {
-    public interface ISimpleResponse
+    public interface NewComerApprovalRequested
     {
         Guid ApprovalId { get; }
         DateTime TimeStamp { get; }
         string UserId { get; }
-        public string ResponseMessage { get; }
     }
 }

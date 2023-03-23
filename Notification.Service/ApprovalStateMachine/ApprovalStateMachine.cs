@@ -1,38 +1,59 @@
 ﻿using MassTransit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Contracts;
 
-namespace Notification.Service.ApprovalStateMachine
+namespace Notification.Service.StateMachines
 {
     public class ApprovalStateMachine : MassTransitStateMachine<ApprovalState>
     {
         public ApprovalStateMachine()
         {
-            Event(() => NewComerSentForApproval, x => x.CorrelateById(m => m.Message.ApprovalId));
+            Event(() => NewComerApprovalRequested, x => x.CorrelateById(m => m.Message.ApprovalId));
+            Event(() => ApprovalStatusRequested, x =>
+            {
+                x.CorrelateById(m => m.Message.ApprovalId);
+                x.OnMissingInstance(m => m.ExecuteAsync(async context =>
+                  {
+                      if (context.RequestId.HasValue)
+                      {
+                          await context.RespondAsync<NewComerNotFound>(new { context.Message.ApprovalId });
+                      }
+                  }));
+            });
 
             InstanceState(x => x.CurrentState);
             Initially(
-                When(NewComerSentForApproval)
-                .TransitionTo(SentForApprovalState));
+                When(NewComerApprovalRequested)
+                .Then(context =>
+                {
+                    context.Instance.SubmitDate = context.Data.TimeStamp;
+                    context.Instance.UserId = context.Data.UserId;
+                    context.Instance.Updated = DateTime.UtcNow;
+                })
+                .TransitionTo(Requested));
+
+            During(Requested, Ignore(NewComerApprovalRequested));
+
+            DuringAny(When(ApprovalStatusRequested)
+                .RespondAsync(x => x.Init<ApprovalStatus>(new
+                {
+                    ApprovalId = x.Instance.CorrelationId,
+                    State = x.Instance.CurrentState
+                }))
+            );
+            
+            DuringAny(
+                When(NewComerApprovalRequested)
+                .Then(context =>
+                {
+                    context.Instance.SubmitDate ??= context.Data.TimeStamp;
+                    context.Instance.UserId ??= context.Data.UserId;
+
+                }));
         }
 
-        public State SentForApprovalState { get; private set; }
+        public State Requested { get; private set; }
 
-        public Event<INewComerApproval> NewComerSentForApproval { get; private set; }
+        public Event<NewComerApprovalRequested> NewComerApprovalRequested { get; private set; }
+        public Event<CheckApprovalStatus> ApprovalStatusRequested { get; private set; }
     }
-
-    public class ApprovalState : SagaStateMachineInstance, ISagaVersion
-    {
-        public Guid CorrelationId { get; set; }
-        public string CurrentState { get; set; }
-
-        public string UserId { get; set; }
-        public int Version { get; set; }
-        public DateTime? SubmitDate { get; internal set; }
-        public DateTime? Updated { get; set; }
-    }
-
 }

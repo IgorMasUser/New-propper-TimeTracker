@@ -3,7 +3,6 @@ using Contracts;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sample.Contracts;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -14,29 +13,22 @@ namespace TimeTracker.Controllers
     //[Authorize]
     public class UserController : Controller
     {
-        public static class Temp
-        {
-            public static string tempstore;
-        }
-
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
-        private readonly IRequestClient<INewComerApprovalRequest> newComer;
-        private readonly IRequestClient<SubmitOrder> submitOrderRequestClient;
-        private readonly IRequestClient<CheckOrder> checkOrderClient;
+        private readonly IRequestClient<NewComerApprovalRequest> NewComerApprovalRequestClient;
+        private readonly IRequestClient<CheckApprovalStatus> checkApprovalStatusClient;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration, IRequestClient<INewComerApprovalRequest> newComer,
-            IRequestClient<SubmitOrder> submitOrderRequestClient, IRequestClient<CheckOrder> checkOrderClient)
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration,
+            IRequestClient<NewComerApprovalRequest> NewComerApprovalRequestClient, IRequestClient<CheckApprovalStatus> checkApprovalStatusClient)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
             this.configuration = configuration;
-            this.newComer = newComer;
-            this.submitOrderRequestClient = submitOrderRequestClient;
-            this.checkOrderClient = checkOrderClient;
+            this.NewComerApprovalRequestClient = NewComerApprovalRequestClient;
+            this.checkApprovalStatusClient = checkApprovalStatusClient;
         }
 
         [Authorize(Policy = "Manager")]
@@ -55,38 +47,12 @@ namespace TimeTracker.Controllers
         {
             return View();
         }
-
-        ////[Authorize(Policy = "HR")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //var mappedUser = mapper.Map<User>(requestedUser);
-        //        //await repository.CreateUser(mappedUser, requestedUser);
-        //        Console.WriteLine("Message sent");
-        //        logger.LogInformation("Message sent");
-        //        var response = await newComer.GetResponse<INewComerApprovalRequest>(new
-        //        {
-        //            ApprovalId = Guid.NewGuid(),
-        //            TimeStamp = DateTime.Now,
-        //            UserId = requestedUser.UserId
-        //        });
-
-        //        logger.LogInformation($"Response from consumer: {response.Message}");
-
-        //        ////return RedirectToAction("GetAttendanceOfUser");
-        //        //return Ok(response);
-        //        return Ok();
-        //    }
-        //    return View(requestedUser);
-        //}
         //[Authorize(Policy = "HR")]
 
         [HttpGet]
         public async Task<IActionResult> GetUserApprovalStatus(Guid id)
         {
-            var (status, notFound) = await checkOrderClient.GetResponse<OrderStatus, OrderNotFound>(new { OrderId = id });
+            var (status, notFound) = await checkApprovalStatusClient.GetResponse<ApprovalStatus, NewComerNotFound>(new { ApprovalId = id });
             if (status.IsCompleted)
             {
                 var response = await status;
@@ -111,11 +77,11 @@ namespace TimeTracker.Controllers
                 //await repository.CreateUser(mappedUser, requestedUser);
                 Console.WriteLine("Message sent");
                 logger.LogInformation("Message sent");
-                var (accepted, rejected) = await submitOrderRequestClient.GetResponse<OrderSubmissionAccepted, OrderSubmissionRejected>(new
+                var (accepted, rejected) = await NewComerApprovalRequestClient.GetResponse<NewComerApprovalRequestAccepted, NewComerApprovalRequestRejected>(new
                 {
-                    OrderId = Guid.NewGuid(),
-                    InVar.Timestamp,
-                    CustomerNumber = requestedUser.Id
+                    ApprovalId = Guid.NewGuid(),
+                    TimeStamp = InVar.Timestamp,
+                    UserId = requestedUser.Email
                 });
 
                 if (accepted.IsCompletedSuccessfully)

@@ -3,12 +3,8 @@ using MassTransit;
 using MassTransitSchedulingTest;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Notification.Service;
-using Notification.Service.ApprovalStateMachine;
-using Sample.Components.Consumers;
-using Sample.Components.StateMachines;
-using Sample.Contracts;
-using System.Text;
+using Notification.Service.Consumers;
+using Notification.Service.StateMachines;
 
 namespace TimeTracker.Extensions
 {
@@ -81,7 +77,7 @@ namespace TimeTracker.Extensions
         {
         services.AddMassTransit(cfg =>
             {
-                cfg.AddSagaStateMachine<OrderStateMachine, OrderState>(sagaConfig =>
+                cfg.AddSagaStateMachine<ApprovalStateMachine, ApprovalState>(sagaConfig =>
                 {
                     sagaConfig.UseMessageRetry(r => r.Immediate(5));
                     sagaConfig.UseInMemoryOutbox();
@@ -90,10 +86,10 @@ namespace TimeTracker.Extensions
             cfg.SetKebabCaseEndpointNameFormatter();
 
                 cfg.SetInMemorySagaRepositoryProvider();
-                cfg.AddConsumer<SubmitOrderConsumer>();
+                cfg.AddConsumer<RequestConsumer>();
 
-                cfg.AddRequestClient<SubmitOrder>(new Uri($"exchange:{KebabCaseEndpointNameFormatter.Instance.Consumer<SubmitOrderConsumer>()}"));
-                cfg.AddRequestClient<CheckOrder>();
+                cfg.AddRequestClient<NewComerApprovalRequest>(new Uri($"exchange:{KebabCaseEndpointNameFormatter.Instance.Consumer<RequestConsumer>()}"));
+                cfg.AddRequestClient<CheckApprovalStatus>();
                 cfg.AddConsumer<ScheduledNotificationConsumer>();
                 cfg.UsingRabbitMq((cxt, cfg) =>
                  {
@@ -108,7 +104,7 @@ namespace TimeTracker.Extensions
                      cfg.ConfigureEndpoints(cxt);
                  });
 
-                cfg.AddRequestClient<INewComerApprovalRequest>();
+                cfg.AddRequestClient<NewComerApprovalRequest>();
             });
 
             return services;

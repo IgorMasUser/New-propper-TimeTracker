@@ -1,41 +1,52 @@
 ﻿using Contracts;
 using MassTransit;
 using Microsoft.Extensions.Logging;
-using Notification.Service.ApprovalStateMachine;
 
-namespace Notification.Service
+namespace Notification.Service.Consumers
 {
-    public class RequestConsumer : IConsumer<INewComerApprovalRequest>
+    public class RequestConsumer : IConsumer<NewComerApprovalRequest>
     {
-        private readonly ILogger<RequestConsumer> logger;
+        private readonly ILogger<RequestConsumer> _logger;
 
         public RequestConsumer(ILogger<RequestConsumer> logger)
         {
-            this.logger = logger;
+            _logger = logger;
         }
-
-        public async Task Consume(ConsumeContext<INewComerApprovalRequest> context)
+        public async Task Consume(ConsumeContext<NewComerApprovalRequest> context)
         {
-            logger.Log(LogLevel.Information, "New comer {0} sent for approval with ApprovalId {1}", context.Message.UserId, context.Message.ApprovalId);
+            _logger.Log(LogLevel.Debug, "New comer {0} sent for approval", context.Message.UserId);
+            if (context.Message.UserId.Contains("TEST"))
+            {
+                if (context.RequestId != null)
+                {
+                    await context.RespondAsync<NewComerApprovalRequestRejected>(new
+                    {
+                        InVar.Timestamp,
+                        context.Message.ApprovalId,
+                        context.Message.UserId,
+                        Reason = $"Test Customer cannot submit order:{context.Message.UserId}"
+                    });
+                }
+                return;
+            }
 
-            await context.Publish<INewComerApproval>(new
+            await context.Publish<NewComerApprovalRequested>(new
             {
                 context.Message.ApprovalId,
                 context.Message.TimeStamp,
                 context.Message.UserId
             });
 
-            logger.Log(LogLevel.Information, "published to Saga");
-
-            await context.RespondAsync<ISimpleResponse>(new
+            if (context.RequestId != null)
             {
-                context.Message.TimeStamp,
-                context.Message.UserId,
-                ResponseMessage = "I have got new comer request"
-            });
+                await context.RespondAsync<NewComerApprovalRequestAccepted>(new
+                {
+                    InVar.Timestamp,
+                    context.Message.ApprovalId,
+                    context.Message.UserId
 
-
+                });
+            }
         }
-
     }
 }
