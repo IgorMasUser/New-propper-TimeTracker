@@ -1,11 +1,9 @@
-﻿
-namespace Contracts
+﻿namespace Notification.Service.ApprovalStateMachine
 {
-    public interface ISimpleResponse
+    public interface INewComerApproval
     {
         Guid ApprovalId { get; }
         DateTime TimeStamp { get; }
         string UserId { get; }
-        public string ResponseMessage { get; }
     }
 }

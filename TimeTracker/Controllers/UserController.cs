@@ -3,6 +3,7 @@ using Contracts;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sample.Contracts;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -21,16 +22,21 @@ namespace TimeTracker.Controllers
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
-        private readonly IRequestClient<ISimpleRequest> client;
+        private readonly IRequestClient<INewComerApprovalRequest> newComer;
+        private readonly IRequestClient<SubmitOrder> submitOrderRequestClient;
+        private readonly IRequestClient<CheckOrder> checkOrderClient;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration, IRequestClient<ISimpleRequest> client)
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration, IRequestClient<INewComerApprovalRequest> newComer,
+            IRequestClient<SubmitOrder> submitOrderRequestClient, IRequestClient<CheckOrder> checkOrderClient)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
             this.configuration = configuration;
-            this.client = client;
+            this.newComer = newComer;
+            this.submitOrderRequestClient = submitOrderRequestClient;
+            this.checkOrderClient = checkOrderClient;
         }
 
         [Authorize(Policy = "Manager")]
@@ -50,7 +56,52 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        ////[Authorize(Policy = "HR")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //var mappedUser = mapper.Map<User>(requestedUser);
+        //        //await repository.CreateUser(mappedUser, requestedUser);
+        //        Console.WriteLine("Message sent");
+        //        logger.LogInformation("Message sent");
+        //        var response = await newComer.GetResponse<INewComerApprovalRequest>(new
+        //        {
+        //            ApprovalId = Guid.NewGuid(),
+        //            TimeStamp = DateTime.Now,
+        //            UserId = requestedUser.UserId
+        //        });
+
+        //        logger.LogInformation($"Response from consumer: {response.Message}");
+
+        //        ////return RedirectToAction("GetAttendanceOfUser");
+        //        //return Ok(response);
+        //        return Ok();
+        //    }
+        //    return View(requestedUser);
+        //}
         //[Authorize(Policy = "HR")]
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserApprovalStatus(Guid id)
+        {
+            var (status, notFound) = await checkOrderClient.GetResponse<OrderStatus, OrderNotFound>(new { OrderId = id });
+            if (status.IsCompleted)
+            {
+                var response = await status;
+                return Ok(response.Message);
+            }
+
+            else
+            {
+                var response = await notFound;
+
+                return NotFound(response.Message);
+
+            }
+        }
+
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(UserCreateDTO requestedUser)
         {
@@ -60,16 +111,24 @@ namespace TimeTracker.Controllers
                 //await repository.CreateUser(mappedUser, requestedUser);
                 Console.WriteLine("Message sent");
                 logger.LogInformation("Message sent");
-               var response = await client.GetResponse<ISimpleResponse>(new
+                var (accepted, rejected) = await submitOrderRequestClient.GetResponse<OrderSubmissionAccepted, OrderSubmissionRejected>(new
                 {
-                    Timestamp = DateTime.Now,
-                    SentMessage = requestedUser.Name
-               });
-                
-                logger.LogInformation($"Response from consumer: {response.Message}");
+                    OrderId = Guid.NewGuid(),
+                    InVar.Timestamp,
+                    CustomerNumber = requestedUser.Id
+                });
 
-                //return RedirectToAction("GetAttendanceOfUser");
-                return Ok(response);
+                if (accepted.IsCompletedSuccessfully)
+                {
+                    var response = await accepted;
+                    return Ok(response);
+                }
+
+                else
+                {
+                    var response = await rejected;
+                    return BadRequest(response.Message);
+                }
             }
             return View(requestedUser);
         }

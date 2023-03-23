@@ -4,6 +4,10 @@ using MassTransitSchedulingTest;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Notification.Service;
+using Notification.Service.ApprovalStateMachine;
+using Sample.Components.Consumers;
+using Sample.Components.StateMachines;
+using Sample.Contracts;
 using System.Text;
 
 namespace TimeTracker.Extensions
@@ -77,8 +81,19 @@ namespace TimeTracker.Extensions
         {
         services.AddMassTransit(cfg =>
             {
-                cfg.SetKebabCaseEndpointNameFormatter();
-                cfg.AddConsumer<RequestConsumer>();
+                cfg.AddSagaStateMachine<OrderStateMachine, OrderState>(sagaConfig =>
+                {
+                    sagaConfig.UseMessageRetry(r => r.Immediate(5));
+                    sagaConfig.UseInMemoryOutbox();
+                }).RedisRepository("127.0.0.1");
+
+            cfg.SetKebabCaseEndpointNameFormatter();
+
+                cfg.SetInMemorySagaRepositoryProvider();
+                cfg.AddConsumer<SubmitOrderConsumer>();
+
+                cfg.AddRequestClient<SubmitOrder>(new Uri($"exchange:{KebabCaseEndpointNameFormatter.Instance.Consumer<SubmitOrderConsumer>()}"));
+                cfg.AddRequestClient<CheckOrder>();
                 cfg.AddConsumer<ScheduledNotificationConsumer>();
                 cfg.UsingRabbitMq((cxt, cfg) =>
                  {
@@ -93,7 +108,7 @@ namespace TimeTracker.Extensions
                      cfg.ConfigureEndpoints(cxt);
                  });
 
-                cfg.AddRequestClient<ISimpleRequest>();
+                cfg.AddRequestClient<INewComerApprovalRequest>();
             });
 
             return services;
