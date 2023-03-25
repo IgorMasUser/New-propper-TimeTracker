@@ -6,5 +6,6 @@ namespace Contracts
         Guid ApprovalId { get; }
         DateTime TimeStamp { get; }
         string UserId { get; }
+        string State { get; }
     }
 }

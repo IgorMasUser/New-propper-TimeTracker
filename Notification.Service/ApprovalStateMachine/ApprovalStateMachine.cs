@@ -41,7 +41,7 @@ namespace Notification.Service.StateMachines
                     State = x.Instance.CurrentState
                 }))
             );
-            
+
             DuringAny(
                 When(NewComerApprovalRequested)
                 .Then(context =>
@@ -52,23 +52,12 @@ namespace Notification.Service.StateMachines
 
             During(RequestedForApproval,
                 When(NewComerRequestApproved)
-                .RespondAsync(x => x.Init<ApprovalStatus>(new
+                .TransitionTo(RequestApproved)
+                .RespondAsync(x => x.Init<NewComerRequestApproved>(new
                 {
                     ApprovalId = x.Instance.CorrelationId,
                     State = x.Instance.CurrentState
-                }))
-                .TransitionTo(RequestApproved));
-                
-
-            //During(RequestedForApproval,
-            //    When(NewComerRequestApproved)
-            //    .Then(context =>
-            //    {
-            //        context.Instance.SubmitDate ??= context.Data.TimeStamp;
-            //        context.Instance.Updated ??= DateTime.UtcNow;
-            //        context.Instance.UserId = context.Data.UserId;
-            //    })
-            //    .TransitionTo(RequestApproved));
+                })));
         }
 
         public State RequestedForApproval { get; private set; }
