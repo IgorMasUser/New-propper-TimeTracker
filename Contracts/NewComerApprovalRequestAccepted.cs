@@ -6,6 +6,5 @@ namespace Contracts
        public Guid ApprovalId { get; set; }
        public DateTime Timestamp { get; set; }
        public string UserId { get; set; }
-
     }
 }

@@ -15,20 +15,6 @@ namespace Notification.Service.Consumers
         public async Task Consume(ConsumeContext<NewComerApprovalRequest> context)
         {
             _logger.Log(LogLevel.Debug, "New comer {0} sent for approval", context.Message.UserId);
-            if (context.Message.UserId.Contains("TEST"))
-            {
-                if (context.RequestId != null)
-                {
-                    await context.RespondAsync<NewComerApprovalRequestRejected>(new
-                    {
-                        InVar.Timestamp,
-                        context.Message.ApprovalId,
-                        context.Message.UserId,
-                        Reason = $"Test Customer cannot submit order:{context.Message.UserId}"
-                    });
-                }
-                return;
-            }
 
             await context.Publish<NewComerApprovalRequested>(new
             {
@@ -37,16 +23,12 @@ namespace Notification.Service.Consumers
                 context.Message.UserId
             });
 
-            if (context.RequestId != null)
+            await context.RespondAsync<NewComerApprovalRequestAccepted>(new
             {
-                await context.RespondAsync<NewComerApprovalRequestAccepted>(new
-                {
-                    InVar.Timestamp,
-                    context.Message.ApprovalId,
-                    context.Message.UserId
-
-                });
-            }
+                InVar.Timestamp,
+                context.Message.ApprovalId,
+                context.Message.UserId
+            });
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Notification.Service.StateMachines
                       }
                   }));
             });
+            Event(() => NewComerRequestApproved, x => x.CorrelateById(m => m.Message.ApprovalId));
 
             InstanceState(x => x.CurrentState);
             Initially(
@@ -29,9 +30,9 @@ namespace Notification.Service.StateMachines
                     context.Instance.UserId = context.Data.UserId;
                     context.Instance.Updated = DateTime.UtcNow;
                 })
-                .TransitionTo(Requested));
+                .TransitionTo(RequestedForApproval));
 
-            During(Requested, Ignore(NewComerApprovalRequested));
+            During(RequestedForApproval, Ignore(NewComerApprovalRequested));
 
             DuringAny(When(ApprovalStatusRequested)
                 .RespondAsync(x => x.Init<ApprovalStatus>(new
@@ -47,13 +48,34 @@ namespace Notification.Service.StateMachines
                 {
                     context.Instance.SubmitDate ??= context.Data.TimeStamp;
                     context.Instance.UserId ??= context.Data.UserId;
-
                 }));
+
+            During(RequestedForApproval,
+                When(NewComerRequestApproved)
+                .RespondAsync(x => x.Init<ApprovalStatus>(new
+                {
+                    ApprovalId = x.Instance.CorrelationId,
+                    State = x.Instance.CurrentState
+                }))
+                .TransitionTo(RequestApproved));
+                
+
+            //During(RequestedForApproval,
+            //    When(NewComerRequestApproved)
+            //    .Then(context =>
+            //    {
+            //        context.Instance.SubmitDate ??= context.Data.TimeStamp;
+            //        context.Instance.Updated ??= DateTime.UtcNow;
+            //        context.Instance.UserId = context.Data.UserId;
+            //    })
+            //    .TransitionTo(RequestApproved));
         }
 
-        public State Requested { get; private set; }
+        public State RequestedForApproval { get; private set; }
+        public State RequestApproved { get; private set; }
 
         public Event<NewComerApprovalRequested> NewComerApprovalRequested { get; private set; }
         public Event<CheckApprovalStatus> ApprovalStatusRequested { get; private set; }
+        public Event<NewComerRequestApproved> NewComerRequestApproved { get; private set; }
     }
 }

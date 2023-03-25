@@ -10,5 +10,6 @@ namespace Notification.Service.StateMachines
         public int Version { get; set; }
         public DateTime? SubmitDate { get; internal set; }
         public DateTime? Updated { get; set; }
+        public string ApprovalRejected { get; set; }
     }
 }

@@ -16,19 +16,22 @@ namespace TimeTracker.Controllers
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
         private readonly IConfiguration configuration;
-        private readonly IRequestClient<NewComerApprovalRequest> NewComerApprovalRequestClient;
+        private readonly IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient;
         private readonly IRequestClient<CheckApprovalStatus> checkApprovalStatusClient;
+        private readonly IRequestClient<NewComerRequestApproved> toApproveNewComer;
         private readonly ILogger<UserController> logger;
 
         public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration,
-            IRequestClient<NewComerApprovalRequest> NewComerApprovalRequestClient, IRequestClient<CheckApprovalStatus> checkApprovalStatusClient)
+            IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient, IRequestClient<CheckApprovalStatus> checkApprovalStatusClient,
+            IRequestClient<NewComerRequestApproved> toApproveNewComer)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
             this.configuration = configuration;
-            this.NewComerApprovalRequestClient = NewComerApprovalRequestClient;
+            this.newComerApprovalRequestClient = newComerApprovalRequestClient;
             this.checkApprovalStatusClient = checkApprovalStatusClient;
+            this.toApproveNewComer = toApproveNewComer;
         }
 
         [Authorize(Policy = "Manager")]
@@ -50,6 +53,18 @@ namespace TimeTracker.Controllers
         //[Authorize(Policy = "HR")]
 
         [HttpGet]
+        public async Task<IActionResult> ToApproveNewComer(Guid id)
+        {
+            var response = await toApproveNewComer.GetResponse<NewComerRequestApproved>(new
+            {
+                ApprovalId = id,
+                TimeStamp = InVar.Timestamp,
+            });
+
+            return Ok(response);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetUserApprovalStatus(Guid id)
         {
             var (status, notFound) = await checkApprovalStatusClient.GetResponse<ApprovalStatus, NewComerNotFound>(new { ApprovalId = id });
@@ -62,9 +77,7 @@ namespace TimeTracker.Controllers
             else
             {
                 var response = await notFound;
-
                 return NotFound(response.Message);
-
             }
         }
 
@@ -77,24 +90,14 @@ namespace TimeTracker.Controllers
                 //await repository.CreateUser(mappedUser, requestedUser);
                 Console.WriteLine("Message sent");
                 logger.LogInformation("Message sent");
-                var (accepted, rejected) = await NewComerApprovalRequestClient.GetResponse<NewComerApprovalRequestAccepted, NewComerApprovalRequestRejected>(new
+                var response = await newComerApprovalRequestClient.GetResponse<NewComerApprovalRequestAccepted>(new
                 {
                     ApprovalId = Guid.NewGuid(),
                     TimeStamp = InVar.Timestamp,
                     UserId = requestedUser.Email
                 });
 
-                if (accepted.IsCompletedSuccessfully)
-                {
-                    var response = await accepted;
-                    return Ok(response);
-                }
-
-                else
-                {
-                    var response = await rejected;
-                    return BadRequest(response.Message);
-                }
+                return Ok(response);
             }
             return View(requestedUser);
         }

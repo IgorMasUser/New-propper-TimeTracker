@@ -1,11 +1,10 @@
 ﻿
 namespace Contracts
 {
-    public interface NewComerApprovalRequest
+    public interface NewComerRequestApproved
     {
         Guid ApprovalId { get; }
         DateTime TimeStamp { get; }
         string UserId { get; }
-        string reasonOfRejection { get; }
     }
 }
