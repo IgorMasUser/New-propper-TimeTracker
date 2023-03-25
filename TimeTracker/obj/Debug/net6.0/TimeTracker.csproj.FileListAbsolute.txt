@@ -290,13 +290,6 @@ C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\refint\
 C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
 C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.GeneratedMSBuildEditorConfig.editorconfig
-E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.AssemblyInfoInputs.cache
-E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.AssemblyInfo.cs
-E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.csproj.CoreCompileInputs.cache
-E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.MvcApplicationPartsAssemblyInfo.cache
-E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.RazorAssemblyInfo.cache
-E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.RazorAssemblyInfo.cs
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.deps.json
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.runtimeconfig.json
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.exe
@@ -320,6 +313,7 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.Ex
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.QuartzIntegration.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.RabbitMqTransport.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.RabbitMq.Extensions.Hosting.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.RedisIntegration.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MessagePack.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MessagePack.Annotations.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
@@ -590,7 +584,14 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.S
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Contracts.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.csproj.AssemblyReference.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.GeneratedMSBuildEditorConfig.editorconfig
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.AssemblyInfoInputs.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.AssemblyInfo.cs
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.csproj.CoreCompileInputs.cache
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.MvcApplicationPartsAssemblyInfo.cs
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.MvcApplicationPartsAssemblyInfo.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.RazorAssemblyInfo.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.RazorAssemblyInfo.cs
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\staticwebassets.build.json
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\staticwebassets.development.json
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
@@ -601,4 +602,3 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.dl
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.RedisIntegration.dll

@@ -77,11 +77,12 @@ namespace TimeTracker.Extensions
         {
         services.AddMassTransit(cfg =>
             {
+                string hostName = configuration.GetSection("ConnectionStrings:DockerRedisConnection").Value;
                 cfg.AddSagaStateMachine<ApprovalStateMachine, ApprovalState>(sagaConfig =>
                 {
                     sagaConfig.UseMessageRetry(r => r.Immediate(5));
                     sagaConfig.UseInMemoryOutbox();
-                }).RedisRepository("127.0.0.1");
+                }).RedisRepository(hostName);
 
             cfg.SetKebabCaseEndpointNameFormatter();
 
