@@ -34,7 +34,7 @@ namespace TimeTracker.Controllers
             this.toApproveNewComer = toApproveNewComer;
         }
 
-        [Authorize(Policy = "Manager")]
+        //[Authorize(Policy = "Manager")]
         [HttpGet]
         public ActionResult<IEnumerable<UserReadDTO>> GetAttendanceOfUser(string search)
         {
@@ -50,8 +50,9 @@ namespace TimeTracker.Controllers
         {
             return View();
         }
-        //[Authorize(Policy = "HR")]
 
+
+        //[Authorize(Policy = "HR")]
         [HttpGet]
         public async Task<IActionResult> ToApproveNewComer(Guid id)
         {
@@ -102,7 +103,7 @@ namespace TimeTracker.Controllers
             return View(requestedUser);
         }
 
-        [Authorize(Policy = "Manager")]
+        //[Authorize(Policy = "Manager")]
         public async Task<IActionResult> EditAttendanceOfUser(int? id)
         {
             if (id == null)
@@ -114,7 +115,7 @@ namespace TimeTracker.Controllers
             return View(userDTO);
         }
 
-        [Authorize(Policy = "Manager")]
+        //[Authorize(Policy = "Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAttendanceOfUser(UserCreateDTO user)
@@ -128,7 +129,7 @@ namespace TimeTracker.Controllers
             return View(user);
         }
 
-        [Authorize(Policy = "Developers")]
+        //[Authorize(Policy = "Developers")]
         public async Task<IActionResult> GetDetailsOfUser(int? id)
         {
             if (id == null)
@@ -140,7 +141,7 @@ namespace TimeTracker.Controllers
             return View(mappedUser);
         }
 
-        [Authorize(Policy = "HR")]
+        //[Authorize(Policy = "HR")]
         public async Task<IActionResult> DeleteUser(int? id)
         {
             if (id == null)
@@ -152,7 +153,7 @@ namespace TimeTracker.Controllers
             return View(mappedUser);
         }
 
-        [Authorize(Policy = "HR")]
+        //[Authorize(Policy = "HR")]
         [HttpPost]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -160,7 +161,7 @@ namespace TimeTracker.Controllers
             return RedirectToAction("GetAttendanceOfUser");
         }
 
-        [Authorize(Policy = "TeamAccess")]
+        //[Authorize(Policy = "TeamAccess")]
         public ActionResult<UserReadDTO> GetAllEmployeesInfo()
         {
             var totalAttendance = repository.GetAllEmployeesInfo();

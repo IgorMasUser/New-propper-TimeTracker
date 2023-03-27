@@ -29,5 +29,12 @@ namespace TimeTracker.Controllers
                 return View(noNotificationsReply);
             }
         }
+
+        public async Task<IActionResult> DeleteNotification(string id)
+        {
+             await repository.DeleteNotification(id);
+
+            return RedirectToAction("GetNotifications");
+        }
     }
 }

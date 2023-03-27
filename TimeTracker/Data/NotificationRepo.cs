@@ -28,5 +28,15 @@ namespace TimeTracker.Data
 
             return null;
         }
+
+        public async Task DeleteNotification(string Id)
+        {
+            var db = redis.GetDatabase();
+
+            //var completeSet = db.HashGetAll("message");
+            //var obj = Array.ConvertAll(completeSet, val => JsonSerializer.Deserialize<NotificationMessage>(val.Value)).ToList();
+
+            await db.HashDeleteAsync("message", Id);
+        }
     }
 }
