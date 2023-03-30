@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contracts;
+using Microsoft.AspNetCore.Mvc;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
 
@@ -19,5 +20,6 @@ namespace TimeTracker.Data
         User GetUserDetails(User user);
         RefreshTokenProvider GetUserTokenDetails(string userName);
         Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken);
+        Task UpdateApprovalStatus(NewComerRequestApproved userDetails);
     }
 }

@@ -62,6 +62,8 @@ namespace TimeTracker.Controllers
                 TimeStamp = InVar.Timestamp,
             });
 
+            await repository.UpdateApprovalStatus(response.Message);
+
             return Ok(response);
         }
 
@@ -87,8 +89,8 @@ namespace TimeTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var mappedUser = mapper.Map<User>(requestedUser);
-                //await repository.CreateUser(mappedUser, requestedUser);
+                var mappedUser = mapper.Map<User>(requestedUser);
+                await repository.CreateUser(mappedUser, requestedUser);
                 Console.WriteLine("Message sent");
                 logger.LogInformation("Message sent");
                 var response = await newComerApprovalRequestClient.GetResponse<NewComerApprovalRequestAccepted>(new

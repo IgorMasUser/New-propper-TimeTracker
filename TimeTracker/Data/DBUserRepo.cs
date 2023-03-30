@@ -1,4 +1,5 @@
-﻿using System.Data.SqlTypes;
+﻿using Contracts;
+using System.Data.SqlTypes;
 using System.Security.Cryptography;
 using TimeTracker.BusinessLogic;
 using TimeTracker.DTOs;
@@ -28,6 +29,7 @@ namespace TimeTracker.Data
                 createdUser.FinishedWorkDayAt = (DateTime)SqlDateTime.MinValue;
                 createdUser.TotalWorkedPerDay = (DateTime)SqlDateTime.MinValue;
                 createdUser.UserWorkedPerRequestedPeriod = (DateTime)SqlDateTime.MinValue;
+                createdUser.ApprovalStatus = "RequestedForApproval";
                 db.User.Add(createdUser);
             }
             else
@@ -157,6 +159,18 @@ namespace TimeTracker.Data
                 return tokenDetails;
             }
             return null;
+        }
+
+        public async Task UpdateApprovalStatus(NewComerRequestApproved userDetails)
+        {
+            //var foundUser = await db.User.FindAsync(userDetails.UserId);
+            var foundUser = await db.User.FindAsync(555);
+            if (foundUser != null)
+            {
+                db.User.Update(foundUser);
+                foundUser.ApprovalStatus = userDetails.State;
+            }
+            await db.SaveChangesAsync();
         }
     }
 }

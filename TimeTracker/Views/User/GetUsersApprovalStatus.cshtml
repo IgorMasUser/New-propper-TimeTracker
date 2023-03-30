@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Contracts.ApprovalStatus>
+
+@{
+    ViewData["Title"] = "UsersApprovalStatus";
+}
+
+<h1>Check my notifications</h1>
+<body>
+    <table>
+        <tbody>
+            @foreach (var message in Model)
+            {
+                <tr>
+                    <td>
+                        @message.ApprovalId
+                    </td>
+                        <td>
+                            <a asp-controller="Notification" asp-action="DeleteNotification"> @message.State</a>
+                        </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+
+<style>
+
+    div {
+        width: 33%;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 18px;
+        width: auto;
+        height: auto;
+        border-right: 2px solid #708090;
+        border-left: 2px solid #708090;
+        border-top: 7px solid #708090;
+        border-bottom: 7px solid #708090;
+        background: #FFFAFA;
+    }
+
+    th {
+        font-size: 18px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 4px solid;
+        border-right: 2px solid #708090;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15);
+    }
+
+    td {
+        font-size: 16px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 2px solid;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+
+    h1 {
+        text-align: center;
+        line-height: 100%;
+    }
+
+</style>
