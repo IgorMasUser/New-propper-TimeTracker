@@ -63,6 +63,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxHZXRVc2VyQXBwcm92YWxTdGF0dXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/User/GetUsersApprovalStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxHZXRVc2Vyc0FwcHJvdmFsU3RhdHVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

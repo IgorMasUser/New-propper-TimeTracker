@@ -163,14 +163,13 @@ namespace TimeTracker.Data
 
         public async Task UpdateApprovalStatus(NewComerRequestApproved userDetails)
         {
-            //var foundUser = await db.User.FindAsync(userDetails.UserId);
-            var foundUser = await db.User.FindAsync(555);
+            var foundUser = db.User.Where(x => x.Email.Contains(userDetails.UserId)).FirstOrDefault();
             if (foundUser != null)
             {
                 db.User.Update(foundUser);
                 foundUser.ApprovalStatus = userDetails.State;
             }
-            await db.SaveChangesAsync();
+           await db.SaveChangesAsync();
         }
     }
 }

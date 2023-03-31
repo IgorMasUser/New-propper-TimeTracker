@@ -59,7 +59,7 @@ namespace TimeTracker.Controllers
             var response = await toApproveNewComer.GetResponse<NewComerRequestApproved>(new
             {
                 ApprovalId = id,
-                TimeStamp = InVar.Timestamp,
+                TimeStamp = InVar.Timestamp
             });
 
             await repository.UpdateApprovalStatus(response.Message);

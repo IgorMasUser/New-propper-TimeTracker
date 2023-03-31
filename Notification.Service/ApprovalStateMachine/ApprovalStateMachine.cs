@@ -56,7 +56,8 @@ namespace Notification.Service.StateMachines
                 .RespondAsync(x => x.Init<NewComerRequestApproved>(new
                 {
                     ApprovalId = x.Instance.CorrelationId,
-                    State = x.Instance.CurrentState
+                    State = x.Instance.CurrentState,
+                    UserId = x.Instance.UserId
                 })));
         }
 
