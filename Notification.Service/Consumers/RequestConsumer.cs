@@ -14,20 +14,20 @@ namespace Notification.Service.Consumers
         }
         public async Task Consume(ConsumeContext<NewComerApprovalRequest> context)
         {
-            _logger.Log(LogLevel.Debug, "New comer {0} sent for approval", context.Message.UserId);
+            _logger.Log(LogLevel.Debug, "New comer {0} sent for approval", context.Message.UserEmail);
 
             await context.Publish<NewComerApprovalRequested>(new
             {
                 context.Message.ApprovalId,
                 context.Message.TimeStamp,
-                context.Message.UserId
+                context.Message.UserEmail
             });
 
             await context.RespondAsync<NewComerApprovalRequestAccepted>(new
             {
                 InVar.Timestamp,
                 context.Message.ApprovalId,
-                context.Message.UserId
+                context.Message.UserEmail
             });
         }
     }

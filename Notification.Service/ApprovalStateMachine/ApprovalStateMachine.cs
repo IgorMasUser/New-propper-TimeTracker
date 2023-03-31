@@ -27,7 +27,7 @@ namespace Notification.Service.StateMachines
                 .Then(context =>
                 {
                     context.Instance.SubmitDate = context.Data.TimeStamp;
-                    context.Instance.UserId = context.Data.UserId;
+                    context.Instance.UserEmail = context.Data.UserEmail;
                     context.Instance.Updated = DateTime.UtcNow;
                 })
                 .TransitionTo(RequestedForApproval));
@@ -47,7 +47,7 @@ namespace Notification.Service.StateMachines
                 .Then(context =>
                 {
                     context.Instance.SubmitDate ??= context.Data.TimeStamp;
-                    context.Instance.UserId ??= context.Data.UserId;
+                    context.Instance.UserEmail ??= context.Data.UserEmail;
                 }));
 
             During(RequestedForApproval,
@@ -57,7 +57,7 @@ namespace Notification.Service.StateMachines
                 {
                     ApprovalId = x.Instance.CorrelationId,
                     State = x.Instance.CurrentState,
-                    UserId = x.Instance.UserId
+                    UserEmail = x.Instance.UserEmail
                 })));
         }
 

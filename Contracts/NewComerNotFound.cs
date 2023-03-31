@@ -4,5 +4,4 @@
     {
         Guid ApprovalId { get; }
     }
-
 }

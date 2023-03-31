@@ -5,7 +5,7 @@ namespace Contracts
     {
         Guid ApprovalId { get; }
         DateTime TimeStamp { get; }
-        string UserId { get; }
+        string UserEmail { get; }
         string reasonOfRejection { get; }
     }
 }
