@@ -165,9 +165,9 @@ namespace TimeTracker.Data
             return null;
         }
 
-        public async Task UpdateApprovalStatus(NewComerRequestApproved userDetails, IConnectionMultiplexer redis)
+        public async Task UpdateApprovalStatus(NewComerRequestApproved userDetails)
         {
-            var foundUser = db.User.Where(x => x.Email.Contains(userDetails.UserEmail)).FirstOrDefault();
+            var foundUser = db.User.FirstOrDefault(x => x.ApprovalId.Equals(userDetails.ApprovalId));
             if (foundUser != null)
             {
                 db.User.Update(foundUser);
@@ -176,49 +176,16 @@ namespace TimeTracker.Data
            await db.SaveChangesAsync();
         }
 
-        //public IEnumerable<ApprovalStatus> GetNewComerApprovalStatus(Guid Id)
-        //{
-        //    //var allRequestedForApprovalNewComers = db.User.Where(s => !s.ApprovalStatus.Contains("RequestedForApproval"));
-
-        //    //var user = db.User.FirstOrDefault(a => a.UserId.Equals(UserId));
-
-        //    var redisDb = redis.GetDatabase();
-        //    var getMessage1 = redisDb.StringGet(Id.ToString());
-        //    //var getMessage2 = redisDb.SetContains();
-
-        //   bool result1 = getMessage1.StartsWith("RequestedForApproval");
-        //   bool result2 = getMessage2.StartsWith("RequestedForApproval");
-
-
-        //    return;
-        //}
-
-
-        public void GetNewComerApprovalStatus(Guid Id)
-        {
-            //var allRequestedForApprovalNewComers = db.User.Where(s => !s.ApprovalStatus.Contains("RequestedForApproval"));
-
-            //var user = db.User.FirstOrDefault(a => a.UserId.Equals(UserId));
-
-            var redisDb = redis.GetDatabase();
-            var getMessage1 = redisDb.StringGet(Id.ToString());
-            //var getMessage2 = redisDb.SetContains();
-
-            bool result1 = getMessage1.StartsWith("RequestedForApproval");
-            //bool result2 = getMessage2.StartsWith("RequestedForApproval");
-
-        }
-
-        public Task UpdateApprovalStatus(NewComerRequestApproved userDetails)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<User> NewComersRequestedForApproval()
         {
             var allRequestedForApprovalNewComers = db.User.Where(s => s.ApprovalStatus.Contains("RequestedForApproval"));
 
             return allRequestedForApprovalNewComers;
+        }
+
+        public void GetNewComerApprovalStatus(Guid Id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

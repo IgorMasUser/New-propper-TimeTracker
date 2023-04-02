@@ -40,6 +40,7 @@ namespace TimeTracker.Migrations
                     Role = table.Column<int>(type: "int", nullable: false),
                     Salary = table.Column<float>(type: "real", nullable: false),
                     ApprovalStatus = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ApprovalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("00000000-0000-0000-0000-000000000000")),
                     StartedWorkDayAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     FinishedWorkDayAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     Break = table.Column<int>(type: "int", maxLength: 59, nullable: false),

@@ -3,6 +3,7 @@ using Contracts;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -19,11 +20,12 @@ namespace TimeTracker.Controllers
         private readonly IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient;
         private readonly IRequestClient<CheckApprovalStatus> checkApprovalStatusClient;
         private readonly IRequestClient<NewComerRequestApproved> toApproveNewComer;
+        private readonly IConnectionMultiplexer redis;
         private readonly ILogger<UserController> logger;
 
         public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration,
             IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient, IRequestClient<CheckApprovalStatus> checkApprovalStatusClient,
-            IRequestClient<NewComerRequestApproved> toApproveNewComer)
+            IRequestClient<NewComerRequestApproved> toApproveNewComer, IConnectionMultiplexer redis)
         {
             this.logger = logger;
             this.repository = repository;
@@ -32,6 +34,7 @@ namespace TimeTracker.Controllers
             this.newComerApprovalRequestClient = newComerApprovalRequestClient;
             this.checkApprovalStatusClient = checkApprovalStatusClient;
             this.toApproveNewComer = toApproveNewComer;
+            this.redis = redis;
         }
 
         //[Authorize(Policy = "Manager")]
@@ -85,7 +88,7 @@ namespace TimeTracker.Controllers
         //}
 
         [HttpGet]
-        public async Task<IActionResult> GetNewComersRequestedForApproval()
+        public IActionResult GetNewComersRequestedForApproval()
         {
             var newComersRequestedForApproval = repository.NewComersRequestedForApproval();
 
@@ -110,7 +113,7 @@ namespace TimeTracker.Controllers
                 logger.LogInformation("Message sent");
                 var response = await newComerApprovalRequestClient.GetResponse<NewComerApprovalRequestAccepted>(new
                 {
-                    ApprovalId = Guid.NewGuid(),
+                    ApprovalId = requestedUser.ApprovalId,
                     TimeStamp = InVar.Timestamp,
                     UserEmail = requestedUser.Email
                 });

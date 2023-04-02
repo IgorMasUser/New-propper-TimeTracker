@@ -25,6 +25,8 @@ namespace TimeTracker.DTOs
 
         public float Salary { get; set; }
 
+        public Guid ApprovalId { get; set; } = Guid.NewGuid();
+
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime StartedWorkDayAt { get; set; }
 
