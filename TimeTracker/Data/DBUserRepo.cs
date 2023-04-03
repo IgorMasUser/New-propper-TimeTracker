@@ -165,7 +165,7 @@ namespace TimeTracker.Data
             return null;
         }
 
-        public async Task UpdateApprovalStatus(NewComerRequestApproved userDetails)
+        public async Task UpdateApprovalStatus(NewComerApprovalRequest userDetails)
         {
             var foundUser = db.User.FirstOrDefault(x => x.ApprovalId.Equals(userDetails.ApprovalId));
             if (foundUser != null)

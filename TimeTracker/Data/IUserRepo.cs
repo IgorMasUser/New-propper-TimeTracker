@@ -20,7 +20,7 @@ namespace TimeTracker.Data
         User GetUserDetails(User user);
         RefreshTokenProvider GetUserTokenDetails(string userName);
         Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken);
-        Task UpdateApprovalStatus(NewComerRequestApproved userDetails);
+        Task UpdateApprovalStatus(NewComerApprovalRequest userDetails);
         IEnumerable<User> NewComersRequestedForApproval();
         void GetNewComerApprovalStatus(Guid Id);
     }

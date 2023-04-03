@@ -20,6 +20,7 @@ namespace Notification.Service.StateMachines
                   }));
             });
             Event(() => NewComerRequestApproved, x => x.CorrelateById(m => m.Message.ApprovalId));
+            Event(() => NewComerRequestRejected, x => x.CorrelateById(m => m.Message.ApprovalId));
 
             InstanceState(x => x.CurrentState);
             Initially(
@@ -59,13 +60,25 @@ namespace Notification.Service.StateMachines
                     State = x.Instance.CurrentState,
                     UserEmail = x.Instance.UserEmail
                 })));
+
+            During(RequestedForApproval,
+                When(NewComerRequestRejected)
+                .TransitionTo(RequestRejected)
+                .RespondAsync(x => x.Init<NewComerRequestRejected>(new
+                {
+                    ApprovalId = x.Instance.CorrelationId,
+                    State = x.Instance.CurrentState,
+                    UserEmail = x.Instance.UserEmail
+                })));
         }
 
         public State RequestedForApproval { get; private set; }
         public State RequestApproved { get; private set; }
+        public State RequestRejected { get; private set; }
 
         public Event<NewComerApprovalRequested> NewComerApprovalRequested { get; private set; }
         public Event<CheckApprovalStatus> ApprovalStatusRequested { get; private set; }
         public Event<NewComerRequestApproved> NewComerRequestApproved { get; private set; }
+        public Event<NewComerRequestRejected> NewComerRequestRejected { get; private set; }
     }
 }

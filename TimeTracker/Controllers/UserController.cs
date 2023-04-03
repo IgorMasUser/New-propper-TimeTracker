@@ -20,12 +20,13 @@ namespace TimeTracker.Controllers
         private readonly IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient;
         private readonly IRequestClient<CheckApprovalStatus> checkApprovalStatusClient;
         private readonly IRequestClient<NewComerRequestApproved> toApproveNewComer;
+        private readonly IRequestClient<NewComerRequestRejected> toRejectNewComer;
         private readonly IConnectionMultiplexer redis;
         private readonly ILogger<UserController> logger;
 
         public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration,
             IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient, IRequestClient<CheckApprovalStatus> checkApprovalStatusClient,
-            IRequestClient<NewComerRequestApproved> toApproveNewComer, IConnectionMultiplexer redis)
+            IRequestClient<NewComerRequestApproved> toApproveNewComer, IRequestClient<NewComerRequestRejected> toRejectNewComer, IConnectionMultiplexer redis)
         {
             this.logger = logger;
             this.repository = repository;
@@ -34,6 +35,7 @@ namespace TimeTracker.Controllers
             this.newComerApprovalRequestClient = newComerApprovalRequestClient;
             this.checkApprovalStatusClient = checkApprovalStatusClient;
             this.toApproveNewComer = toApproveNewComer;
+            this.toRejectNewComer = toRejectNewComer;
             this.redis = redis;
         }
 
@@ -52,6 +54,20 @@ namespace TimeTracker.Controllers
         public IActionResult CreateUser()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ToRejectNewComer(Guid id)
+        {
+            var response = await toRejectNewComer.GetResponse<NewComerRequestRejected>(new
+            {
+                ApprovalId = id,
+                TimeStamp = InVar.Timestamp,
+            });
+
+            await repository.UpdateApprovalStatus(response.Message);
+
+            return Ok(response);
         }
 
 
