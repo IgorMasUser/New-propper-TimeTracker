@@ -178,6 +178,7 @@ namespace TimeTracker.Controllers
         }
 
         //[Authorize(Policy = "HR")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteUser(int? id)
         {
             if (id == null)

@@ -6,5 +6,6 @@ namespace TimeTracker.Data
     {
         IEnumerable<NotificationMessage?>? GetAllNotifications();
         Task DeleteNotification(string Id);
+        Task DeleteAllNotifications();
     }
 }
