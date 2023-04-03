@@ -4,8 +4,9 @@
     ViewData["Title"] = "UsersApprovalStatus";
 }
 
-<h1>Check my notifications</h1>
+
 <body>
+    <h1>Check my notifications</h1>
     <table>
         <tbody>
             @foreach (var message in Model)
@@ -14,9 +15,9 @@
                     <td>
                         @message.ApprovalId
                     </td>
-                        <td>
-                            <a asp-controller="Notification" asp-action="DeleteNotification"> @message.State</a>
-                        </td>
+                    <td>
+                        <a asp-controller="Notification" asp-action="DeleteNotification"> @message.State</a>
+                    </td>
                 </tr>
             }
         </tbody>
