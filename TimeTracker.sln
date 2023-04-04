@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{5E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{48FFBC73-F608-4BEA-BBBB-477C1B86A9CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Service", "Notification.Service\Notification.Service.csproj", "{5EFB4624-768D-4F7A-A44B-07CEABF906A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Service", "Notification.Service\Notification.Service.csproj", "{5EFB4624-768D-4F7A-A44B-07CEABF906A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

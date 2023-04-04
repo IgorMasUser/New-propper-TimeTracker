@@ -22,6 +22,7 @@ namespace TimeTracker.Data
         Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken);
         Task UpdateApprovalStatus(NewComerApprovalRequest userDetails);
         IEnumerable<User> NewComersRequestedForApproval();
+        IEnumerable<User> GetNewComersApprovalStatus();
         void GetNewComerApprovalStatus(Guid Id);
     }
 }

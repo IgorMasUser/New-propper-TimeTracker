@@ -11,13 +11,7 @@ namespace Notification.Service.StateMachines
             Event(() => ApprovalStatusRequested, x =>
             {
                 x.CorrelateById(m => m.Message.ApprovalId);
-                x.OnMissingInstance(m => m.ExecuteAsync(async context =>
-                  {
-                      if (context.RequestId.HasValue)
-                      {
-                          await context.RespondAsync<NewComerNotFound>(new { context.Message.ApprovalId });
-                      }
-                  }));
+
             });
             Event(() => NewComerRequestApproved, x => x.CorrelateById(m => m.Message.ApprovalId));
             Event(() => NewComerRequestRejected, x => x.CorrelateById(m => m.Message.ApprovalId));

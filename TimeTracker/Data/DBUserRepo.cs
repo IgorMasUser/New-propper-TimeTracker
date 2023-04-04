@@ -183,6 +183,13 @@ namespace TimeTracker.Data
             return allRequestedForApprovalNewComers;
         }
 
+        public IEnumerable<User> GetNewComersApprovalStatus()
+        {
+            var getNewComersApprovalStatus = db.User.Select(x=>x);
+
+            return getNewComersApprovalStatus;
+        }
+
         public void GetNewComerApprovalStatus(Guid Id)
         {
             throw new NotImplementedException();

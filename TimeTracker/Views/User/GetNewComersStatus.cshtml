@@ -1,17 +1,25 @@
-﻿@model Contracts.ApprovalStatus
+﻿@model IEnumerable<TimeTracker.Models.User>
+
 @{
-    ViewData["Title"] = "GetUserApprovalStatus";
+    ViewData["Title"] = "CheckEmployeesStatus";
 }
 
 <body>
-    <h1>User Approval Status</h1>
+    <h1>Check employees status</h1>
     <table>
         <tbody>
+            @foreach (var user in Model)
+            {
                 <tr>
                     <td>
-                        @ViewData["ApprovalStatus"]
+                        @user.Email
+                    </td>
+                    <td>
+                        <a asp-controller="User" asp-action="GetUserApprovalStatus" asp-route-id="@user.ApprovalId"
+                       class="btn btn-primary"> Check status</a>
                     </td>
                 </tr>
+            }
         </tbody>
     </table>
 
@@ -62,6 +70,4 @@
     }
 
 </style>
-
-
 

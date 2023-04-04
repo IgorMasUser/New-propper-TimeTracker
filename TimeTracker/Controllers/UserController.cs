@@ -86,27 +86,35 @@ namespace TimeTracker.Controllers
             return Ok(response);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetUserApprovalStatus(Guid id)
-        //{
-        //    var (status, notFound) = await checkApprovalStatusClient.GetResponse<ApprovalStatus, NewComerNotFound>(new { ApprovalId = id });
-        //    if (status.IsCompleted)
-        //    {
-        //        var response = await status;
-        //        return Ok(response.Message);
-        //    }
+        [HttpGet]
+        public async Task<IActionResult> GetUserApprovalStatus(Guid id)
+        {
+            var status = await checkApprovalStatusClient.GetResponse<ApprovalStatus>(new { ApprovalId = id });
 
-        //    else
-        //    {
-        //        var response = await notFound;
-        //        return NotFound(response.Message);
-        //    }
-        //}
+            ViewData["ApprovalStatus"] = status.Message.State;
+            return View();
+
+        }
 
         [HttpGet]
         public IActionResult GetNewComersRequestedForApproval()
         {
             var newComersRequestedForApproval = repository.NewComersRequestedForApproval();
+
+            if (newComersRequestedForApproval != null)
+            {
+                return View(newComersRequestedForApproval);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetNewComersStatus()
+        {
+            var newComersRequestedForApproval = repository.GetNewComersApprovalStatus();
 
             if (newComersRequestedForApproval != null)
             {
