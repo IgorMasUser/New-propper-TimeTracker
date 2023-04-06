@@ -24,6 +24,7 @@
         border-bottom: 7px solid #708090;
         background: #FFFAFA;
         margin-top: 20px;
+        text-align: center;
     }
 
     th {
@@ -57,9 +58,6 @@
         box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
     }
 
-    hr {
-        margin-right: 8%;
-    }
 
 
 </style>
@@ -147,15 +145,15 @@
                         @Html.DisplayFor(modelItem => item.TotalWorkedPerDay)
                     <td />
 
-                    <td style="width:28%">
+                    <td style="width:auto">
                         <a asp-controller="User" asp-action="EditAttendanceOfUser" asp-route-id="@item.Id"
-                       class="btn btn-primary mx-2" id="li"><i class="bi bi-pencil-square"></i> Edit</a>
+                       class="btn btn-primary mx-1" id="li"><i class="bi bi-pencil-square"></i> Edit</a>
 
                         <a asp-controller="User" asp-action="GetDetailsOfUser" asp-route-id="@item.Id"
-                       class="btn btn-success mx-2" id="li"><i class="bi bi-question-circle-fill"></i> Details</a>
+                       class="btn btn-success mx-1" id="li"><i class="bi bi-question-circle-fill"></i> Details</a>
 
                         <a asp-controller="User" asp-action="DeleteUser" asp-route-id="@item.Id"
-                       class="btn btn-danger mx-2" id="li"><i class="bi bi-trash-fill"></i> Delete</a>
+                       class="btn btn-danger mx-1" id="li"><i class="bi bi-trash-fill"></i> Delete</a>
 
                     </td>
                 </tr>

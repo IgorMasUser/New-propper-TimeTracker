@@ -1,0 +1,115 @@
+﻿<body>
+    <h1>Check newcomers awaited approval</h1>
+    <table>
+        <thead>
+            <tr>
+
+                <th>
+                    User Id
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Surname
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    Slary Limit
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in (dynamic)Model)
+            {
+                <tr>
+                    <td>
+                        @user.UserId
+                    </td>
+                    <td>
+                        @user.Name
+                    </td>
+                    <td>
+                        @user.Email
+                    </td>
+                    <td>
+                        @user.Surname
+                    </td>
+                    <td>
+                        @user.Salary
+                    </td>
+                    <td>
+                        @user.SlaryLimit
+                    </td>
+                    <td>
+                        @user.RoleName
+                    </td>
+                    <td>
+                        <a asp-controller="User" asp-action="ToApproveNewComer" asp-route-id="@user.ApprovalId"
+                       class="btn btn-success mx-2" id="li"><i class="bi bi-check-circle"></i> Approve</a>
+                        <a asp-controller="User" asp-action="ToRejectNewComer" asp-route-id="@user.ApprovalId"
+                       class="btn btn-danger mx-2" id="li"><i class="bi bi-x-square"></i> Reject</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+
+<style>
+
+    div {
+        width: 33%;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table {
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 18px;
+        width: auto;
+        height: auto;
+        border-right: 2px solid #708090;
+        border-left: 2px solid #708090;
+        border-top: 7px solid #708090;
+        border-bottom: 7px solid #708090;
+        background: #FFFAFA;
+    }
+
+    th {
+        font-size: 18px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 4px solid;
+        border-right: 2px solid #708090;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15);
+    }
+
+    td {
+        font-size: 16px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 2px solid;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+
+    h1 {
+        text-align: center;
+        line-height: 100%;
+    }
+
+</style>

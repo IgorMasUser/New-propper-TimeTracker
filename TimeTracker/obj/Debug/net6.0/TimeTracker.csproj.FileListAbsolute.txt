@@ -290,9 +290,9 @@ C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\refint\
 C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
 C:\Repos\New folder\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.deps.json
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.runtimeconfig.json
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.exe
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.deps.json
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.runtimeconfig.json
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.exe
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\appsettings.Development.json
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\appsettings.json
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\TimeTracker.staticwebassets.runtime.json
@@ -313,11 +313,14 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.Ex
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.QuartzIntegration.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.RabbitMqTransport.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.RabbitMq.Extensions.Hosting.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MassTransit.RedisIntegration.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MessagePack.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\MessagePack.Annotations.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Build.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Build.Framework.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -340,18 +343,26 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Enti
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Hosting.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Identity.Client.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.NET.StringTools.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.OpenApi.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.VisualStudio.Debugger.Contracts.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
@@ -372,6 +383,7 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\NuGet.Packagin
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\NuGet.ProjectModel.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\NuGet.Protocol.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\NuGet.Versioning.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Pipelines.Sockets.Unofficial.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Quartz.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Quartz.Extensions.DependencyInjection.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Quartz.Extensions.Hosting.dll
@@ -380,6 +392,7 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Quartz.Plugins
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Quartz.Plugins.TimeZoneConverter.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Quartz.Serialization.Json.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\RabbitMQ.Client.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\StackExchange.Redis.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -391,6 +404,7 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Composi
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Drawing.Common.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Reflection.MetadataLoadContext.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Runtime.Caching.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Security.Permissions.dll
@@ -566,9 +580,9 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\runtimes\win\l
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Contracts.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Contracts.pdb
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Host.pdb
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Notification.Service.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.csproj.AssemblyReference.cache
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.GeneratedMSBuildEditorConfig.editorconfig
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.AssemblyInfoInputs.cache
@@ -588,18 +602,3 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.dl
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\appsettings.Development_Host.json
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\appsettings_Host.json
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Pipelines.Sockets.Unofficial.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\StackExchange.Redis.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Diagnostics.PerformanceCounter.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Build.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Build.Framework.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.NET.StringTools.dll
-E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Reflection.MetadataLoadContext.dll

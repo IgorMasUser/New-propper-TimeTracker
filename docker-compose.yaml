@@ -45,9 +45,7 @@ services:
       context: .
       dockerfile: Dockerfile.Service
     container_name: notification_service
-    image: notification_service
-    ports:
-      - "9090:80"    
+    image: notification_service  
 
 volumes:
   mssql_data: {}

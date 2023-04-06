@@ -28,5 +28,21 @@ namespace TimeTracker.Data
 
             return null;
         }
+
+        public async Task DeleteNotification(string Id)
+        {
+            var db = redis.GetDatabase();
+            await db.HashDeleteAsync("message", Id);
+        }
+
+        public async Task DeleteAllNotifications()
+        {
+            var db = redis.GetDatabase();
+            var completeSet = db.HashGetAll("message");
+            foreach(var Id in completeSet)
+            {
+                await db.HashDeleteAsync("message", Id.Name);
+            }
+        }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Contracts;
 using MassTransit;
-using Notification.Host.Notification;
-using Notification.Host.NotificationInterval;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Notification.Service.Notification;
+using Notification.Service.NotificationInterval;
 
-namespace Notification.Host.HostedServices
+namespace Notification.Service.HostedServices
 {
     public class RemindingService : IHostedService
     {

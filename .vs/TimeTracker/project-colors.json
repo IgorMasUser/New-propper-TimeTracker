@@ -40,7 +40,17 @@
       "ProjectGuid": "48ffbc73-f608-4bea-bbbb-477c1b86a9cf",
       "DisplayName": "Contracts",
       "ColorIndex": 6
+    },
+    "65a71b3b-7b9f-43c1-8e7d-055271d5a4dd": {
+      "ProjectGuid": "65a71b3b-7b9f-43c1-8e7d-055271d5a4dd",
+      "DisplayName": "Notification.Service",
+      "ColorIndex": 7
+    },
+    "5efb4624-768d-4f7a-a44b-07ceabf906a1": {
+      "ProjectGuid": "5efb4624-768d-4f7a-a44b-07ceabf906a1",
+      "DisplayName": "Notification.Service",
+      "ColorIndex": 8
     }
   },
-  "NextColorIndex": 7
+  "NextColorIndex": 9
 }

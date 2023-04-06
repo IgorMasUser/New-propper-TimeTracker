@@ -59,6 +59,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxHZXREZXRhaWxzT2ZVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/User/GetNewComersRequestedForApproval.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxHZXROZXdDb21lcnNSZXF1ZXN0ZWRGb3JBcHByb3ZhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/User/GetNewComersStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxHZXROZXdDb21lcnNTdGF0dXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/User/GetUserApprovalStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxHZXRVc2VyQXBwcm92YWxTdGF0dXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/User/GetUsersApprovalStatus.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxHZXRVc2Vyc0FwcHJvdmFsU3RhdHVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/MyProject/New-propper-TimeTracker/TimeTracker/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

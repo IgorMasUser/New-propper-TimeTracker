@@ -18,16 +18,30 @@ namespace TimeTracker.Controllers
         {
             var notifications = repository.GetAllNotifications();
 
-            if(notifications != null)
+            if (notifications != null)
             {
                 return View(notifications);
             }
             else
             {
                 List<NotificationMessage> noNotificationsReply = new List<NotificationMessage>();
-                noNotificationsReply.Add(new NotificationMessage {Message = "You don't have any notifications"});
+                noNotificationsReply.Add(new NotificationMessage { Message = "You don't have any notifications" });
                 return View(noNotificationsReply);
             }
+        }
+
+        public async Task<IActionResult> DeleteNotification(string id)
+        {
+            await repository.DeleteNotification(id);
+
+            return RedirectToAction("GetNotifications");
+        }
+
+        public async Task<IActionResult> DeleteAllNotifications()
+        {
+            await repository.DeleteAllNotifications();
+
+            return RedirectToAction("GetNotifications");
         }
     }
 }
