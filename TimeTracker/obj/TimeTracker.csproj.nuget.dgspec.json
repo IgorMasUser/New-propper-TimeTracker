@@ -209,6 +209,18 @@
               "target": "Package",
               "version": "[12.0.0, )"
             },
+            "HotChocolate": {
+              "target": "Package",
+              "version": "[13.0.5, )"
+            },
+            "HotChocolate.AspNetCore": {
+              "target": "Package",
+              "version": "[13.0.5, )"
+            },
+            "HotChocolate.Data.EntityFramework": {
+              "target": "Package",
+              "version": "[13.0.5, )"
+            },
             "MassTransit.Analyzers": {
               "target": "Package",
               "version": "[8.0.3, )"
