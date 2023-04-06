@@ -1,24 +1,62 @@
-﻿@model IEnumerable<TimeTracker.Models.User>
-
-@{
-    ViewData["Title"] = "GetNewComersRequestedForApproval";
-}
-
-<body>
-    <h1>Check new comers awaited approval</h1>
+﻿<body>
+    <h1>Check newcomers awaited approval</h1>
     <table>
+        <thead>
+            <tr>
+
+                <th>
+                    User Id
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Surname
+                </th>
+                <th>
+                    Salary
+                </th>
+                <th>
+                    Slary Limit
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
         <tbody>
-            @foreach (var user in Model)
+            @foreach (var user in (dynamic)Model)
             {
                 <tr>
+                    <td>
+                        @user.UserId
+                    </td>
+                    <td>
+                        @user.Name
+                    </td>
                     <td>
                         @user.Email
                     </td>
                     <td>
-                        <a asp-controller="User" asp-action="ToApproveNewComer" asp-route-id="@user.ApprovalId"
-                       class="btn btn-success mx-2" id="li"><i class="bi bi-check-circle"></i> Approve</a>
+                        @user.Surname
                     </td>
                     <td>
+                        @user.Salary
+                    </td>
+                    <td>
+                        @user.SlaryLimit
+                    </td>
+                    <td>
+                        @user.RoleName
+                    </td>
+                    <td>
+                        <a asp-controller="User" asp-action="ToApproveNewComer" asp-route-id="@user.ApprovalId"
+                       class="btn btn-success mx-2" id="li"><i class="bi bi-check-circle"></i> Approve</a>
                         <a asp-controller="User" asp-action="ToRejectNewComer" asp-route-id="@user.ApprovalId"
                        class="btn btn-danger mx-2" id="li"><i class="bi bi-x-square"></i> Reject</a>
                     </td>

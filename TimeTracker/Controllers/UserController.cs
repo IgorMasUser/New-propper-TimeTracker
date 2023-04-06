@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using MassTransit;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StackExchange.Redis;
 using TimeTracker.Data;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
@@ -16,27 +14,23 @@ namespace TimeTracker.Controllers
     {
         private readonly IUserRepo repository;
         private readonly IMapper mapper;
-        private readonly IConfiguration configuration;
         private readonly IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient;
         private readonly IRequestClient<CheckApprovalStatus> checkApprovalStatusClient;
         private readonly IRequestClient<NewComerRequestApproved> toApproveNewComer;
         private readonly IRequestClient<NewComerRequestRejected> toRejectNewComer;
-        private readonly IConnectionMultiplexer redis;
         private readonly ILogger<UserController> logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper, IConfiguration configuration,
+        public UserController(ILogger<UserController> logger, IUserRepo repository, IMapper mapper,
             IRequestClient<NewComerApprovalRequest> newComerApprovalRequestClient, IRequestClient<CheckApprovalStatus> checkApprovalStatusClient,
-            IRequestClient<NewComerRequestApproved> toApproveNewComer, IRequestClient<NewComerRequestRejected> toRejectNewComer, IConnectionMultiplexer redis)
+            IRequestClient<NewComerRequestApproved> toApproveNewComer, IRequestClient<NewComerRequestRejected> toRejectNewComer)
         {
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
-            this.configuration = configuration;
             this.newComerApprovalRequestClient = newComerApprovalRequestClient;
             this.checkApprovalStatusClient = checkApprovalStatusClient;
             this.toApproveNewComer = toApproveNewComer;
             this.toRejectNewComer = toRejectNewComer;
-            this.redis = redis;
         }
 
         //[Authorize(Policy = "Manager")]
@@ -56,7 +50,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        [HttpGet]
+        //[Authorize(Policy = "HR")]
         public async Task<IActionResult> ToRejectNewComer(Guid id)
         {
             var response = await toRejectNewComer.GetResponse<NewComerRequestRejected>(new
@@ -70,9 +64,7 @@ namespace TimeTracker.Controllers
             return Ok(response);
         }
 
-
         //[Authorize(Policy = "HR")]
-        [HttpGet]
         public async Task<IActionResult> ToApproveNewComer(Guid id)
         {
             var response = await toApproveNewComer.GetResponse<NewComerRequestApproved>(new
@@ -100,7 +92,6 @@ namespace TimeTracker.Controllers
         public IActionResult GetNewComersRequestedForApproval()
         {
             var newComersRequestedForApproval = repository.NewComersRequestedForApproval();
-
             if (newComersRequestedForApproval != null)
             {
                 return View(newComersRequestedForApproval);
@@ -133,7 +124,6 @@ namespace TimeTracker.Controllers
             {
                 var mappedUser = mapper.Map<User>(requestedUser);
                 await repository.CreateUser(mappedUser, requestedUser);
-                Console.WriteLine("Message sent");
                 logger.LogInformation("Message sent");
                 var response = await newComerApprovalRequestClient.GetResponse<NewComerApprovalRequestAccepted>(new
                 {

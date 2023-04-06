@@ -12,12 +12,10 @@ namespace TimeTracker.Data
     public class DBUserRepo : IUserRepo
     {
         private readonly ApplicationDbContext db;
-        private readonly IConnectionMultiplexer redis;
 
-        public DBUserRepo(ApplicationDbContext db, IConnectionMultiplexer redis)
+        public DBUserRepo(ApplicationDbContext db)
         {
             this.db = db;
-            this.redis = redis;
         }
         public async Task CreateUser(User createdUser, UserCreateDTO requestedUser)
         {
@@ -79,15 +77,15 @@ namespace TimeTracker.Data
 
         public HashSet<User> GetAllEmployeesInfo()
         {
-            var data = db.User.Select(x => x).ToList();
-            var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(data);
+            var getAllEmployees = db.User.Select(x =>x).Where(d=>d.ApprovalStatus.Contains("RequestApproved")).ToList();
+            var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(getAllEmployees);
             return setOfUsers;
         }
 
         public IEnumerable<User> GetAttendanceOfUser(string search)
         {
             //var listOfUsers = db.User.Select(x => x).Where(y => y.Date != (DateTime)SqlDateTime.MinValue); //if we want to see only users with filled attendance
-            var listOfUsers = db.User.Select(x => x);
+            var listOfUsers = db.User.Select(x => x).Where(d => d.ApprovalStatus.Contains("RequestApproved"));
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -173,26 +171,32 @@ namespace TimeTracker.Data
                 db.User.Update(foundUser);
                 foundUser.ApprovalStatus = userDetails.State;
             }
-           await db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
 
-        public IEnumerable<User> NewComersRequestedForApproval()
+        public IEnumerable<dynamic> NewComersRequestedForApproval()
         {
             var allRequestedForApprovalNewComers = db.User.Where(s => s.ApprovalStatus.Contains("RequestedForApproval"));
+            var newComersWithRoleDetails = allRequestedForApprovalNewComers.Join(db.Roles, u => u.Role, r => r.UserRoleId, (u, r) => new
+            {
+                UserId = u.UserId,
+                Name = u.Name,
+                Email = u.Email,
+                Surname = u.Surname,
+                Salary = u.Salary,
+                SlaryLimit = r.SalaryLimit,
+                RoleName = r.RoleName,
+                ApprovalId = u.ApprovalId,
+            });
 
-            return allRequestedForApprovalNewComers;
+            return newComersWithRoleDetails;
         }
 
         public IEnumerable<User> GetNewComersApprovalStatus()
         {
-            var getNewComersApprovalStatus = db.User.Select(x=>x);
+            var getNewComersApprovalStatus = db.User.Select(x => x);
 
             return getNewComersApprovalStatus;
-        }
-
-        public void GetNewComerApprovalStatus(Guid Id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
