@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimeTracker.Data;
+using TimeTracker.DTOs;
 using TimeTracker.Models;
 
 namespace TimeTracker.GraphQL
@@ -12,11 +13,11 @@ namespace TimeTracker.GraphQL
         {
             this.mapper = mapper;
         }
-        public IQueryable<User> GetUsers([Service] ApplicationDbContext context)
+        public IQueryable<UserReadDTO> GetUsers([Service] ApplicationDbContext context)
         {
-            //var userDTO = mapper.Map<UserReadDTO>(context.User.ToList());
+            IQueryable<UserReadDTO> userDTO = (context.User.Select(u => mapper.Map<User, UserReadDTO>(u)));
 
-            return context.User;
+            return userDTO;
         }
     }
 }
