@@ -13,11 +13,21 @@ namespace TimeTracker.GraphQL
         {
             this.mapper = mapper;
         }
-        public IQueryable<UserReadDTO> GetUsers([Service] ApplicationDbContext context)
-        {
-            IQueryable<UserReadDTO> userDTO = (context.User.Select(u => mapper.Map<User, UserReadDTO>(u)));
 
-            return userDTO;
+        //[UseFiltering]
+        //[UseSorting]
+        //public IQueryable<UserReadDTO> GetUsers([Service] ApplicationDbContext context)
+        //{
+        //    IQueryable<UserReadDTO> userDTO = (context.User.Select(u => mapper.Map<User, UserReadDTO>(u)));
+
+        //    return userDTO;
+        //}
+
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<User> GetUsers([Service] ApplicationDbContext context) //works
+        {
+            return context.User;
         }
     }
 }
