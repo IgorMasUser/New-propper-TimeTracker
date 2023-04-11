@@ -21,7 +21,7 @@ builder.Services.AddScoped<INotificationRepo, NotificationRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(opt =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("DockerRedisConnection")));
-builder.Services.AddGraphQLServer().AddQueryType<UserQuery>().AddFiltering().AddSorting();
+builder.Services.AddGraphQLServer().AddQueryType<UserQuery>().AddMutationType<UserMutation>().AddFiltering().AddSorting();
 
 builder.Services.AddAuthentication(x =>
 {
