@@ -1,5 +1,4 @@
-﻿using System.Data.SqlTypes;
-using TimeTracker.Data;
+﻿using TimeTracker.Data;
 using TimeTracker.Models;
 
 namespace TimeTracker.GraphQL
@@ -20,41 +19,47 @@ namespace TimeTracker.GraphQL
                 Salary = input.Salary
             };
 
-            context.Add(user);
-
-            await context.SaveChangesAsync();
-
+            using (context)
+            {
+                context.Add(user);
+                await context.SaveChangesAsync();
+            }
             return new AddUserPayload(user);
         }
 
-        public async Task<AddUserPayload> UpdateUser([GraphQLNonNullType] AddUserInput input, int? userId, [Service] ApplicationDbContext context)
+        public async Task<AddUserPayload> UpdateUser([GraphQLNonNullType] UpdateUserInput input, int? userId, [Service] ApplicationDbContext context)
         {
-            var foundUser = context.User.Where(x => x.UserId == userId).FirstOrDefault();
-            foundUser.Name = input.Name;
-            foundUser.Surname = input.Surname;
-            foundUser.UserId = input.UserId;
-            foundUser.ApprovalStatus = input.ApprovalStatus;
-            foundUser.Date = input.Date;
-            foundUser.Email = input.Email;
-            foundUser.Role = input.Role;
-            foundUser.Salary = input.Salary;
+            using (context)
+            {
+                var foundUser = context.User.Where(x => x.UserId == userId).FirstOrDefault();
 
-            context.Update(foundUser);
-            await context.SaveChangesAsync();
-            return new AddUserPayload(foundUser);
+                foundUser.Name = input.Name;
+                foundUser.Surname = input.Surname;
+                foundUser.UserId = input.UserId;
+                foundUser.ApprovalStatus = input.ApprovalStatus;
+                foundUser.Date = input.Date;
+                foundUser.Email = input.Email;
+                foundUser.Role = input.Role;
+                foundUser.Salary = input.Salary;
+
+                context.Update(foundUser);
+                await context.SaveChangesAsync();
+
+                return new AddUserPayload(foundUser);
+            }
         }
 
-        public async void DeleteUser([GraphQLNonNullType] int id, [Service] ApplicationDbContext context)
+        public async Task<int> DeleteUser([GraphQLNonNullType] int? userId, [Service] ApplicationDbContext context)
         {
-            var userToDelete = context.User.Where(x => x.UserId == id).FirstOrDefault();
+            var userToDelete = context.User.Where(x => x.UserId == userId).FirstOrDefault();
             if (userToDelete != null)
             {
                 context.User.Remove(userToDelete);
                 await context.SaveChangesAsync();
+                return userToDelete.UserId;
             }
 
-            return;
+            return 0;
         }
-
     }
 }
