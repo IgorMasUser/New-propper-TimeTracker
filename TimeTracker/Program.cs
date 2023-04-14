@@ -5,6 +5,7 @@ using StackExchange.Redis;
 using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Extensions;
+using TimeTracker.GraphQL;
 using TimeTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddScoped<INotificationRepo, NotificationRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(opt =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("DockerRedisConnection")));
+builder.Services.AddGraphQLServer().AddQueryType<UserQuery>().AddMutationType<UserMutation>().AddFiltering().AddSorting();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -83,7 +85,7 @@ builder.Services.AddMassTransitServices(configuration);
 builder.Services.AddAuthorizationServices();
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -94,6 +96,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapGraphQL();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Authorization}/{action=Authorize}/{id?}");
