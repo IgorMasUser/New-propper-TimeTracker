@@ -27,10 +27,10 @@ namespace TimeTracker.Controllers
             this.logger = logger;
             this.repository = repository;
             this.mapper = mapper;
-            this.newComerApprovalRequestClient = newComerApprovalRequestClient;
-            this.checkApprovalStatusClient = checkApprovalStatusClient;
-            this.toApproveNewComer = toApproveNewComer;
-            this.toRejectNewComer = toRejectNewComer;
+            this.newComerApprovalRequestClient = newComerApprovalRequestClient ?? throw new ArgumentNullException(nameof(newComerApprovalRequestClient));
+            this.checkApprovalStatusClient = checkApprovalStatusClient ?? throw new ArgumentNullException(nameof(checkApprovalStatusClient));
+            this.toApproveNewComer = toApproveNewComer ?? throw new ArgumentNullException(nameof(toApproveNewComer));
+            this.toRejectNewComer = toRejectNewComer ?? throw new ArgumentNullException(nameof(toRejectNewComer));
         }
 
         //[Authorize(Policy = "Manager")]

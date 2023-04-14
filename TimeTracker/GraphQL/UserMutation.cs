@@ -13,6 +13,7 @@ namespace TimeTracker.GraphQL
                 Surname = input.Surname,
                 UserId = input.UserId,
                 ApprovalStatus = input.ApprovalStatus,
+                ApprovalId = Guid.NewGuid(),
                 Date = input.Date,
                 Email = input.Email,
                 Role = input.Role,
@@ -37,6 +38,7 @@ namespace TimeTracker.GraphQL
                 foundUser.Surname = input.Surname;
                 foundUser.UserId = input.UserId;
                 foundUser.ApprovalStatus = input.ApprovalStatus;
+                foundUser.ApprovalId = Guid.NewGuid();
                 foundUser.Date = input.Date;
                 foundUser.Email = input.Email;
                 foundUser.Role = input.Role;
@@ -51,12 +53,15 @@ namespace TimeTracker.GraphQL
 
         public async Task<int> DeleteUser([GraphQLNonNullType] int? userId, [Service] ApplicationDbContext context)
         {
-            var userToDelete = context.User.Where(x => x.UserId == userId).FirstOrDefault();
-            if (userToDelete != null)
+            using(context)
             {
-                context.User.Remove(userToDelete);
-                await context.SaveChangesAsync();
-                return userToDelete.UserId;
+                var userToDelete = context.User.Where(x => x.UserId == userId).FirstOrDefault();
+                if (userToDelete != null)
+                {
+                    context.User.Remove(userToDelete);
+                    await context.SaveChangesAsync();
+                    return userToDelete.UserId;
+                }
             }
 
             return 0;

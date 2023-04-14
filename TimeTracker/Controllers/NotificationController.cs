@@ -10,7 +10,7 @@ namespace TimeTracker.Controllers
 
         public NotificationController(INotificationRepo repository)
         {
-            this.repository = repository;
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]

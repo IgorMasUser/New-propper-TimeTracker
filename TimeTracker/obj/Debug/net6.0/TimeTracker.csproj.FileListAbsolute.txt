@@ -628,3 +628,14 @@ E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.dl
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\ref\TimeTracker.dll
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.pdb
 E:\MyProject\New-propper-TimeTracker\TimeTracker\obj\Debug\net6.0\TimeTracker.genruntimeconfig.cache
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Azure.Core.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Graph.Core.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Kiota.Abstractions.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Kiota.Authentication.Azure.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Kiota.Http.HttpClientLibrary.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Kiota.Serialization.Form.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Kiota.Serialization.Json.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Microsoft.Kiota.Serialization.Text.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\System.Memory.Data.dll
+E:\MyProject\New-propper-TimeTracker\TimeTracker\bin\Debug\net6.0\Tavis.UriTemplates.dll
