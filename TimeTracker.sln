@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Service", "Notification.Service\Notification.Service.csproj", "{5EFB4624-768D-4F7A-A44B-07CEABF906A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTrackerTest", "TimeTrackerTest\TimeTrackerTest.csproj", "{2C849C52-484B-4489-AC86-4B4CEAF060CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTrackerTest", "TimeTrackerTest\TimeTrackerTest.csproj", "{2C849C52-484B-4489-AC86-4B4CEAF060CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

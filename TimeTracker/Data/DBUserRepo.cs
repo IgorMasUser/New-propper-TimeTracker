@@ -64,7 +64,7 @@ namespace TimeTracker.Data
         public async Task EditAttendanceOfUser(User mappedUser)
         {
             db.User.Update(mappedUser);
-            mappedUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(ref mappedUser);
+            mappedUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(mappedUser);
             mappedUser.Date = mappedUser.StartedWorkDayAt;
             await db.SaveChangesAsync();
         }
