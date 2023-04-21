@@ -4,7 +4,7 @@ namespace TimeTracker.BusinessLogic
 {
     public static class TimeCalculator
     {
-        public static DateTime ToCalcWorkedTimePerDay(ref User user)
+        public static DateTime ToCalcWorkedTimePerDay(User user)
         {
             DateTime @break = new DateTime().AddMinutes(user.Break);
             TimeSpan temp = new DateTime().Subtract(@break);

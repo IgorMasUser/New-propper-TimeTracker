@@ -50,7 +50,12 @@
       "ProjectGuid": "5efb4624-768d-4f7a-a44b-07ceabf906a1",
       "DisplayName": "Notification.Service",
       "ColorIndex": 8
+    },
+    "2c849c52-484b-4489-ac86-4b4ceaf060ca": {
+      "ProjectGuid": "2c849c52-484b-4489-ac86-4b4ceaf060ca",
+      "DisplayName": "TimeTrackerTest",
+      "ColorIndex": 9
     }
   },
-  "NextColorIndex": 9
+  "NextColorIndex": 10
 }
