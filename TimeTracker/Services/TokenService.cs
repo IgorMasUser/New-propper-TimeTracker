@@ -51,30 +51,5 @@ namespace TimeTracker.Services
 
             return refreshTokenProvider;
         }
-
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(configuration.GetSection("JWT:Key").Value)),
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidIssuer = configuration.GetSection("JWT:Issuer").Value,
-                ValidAudience = configuration.GetSection("JWT:Audience").Value,
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256Signature, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
-
-            return principal;
-
-        }
     }
 }

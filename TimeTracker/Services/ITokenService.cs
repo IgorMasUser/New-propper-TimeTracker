@@ -7,6 +7,5 @@ namespace TimeTracker.Services
     {
         string GenerateAccessToken(IEnumerable<Claim> claims, int tokenExpirationTimeInMinutes);
         Task<RefreshTokenProvider> GenerateAndAssignRefreshToken(int user);
-        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }
