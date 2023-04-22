@@ -10,6 +10,7 @@ namespace TimeTracker.Data
     {
         IEnumerable<User> GetAttendanceOfUser(string search);
         Task CreateUser(User user, UserCreateDTO requestedUser);
+        Task AddWorkedHours(User user,int userId);
         Task<User> EditAttendanceOfUser(int? id);
         Task EditAttendanceOfUser(User user);
         Task<User> GetUserToDelete(int? id);
