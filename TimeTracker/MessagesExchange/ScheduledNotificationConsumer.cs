@@ -33,7 +33,7 @@ namespace MassTransitSchedulingTest
             db.HashSet($"message", new HashEntry[] {new HashEntry(message.Id, serialMessage) });
             //db.StringSet(message.Id, context.Message.Value);
             //var getMessage = db.StringGet(message.Id);
-            //logger.LogInformation($"Get saved Platform:{getMessage}");
+            //logger.LogInformation($"Get message:{getMessage}");
         }
     }
 }

@@ -26,6 +26,7 @@ namespace TimeTracker.Data
                 db.User.Update(foundExistingUser);
                 foundExistingUser.StartedWorkDayAt = user.StartedWorkDayAt;
                 foundExistingUser.FinishedWorkDayAt = user.FinishedWorkDayAt;
+                foundExistingUser.Date= DateTime.Today;
                 foundExistingUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(user);
 
                 await db.SaveChangesAsync();
