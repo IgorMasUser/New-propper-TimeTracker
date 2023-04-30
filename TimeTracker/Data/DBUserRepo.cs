@@ -31,7 +31,7 @@ namespace TimeTracker.Data
 
                 await db.SaveChangesAsync();
             }
-            else;  
+            else await Task.CompletedTask;  
         }
 
         public async Task CreateUser(User createdUser, UserCreateDTO requestedUser)
@@ -133,7 +133,7 @@ namespace TimeTracker.Data
 
         public User GetUserDetails(User requestedUser)
         {
-            var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
+           var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
 
             return foundUser;
         }
@@ -211,9 +211,9 @@ namespace TimeTracker.Data
 
         public IEnumerable<User> GetNewComersApprovalStatus()
         {
-            var getNewComersApprovalStatus = db.User.Select(x => x);
+               var getNewComersApprovalStatus = db.User.Select(x => x);
 
-            return getNewComersApprovalStatus;
+                return getNewComersApprovalStatus;                    
         }
     }
 }

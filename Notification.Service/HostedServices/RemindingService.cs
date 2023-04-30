@@ -33,7 +33,5 @@ namespace Notification.Service.HostedServices
             logger.LogInformation("Stopping bus");
             return Task.CompletedTask;
         }
-
-
     }
 }
