@@ -5,6 +5,8 @@ using System.Security.Cryptography;
 using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Models;
+using TimeTracker.Options;
+using Microsoft.Extensions.Options;
 
 namespace TimeTracker.Services
 {
@@ -12,11 +14,13 @@ namespace TimeTracker.Services
     {
         private readonly IConfiguration configuration;
         private readonly IUserRepo repository;
+        private readonly JWTOptions jwt;
 
-        public TokenService(IConfiguration configuration, IUserRepo repository)
+        public TokenService(IConfiguration configuration, IUserRepo repository, IOptions<JWTOptions> jwt)
         {
             this.configuration = configuration;
             this.repository = repository;
+            this.jwt = jwt.Value;
         }
 
         public string GenerateAccessToken(IEnumerable<Claim> claims, int tokenExpirationTimeInMinutes)
@@ -56,15 +60,13 @@ namespace TimeTracker.Services
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(configuration.GetSection("JWT:Key").Value)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
-                ValidIssuer = configuration.GetSection("JWT:Issuer").Value,
-                ValidAudience = configuration.GetSection("JWT:Audience").Value,
+                ValidIssuer = jwt.Issuer,
+                ValidAudience = jwt.Audience,
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;

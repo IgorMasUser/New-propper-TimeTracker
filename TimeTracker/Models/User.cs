@@ -36,7 +36,7 @@ namespace TimeTracker.Models
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime FinishedWorkDayAt { get; set; } = (DateTime)SqlDateTime.MinValue;
 
-        public int Break { get; set; }
+        public int Break { get; set; } = 30;
 
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime Date { get; set; } = (DateTime)SqlDateTime.MinValue;

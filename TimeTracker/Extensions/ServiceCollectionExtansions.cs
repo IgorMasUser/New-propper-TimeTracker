@@ -78,6 +78,10 @@ namespace TimeTracker.Extensions
         services.AddMassTransit(cfg =>
             {
                 string hostName = configuration.GetSection("ConnectionStrings:DockerRedisConnection").Value;
+
+                services.Configure<RabbitMQOptions>(configuration.GetSection("RabbitMQ"));
+                var option = configuration.GetSection("RabbitMQ").Get<RabbitMQOptions>();
+
                 cfg.AddSagaStateMachine<ApprovalStateMachine, ApprovalState>(sagaConfig =>
                 {
                     sagaConfig.UseMessageRetry(r => r.Immediate(5));
@@ -94,12 +98,12 @@ namespace TimeTracker.Extensions
                 cfg.AddConsumer<ScheduledNotificationConsumer>();
                 cfg.UsingRabbitMq((cxt, cfg) =>
                  {
-                     string hostName = configuration.GetSection("RabbitMQ:HostName").Value;
+                     string hostName = option.HostName;
 
                      cfg.Host(hostName, "/", h =>
                      {
-                         h.Username("guest");
-                         h.Password("guest");
+                         h.Username(option.UserName);
+                         h.Password(option.PassWord);
                      });
 
                      cfg.ConfigureEndpoints(cxt);

@@ -23,6 +23,7 @@ namespace TimeTrackerControllers
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
         }
+
         [HttpGet]
         public IActionResult Authorize()
         {
@@ -96,6 +97,7 @@ namespace TimeTrackerControllers
             };
             Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
         }
+
         void SetAccessTokenForDataRetriving(string jwtAccessToken, int tokenExpirationTimeInMinutes)
         {
             var cookieOptions = new CookieOptions
@@ -106,6 +108,7 @@ namespace TimeTrackerControllers
             };
             Response.Cookies.Append("accessTokenForDataRetriving", jwtAccessToken, cookieOptions);
         }
+
         void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
         {
             var cookieOptions = new CookieOptions

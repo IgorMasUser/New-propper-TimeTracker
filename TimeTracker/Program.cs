@@ -6,6 +6,7 @@ using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Extensions;
 using TimeTracker.GraphQL;
+using TimeTracker.Options;
 using TimeTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,9 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(opt =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("DockerRedisConnection")));
 builder.Services.AddGraphQLServer().AddQueryType<UserQuery>().AddMutationType<UserMutation>().AddFiltering().AddSorting();
 
+builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection("JWT"));
+var option = builder.Configuration.GetSection("JWT").Get<JWTOptions>();
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,12 +39,12 @@ builder.Services.AddAuthentication(x =>
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(builder.Configuration.GetSection("JWT:Key").Value)),
+                        .GetBytes(option.Key)),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
-        ValidIssuer = builder.Configuration.GetSection("JWT:Issuer").Value,
-        ValidAudience = builder.Configuration.GetSection("JWT:Audience").Value
+        ValidIssuer = option.Issuer,
+        ValidAudience = option.Audience
     };
     x.Events = new JwtBearerEvents
     {

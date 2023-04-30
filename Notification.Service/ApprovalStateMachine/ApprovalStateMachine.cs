@@ -62,7 +62,7 @@ namespace Notification.Service.StateMachines
                 {
                     ApprovalId = x.Instance.CorrelationId,
                     State = x.Instance.CurrentState,
-                    UserEmail = x.Instance.UserEmail
+                    UserEmail = x.Instance.UserEmail,
                 })));
         }
 

@@ -5,5 +5,4 @@ namespace Contracts
     {
         Guid ApprovalId { get;}
     }
-
 }

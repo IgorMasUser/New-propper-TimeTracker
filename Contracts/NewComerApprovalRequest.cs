@@ -7,6 +7,5 @@ namespace Contracts
         DateTime TimeStamp { get; }
         string UserEmail { get; }
         string State { get; }
-        string reasonOfRejection { get; }
     }
 }

@@ -17,6 +17,23 @@ namespace TimeTracker.Data
         {
             this.db = db;
         }
+
+        public async Task AddWorkedHours(User user, int userId)
+        {
+            var foundExistingUser = db.User.FirstOrDefault(x => x.UserId.Equals(userId));
+            if(foundExistingUser != null)
+            {
+                db.User.Update(foundExistingUser);
+                foundExistingUser.StartedWorkDayAt = user.StartedWorkDayAt;
+                foundExistingUser.FinishedWorkDayAt = user.FinishedWorkDayAt;
+                foundExistingUser.Date= DateTime.Today;
+                foundExistingUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(user);
+
+                await db.SaveChangesAsync();
+            }
+            else await Task.CompletedTask;  
+        }
+
         public async Task CreateUser(User createdUser, UserCreateDTO requestedUser)
         {
             if (!db.User.Any(x => x.Email.Contains(requestedUser.Email)) || !db.User.Any(x => x.UserId.Equals(requestedUser.UserId)))
@@ -77,7 +94,7 @@ namespace TimeTracker.Data
 
         public HashSet<User> GetAllEmployeesInfo()
         {
-            var getAllEmployees = db.User.Select(x =>x).Where(d=>d.ApprovalStatus.Contains("RequestApproved")).ToList();
+            var getAllEmployees = db.User.Select(x => x).Where(d => d.ApprovalStatus.Contains("RequestApproved")).ToList();
             var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(getAllEmployees);
             return setOfUsers;
         }
@@ -116,7 +133,7 @@ namespace TimeTracker.Data
 
         public User GetUserDetails(User requestedUser)
         {
-            var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
+           var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
 
             return foundUser;
         }
@@ -194,9 +211,9 @@ namespace TimeTracker.Data
 
         public IEnumerable<User> GetNewComersApprovalStatus()
         {
-            var getNewComersApprovalStatus = db.User.Select(x => x);
+               var getNewComersApprovalStatus = db.User.Select(x => x);
 
-            return getNewComersApprovalStatus;
+                return getNewComersApprovalStatus;                    
         }
     }
 }
