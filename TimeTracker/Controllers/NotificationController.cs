@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using TimeTracker.Data;
 using TimeTracker.Models;
 
@@ -7,10 +8,12 @@ namespace TimeTracker.Controllers
     public class NotificationController : Controller
     {
         private readonly INotificationRepo repository;
+        private readonly IMemoryCache memoryCache;
 
-        public NotificationController(INotificationRepo repository)
+        public NotificationController(INotificationRepo repository, IMemoryCache memoryCache)
         {
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            this.memoryCache = memoryCache;
         }
 
         [HttpGet]
@@ -20,7 +23,16 @@ namespace TimeTracker.Controllers
 
             if (notifications != null)
             {
-                return View(notifications);
+                var cachedNotifications = memoryCache.Get<IEnumerable<NotificationMessage?>>("notifications");
+
+                if (cachedNotifications is null)
+                {
+                    cachedNotifications = repository.GetAllNotifications();
+
+                    memoryCache.Set("notifications", cachedNotifications, TimeSpan.FromMinutes(1));
+                }
+
+                return View(cachedNotifications);
             }
             else
             {

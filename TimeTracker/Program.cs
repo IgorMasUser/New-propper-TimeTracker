@@ -87,6 +87,7 @@ IConfigurationRoot configuration = configBuilder.Build();
 //builder.Services.AddAuthenticationServices(configuration);
 builder.Services.AddMassTransitServices(configuration);
 builder.Services.AddAuthorizationServices();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
