@@ -17,6 +17,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+builder.Services.AddHostedService<RefreshTokenCleanupService>();
 builder.Services.AddScoped<IUserRepo, DBUserRepo>();
 builder.Services.AddScoped<INotificationRepo, NotificationRepo>();
 builder.Services.AddTransient<ITokenService, TokenService>();
@@ -26,50 +27,6 @@ builder.Services.AddGraphQLServer().AddQueryType<UserQuery>().AddMutationType<Us
 
 builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection("JWT"));
 var option = builder.Configuration.GetSection("JWT").Get<JWTOptions>();
-
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(option.Key)),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidIssuer = option.Issuer,
-        ValidAudience = option.Audience
-    };
-    x.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            context.Token = context.Request.Cookies["accessToken"];
-            return Task.CompletedTask;
-        },
-        OnChallenge = context =>
-        {
-            var dataToken = context.Request.Cookies["accessTokenForDataRetriving"];
-            if (string.IsNullOrEmpty(dataToken))
-            {
-                context.Response.Redirect("/Authorization/Authorize");
-            }
-            else
-            {
-                context.Response.Redirect("/Authorization/Refresh");
-            }
-            context.HandleResponse();
-            return Task.FromResult(0);
-        }
-
-    };
-});
 
 IConfigurationBuilder configBuilder;
 
@@ -84,7 +41,7 @@ else
 
 IConfigurationRoot configuration = configBuilder.Build();
 
-//builder.Services.AddAuthenticationServices(configuration);
+builder.Services.AddAuthenticationServices(configuration);
 builder.Services.AddMassTransitServices(configuration);
 builder.Services.AddAuthorizationServices();
 builder.Services.AddMemoryCache();

@@ -43,5 +43,19 @@ namespace TimeTracker.Data
             });
 
         }
+
+        public async Task RemoveExpiredRefreshTokensAsync()
+        {
+            var now = DateTime.UtcNow;
+            var expiredTokens = await RefreshTokenProvider
+                .Where(t => t.RefreshTokenExpiresAt <= now)
+                .ToListAsync();
+
+            if (expiredTokens.Any())
+            {
+                RefreshTokenProvider.RemoveRange(expiredTokens);
+                await SaveChangesAsync();
+            }
+        }
     }
 }
