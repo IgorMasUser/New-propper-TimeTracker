@@ -6,15 +6,15 @@ namespace Notification.Service.Consumers
 {
     public class RequestConsumer : IConsumer<NewComerApprovalRequest>
     {
-        private readonly ILogger<RequestConsumer> _logger;
+        private readonly ILogger<RequestConsumer> logger;
 
         public RequestConsumer(ILogger<RequestConsumer> logger)
         {
-            _logger = logger;
+            this.logger = logger;
         }
         public async Task Consume(ConsumeContext<NewComerApprovalRequest> context)
         {
-            _logger.Log(LogLevel.Debug, "New comer {0} sent for approval", context.Message.UserEmail);
+            logger.Log(LogLevel.Information, "New comer {0} sent for approval", context.Message.UserEmail);
 
             await context.Publish<NewComerApprovalRequested>(new
             {
