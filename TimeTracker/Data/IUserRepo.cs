@@ -17,7 +17,7 @@ namespace TimeTracker.Data
         Task DeleteUser(int id);
         Task<User> GetDetailsOfUser(int? id);
         HashSet<User> GetAllEmployeesInfo();
-        bool CheckIfUserExists(User user, UserCreateDTO requestedUser);
+        bool CheckIfUserExists(UserCreateDTO user);
         User GetUserDetails(User user);
         RefreshTokenProvider GetUserTokenDetails(string userName);
         Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken);

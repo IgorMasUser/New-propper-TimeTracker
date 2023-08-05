@@ -4,136 +4,262 @@ using System.Security.Cryptography;
 using TimeTracker.BusinessLogic;
 using TimeTracker.DTOs;
 using TimeTracker.Models;
-using StackExchange.Redis;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TimeTracker.Data
 {
     public class DBUserRepo : IUserRepo
     {
         private readonly ApplicationDbContext db;
+        private readonly ILogger<DBUserRepo> logger;
 
-        public DBUserRepo(ApplicationDbContext db)
+        public DBUserRepo(ApplicationDbContext db, ILogger<DBUserRepo> logger)
         {
-            this.db = db;
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task AddWorkedHours(User user, int userId)
         {
-            var foundExistingUser = db.User.FirstOrDefault(x => x.UserId.Equals(userId));
-            if(foundExistingUser != null)
+            try
             {
-                db.User.Update(foundExistingUser);
-                foundExistingUser.StartedWorkDayAt = user.StartedWorkDayAt;
-                foundExistingUser.FinishedWorkDayAt = user.FinishedWorkDayAt;
-                foundExistingUser.Date= DateTime.Today;
-                foundExistingUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(user);
+                if (user == null)
+                {
+                    throw new ArgumentNullException(nameof(user));
+                }
 
-                await db.SaveChangesAsync();
+                var foundExistingUser = db.User.FirstOrDefault(x => x.UserId.Equals(userId));
+                if (foundExistingUser != null)
+                {
+                    db.User.Update(foundExistingUser);
+                    foundExistingUser.StartedWorkDayAt = user.StartedWorkDayAt;
+                    foundExistingUser.FinishedWorkDayAt = user.FinishedWorkDayAt;
+                    foundExistingUser.Date = DateTime.Today;
+                    foundExistingUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(user);
+
+                    await db.SaveChangesAsync();
+                }
+
+                else await Task.CompletedTask;
             }
-            else await Task.CompletedTask;  
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
         }
 
         public async Task CreateUser(User createdUser, UserCreateDTO requestedUser)
         {
-            if (!db.User.Any(x => x.Email.Contains(requestedUser.Email)) || !db.User.Any(x => x.UserId.Equals(requestedUser.UserId)))
+            try
             {
-                using (var hmac = new HMACSHA512())
+                if (createdUser == null)
                 {
-                    createdUser.PasswordSalt = hmac.Key;
-                    createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
+                    throw new ArgumentNullException(nameof(createdUser));
                 }
-                createdUser.StartedWorkDayAt = (DateTime)SqlDateTime.MinValue;
-                createdUser.Date = (DateTime)SqlDateTime.MinValue;
-                createdUser.FinishedWorkDayAt = (DateTime)SqlDateTime.MinValue;
-                createdUser.TotalWorkedPerDay = (DateTime)SqlDateTime.MinValue;
-                createdUser.UserWorkedPerRequestedPeriod = (DateTime)SqlDateTime.MinValue;
-                createdUser.ApprovalStatus = "RequestedForApproval";
-                db.User.Add(createdUser);
+
+                if (requestedUser == null)
+                {
+                    throw new ArgumentNullException(nameof(requestedUser));
+                }
+
+                if (!db.User.Any(x => x.Email.Contains(requestedUser.Email)) || !db.User.Any(x => x.UserId.Equals(requestedUser.UserId)))
+                {
+                    using (var hmac = new HMACSHA512())
+                    {
+                        createdUser.PasswordSalt = hmac.Key;
+                        createdUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(requestedUser.Password));
+                    }
+                    createdUser.StartedWorkDayAt = (DateTime)SqlDateTime.MinValue;
+                    createdUser.Date = (DateTime)SqlDateTime.MinValue;
+                    createdUser.FinishedWorkDayAt = (DateTime)SqlDateTime.MinValue;
+                    createdUser.TotalWorkedPerDay = (DateTime)SqlDateTime.MinValue;
+                    createdUser.UserWorkedPerRequestedPeriod = (DateTime)SqlDateTime.MinValue;
+                    createdUser.ApprovalStatus = "RequestedForApproval";
+                    db.User.Add(createdUser);
+                }
+                else
+                {
+                    var foundExistingUser = db.User.FirstOrDefault(x => x.UserId.Equals(requestedUser.UserId));
+                    db.User.Update(foundExistingUser);
+                    foundExistingUser.Name = requestedUser.Name;
+                    foundExistingUser.UserId = requestedUser.UserId;
+                    foundExistingUser.Role = requestedUser.Role;
+                    foundExistingUser.Email = requestedUser.Email;
+                    foundExistingUser.Salary = requestedUser.Salary;
+                    foundExistingUser.Surname = requestedUser.Surname;
+                }
+                await db.SaveChangesAsync();
             }
-            else
+            catch (Exception ex)
             {
-                var foundExistingUser = db.User.FirstOrDefault(x => x.UserId.Equals(requestedUser.UserId));
-                db.User.Update(foundExistingUser);
-                foundExistingUser.Name = requestedUser.Name;
-                foundExistingUser.UserId = requestedUser.UserId;
-                foundExistingUser.Role = requestedUser.Role;
-                foundExistingUser.Email = requestedUser.Email;
-                foundExistingUser.Salary = requestedUser.Salary;
-                foundExistingUser.Surname = requestedUser.Surname;
+                logger.LogError(ex.Message);
             }
-            await db.SaveChangesAsync();
         }
 
         public async Task DeleteUser(int id)
         {
-            var result = await db.User.FindAsync(id);
-            db.User.Remove(result);
-            await db.SaveChangesAsync();
+            try
+            {
+                var result = await db.User.FindAsync(id);
+                db.User.Remove(result);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
         }
 
         public async Task<User> GetUserToDelete(int? id)
         {
-            var user = await db.User.FindAsync(id);
-            return user;
+            try
+            {
+                var user = await db.User.FindAsync(id);
+
+                return user ?? null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+
+                return null;
+            }
         }
 
         public async Task EditAttendanceOfUser(User mappedUser)
         {
-            db.User.Update(mappedUser);
-            mappedUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(mappedUser);
-            mappedUser.Date = mappedUser.StartedWorkDayAt;
-            await db.SaveChangesAsync();
+            try
+            {
+                if (mappedUser == null)
+                {
+                    throw new ArgumentNullException(nameof(mappedUser));
+                }
+
+                db.User.Update(mappedUser);
+                mappedUser.TotalWorkedPerDay = TimeCalculator.ToCalcWorkedTimePerDay(mappedUser);
+                mappedUser.Date = mappedUser.StartedWorkDayAt;
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
         }
 
         public async Task<User> EditAttendanceOfUser(int? id)
         {
-            var user = await db.User.FindAsync(id);
-            return user;
+            User user = null;
+
+            try
+            {
+                user = await db.User.FindAsync(id);
+                return user ?? null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return user;
+            }
         }
 
         public HashSet<User> GetAllEmployeesInfo()
         {
-            var getAllEmployees = db.User.Select(x => x).Where(d => d.ApprovalStatus.Contains("RequestApproved")).ToList();
-            var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(getAllEmployees);
-            return setOfUsers;
+            try
+            {
+                var getAllEmployees = db.User.Select(x => x).Where(d => d.ApprovalStatus.Contains("RequestApproved")).ToList();
+                var setOfUsers = new UserTimeCalculator().GetTotalWorkedTimeForAllUsers(getAllEmployees);
+                return setOfUsers;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return new HashSet<User>();
+            }
         }
 
         public IEnumerable<User> GetAttendanceOfUser(string search)
         {
-            //var listOfUsers = db.User.Select(x => x).Where(y => y.Date != (DateTime)SqlDateTime.MinValue); //if we want to see only users with filled attendance
-            var listOfUsers = db.User.Select(x => x).Where(d => d.ApprovalStatus.Contains("RequestApproved"));
-
-            if (!string.IsNullOrEmpty(search))
+            try
             {
-                listOfUsers = listOfUsers.Where(a => a.Name.Contains(search) || a.Surname.Contains(search));
+                //var listOfUsers = db.User.Select(x => x).Where(y => y.Date != (DateTime)SqlDateTime.MinValue); //if we want to see only users with filled attendance
+                var listOfUsers = db.User.Select(x => x).Where(d => d.ApprovalStatus.Contains("RequestApproved"));
+
+                if (!string.IsNullOrEmpty(search))
+                {
+                    listOfUsers = listOfUsers.Where(a => a.Name.Contains(search) || a.Surname.Contains(search));
+                }
+                return listOfUsers.ToList();
             }
-            return listOfUsers;
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return Enumerable.Empty<User>();
+            }
+
         }
 
         public async Task<User> GetDetailsOfUser(int? id)
         {
-            var user = await db.User.FindAsync(id);
-            return user;
+            User user = null;
+
+            try
+            {
+                user = await db.User.FindAsync(id);
+                return user ?? null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return user;
+            }
         }
 
-        public bool CheckIfUserExists(User user, UserCreateDTO requestedUser)
+        public bool CheckIfUserExists(UserCreateDTO requestedUser)
         {
-            if (db.User.Any(x => x.Email.Contains(requestedUser.Email)))
+            try
             {
-                var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
-
-                if (VerifyPassword(requestedUser.Password, foundUser.PasswordHash, foundUser.PasswordSalt))
+                if (requestedUser == null)
                 {
-                    return true;
+                    throw new ArgumentNullException(nameof(requestedUser));
                 }
+
+                if (db.User.Any(x => x.Email.Contains(requestedUser.Email)))
+                {
+                    var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
+
+                    if (VerifyPassword(requestedUser.Password, foundUser.PasswordHash, foundUser.PasswordSalt))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
             }
             return false;
         }
 
         public User GetUserDetails(User requestedUser)
         {
-           var foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
+
+            User foundUser = null;
+
+            try
+            {
+                if (requestedUser == null)
+                {
+                    throw new ArgumentNullException(nameof(requestedUser));
+                }
+
+                foundUser = db.User.FirstOrDefault(x => x.Email.Contains(requestedUser.Email));
+
+                return foundUser;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
 
             return foundUser;
         }
@@ -149,71 +275,122 @@ namespace TimeTracker.Data
 
         public async Task<RefreshTokenProvider> SaveRefreshToken(int userId, string refreshToken)
         {
-            RefreshTokenProvider tokenProvider = new RefreshTokenProvider();
-            if (!db.RefreshTokenProvider.Any(x => x.UserId.Equals(userId)))
+            try
             {
-                tokenProvider.RefreshTokenExpiresAt = DateTime.Now.AddDays(7);
-                tokenProvider.RefreshTokenCreatedAt = DateTime.Now;
-                tokenProvider.UserId = userId;
-                tokenProvider.RefreshToken = refreshToken;
-                db.RefreshTokenProvider.Add(tokenProvider);
-                await db.SaveChangesAsync();
-                return tokenProvider;
+                if (refreshToken == null)
+                {
+                    throw new ArgumentNullException(nameof(refreshToken));
+                }
+
+                if (!db.RefreshTokenProvider.Any(x => x.UserId.Equals(userId)))
+                {
+                    RefreshTokenProvider tokenProvider = new RefreshTokenProvider();
+
+                    tokenProvider.RefreshTokenExpiresAt = DateTime.Now.AddDays(7);
+                    tokenProvider.RefreshTokenCreatedAt = DateTime.Now;
+                    tokenProvider.UserId = userId;
+                    tokenProvider.RefreshToken = refreshToken;
+
+                    db.RefreshTokenProvider.Add(tokenProvider);
+                    await db.SaveChangesAsync();
+                    return tokenProvider;
+                }
+                else
+                {
+                    var foundExistingToken = db.RefreshTokenProvider.FirstOrDefault(x => x.UserId.Equals(userId));
+                    return foundExistingToken;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var foundExistingToken = db.RefreshTokenProvider.FirstOrDefault(x => x.UserId.Equals(userId));
-                return foundExistingToken;
+                logger.LogError(ex.Message);
+                return null;
             }
         }
 
         public RefreshTokenProvider GetUserTokenDetails(string userName)
         {
-            var obtainedUser = db.User.Where(p => p.Name.Contains(userName));
-            //var tokenDetails = db.RefreshTokenProvider.FirstOrDefault(x=>x.RefreshToken.Equals(cookiesToken));
-            var tokenDetails = db.RefreshTokenProvider.Where(p => obtainedUser.Any(p2 => p2.UserId == p.UserId)).FirstOrDefault();
-
-            if (tokenDetails != null)
+            try
             {
-                return tokenDetails;
+                if (userName == null)
+                {
+                    throw new ArgumentNullException(nameof(userName));
+                }
+
+                var obtainedUser = db.User.Where(p => p.Name.Contains(userName));
+                var tokenDetails = db.RefreshTokenProvider.Where(p => obtainedUser.Any(p2 => p2.UserId == p.UserId)).FirstOrDefault();
+
+                return tokenDetails ?? null;
+
             }
-            return null;
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return null;
+            }
         }
 
         public async Task UpdateApprovalStatus(NewComerApprovalRequest userDetails)
         {
-            var foundUser = db.User.FirstOrDefault(x => x.ApprovalId.Equals(userDetails.ApprovalId));
-            if (foundUser != null)
+            try
             {
-                db.User.Update(foundUser);
-                foundUser.ApprovalStatus = userDetails.State;
+                if (userDetails == null)
+                {
+                    throw new ArgumentNullException(nameof(userDetails));
+                }
+
+                var foundUser = await db.User.FirstOrDefaultAsync(x => x.ApprovalId.Equals(userDetails.ApprovalId));
+                if (foundUser != null)
+                {
+                    db.User.Update(foundUser);
+                    foundUser.ApprovalStatus = userDetails.State;
+                    await db.SaveChangesAsync();
+                }
             }
-            await db.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+            }
         }
 
         public IEnumerable<dynamic> NewComersRequestedForApproval()
         {
-            var allRequestedForApprovalNewComers = db.User.Where(s => s.ApprovalStatus.Contains("RequestedForApproval"));
-            var newComersWithRoleDetails = allRequestedForApprovalNewComers.Join(db.Roles, u => u.Role, r => r.UserRoleId, (u, r) => new
+            try
             {
-                UserId = u.UserId,
-                Name = u.Name,
-                Email = u.Email,
-                Surname = u.Surname,
-                Salary = u.Salary,
-                SlaryLimit = r.SalaryLimit,
-                RoleName = r.RoleName,
-                ApprovalId = u.ApprovalId,
-            });
+                var allRequestedForApprovalNewComers = db.User.Where(s => s.ApprovalStatus.Contains("RequestedForApproval"));
+                var newComersWithRoleDetails = allRequestedForApprovalNewComers.Join(db.Roles, u => u.Role, r => r.UserRoleId, (u, r) => new
+                {
+                    UserId = u.UserId,
+                    Name = u.Name,
+                    Email = u.Email,
+                    Surname = u.Surname,
+                    Salary = u.Salary,
+                    SlaryLimit = r.SalaryLimit,
+                    RoleName = r.RoleName,
+                    ApprovalId = u.ApprovalId,
+                });
 
-            return newComersWithRoleDetails;
+                return newComersWithRoleDetails;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return Enumerable.Empty<dynamic>();
+            }
         }
 
         public IEnumerable<User> GetNewComersApprovalStatus()
         {
-               var getNewComersApprovalStatus = db.User.Select(x => x);
-
-                return getNewComersApprovalStatus;                    
+            try
+            {
+                var getNewComersApprovalStatus = db.User.Select(x => x);
+                return getNewComersApprovalStatus;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return Enumerable.Empty<User>();
+            }
         }
     }
 }

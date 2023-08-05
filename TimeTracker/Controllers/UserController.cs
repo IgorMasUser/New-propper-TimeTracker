@@ -39,19 +39,19 @@ namespace TimeTracker.Controllers
         [Authorize(Policy = "Developers")]
         public async Task<IActionResult> ToFillInWorkHours(UserCreateDTO requestedUser)
         {
-                var mappedUser = mapper.Map<User>(requestedUser);
-                var jwtAccessToken = Request.Cookies["accessTokenForDataRetriving"];
-                if(jwtAccessToken !=null)
-                {
-                    var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
-                    var username = principal?.Identity?.Name;
-                    var tokenDetails = repository.GetUserTokenDetails(username);
-                    await repository.AddWorkedHours(mappedUser, tokenDetails.UserId);
+            var mappedUser = mapper.Map<User>(requestedUser);
+            var jwtAccessToken = Request.Cookies["accessTokenForDataRetriving"];
+            if (jwtAccessToken != null)
+            {
+                var principal = tokenService.GetPrincipalFromExpiredToken(jwtAccessToken);
+                var username = principal?.Identity?.Name;
+                var tokenDetails = repository.GetUserTokenDetails(username);
+                await repository.AddWorkedHours(mappedUser, tokenDetails.UserId);
 
-                    return RedirectToAction("GetAttendanceOfUser");
-                }
+                return RedirectToAction("GetAttendanceOfUser");
+            }
 
-                return NotFound();                
+            return NotFound();
         }
 
 

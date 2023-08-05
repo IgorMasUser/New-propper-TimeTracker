@@ -39,7 +39,8 @@ namespace TimeTrackerControllers
                 return BadRequest("Invalid client request");
             }
             var mappedUser = mapper.Map<User>(requestedUser);
-            if (repository.CheckIfUserExists(mappedUser, requestedUser))
+
+            if (repository.CheckIfUserExists(requestedUser))
             {
                 var obtainedUser = repository.GetUserDetails(mappedUser);
                 List<Claim> claims = new List<Claim>
@@ -58,7 +59,7 @@ namespace TimeTrackerControllers
 
                 return Ok(string.Format("Hello {0} {1}", obtainedUser.Name, obtainedUser.Surname));
             }
-            return Unauthorized("Wrong password!");
+            return Unauthorized(string.Format("User {0} does not exist or password is wrong!", requestedUser.Email));
         }
 
         [HttpGet]
@@ -87,7 +88,7 @@ namespace TimeTrackerControllers
             return Ok();
         }
 
-        void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
+        private void SetAccessToken(string jwtAccessToken, int tokenExpirationTimeInMinutes)
         {
             var cookieOptions = new CookieOptions
             {
@@ -98,7 +99,7 @@ namespace TimeTrackerControllers
             Response.Cookies.Append("accessToken", jwtAccessToken, cookieOptions);
         }
 
-        void SetAccessTokenForDataRetriving(string jwtAccessToken, int tokenExpirationTimeInMinutes)
+        private void SetAccessTokenForDataRetriving(string jwtAccessToken, int tokenExpirationTimeInMinutes)
         {
             var cookieOptions = new CookieOptions
             {
@@ -109,7 +110,7 @@ namespace TimeTrackerControllers
             Response.Cookies.Append("accessTokenForDataRetriving", jwtAccessToken, cookieOptions);
         }
 
-        void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
+        private void SetRefreshToken(RefreshTokenProvider jwtRefreshToken)
         {
             var cookieOptions = new CookieOptions
             {

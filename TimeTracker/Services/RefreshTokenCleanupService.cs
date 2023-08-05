@@ -1,17 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using TimeTracker.Data;
+﻿using TimeTracker.Data;
 
 public class RefreshTokenCleanupService : BackgroundService
 {
     private readonly IServiceProvider services;
+    private readonly ILogger<RefreshTokenCleanupService> logger;
 
-    public RefreshTokenCleanupService(IServiceProvider services)
+    public RefreshTokenCleanupService(IServiceProvider services, ILogger<RefreshTokenCleanupService> logger)
     {
         this.services = services;
+        this.logger = logger;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -23,6 +20,8 @@ public class RefreshTokenCleanupService : BackgroundService
 
             // Remove expired refresh tokens from the database
             await dbContext.RemoveExpiredRefreshTokensAsync();
+
+            logger.Log(LogLevel.Information, "Refresh tokens cleaned");
 
             await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken); // Delay for 5 minutes
         }
