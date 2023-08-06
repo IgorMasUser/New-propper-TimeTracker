@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Rotativa.AspNetCore;
 using StackExchange.Redis;
-using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Extensions;
 using TimeTracker.GraphQL;
@@ -10,7 +8,6 @@ using TimeTracker.Options;
 using TimeTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -45,6 +42,8 @@ builder.Services.AddAuthenticationServices(configuration);
 builder.Services.AddMassTransitServices(configuration);
 builder.Services.AddAuthorizationServices();
 builder.Services.AddMemoryCache();
+
+RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
 
 var app = builder.Build();
 

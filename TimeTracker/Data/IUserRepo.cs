@@ -9,8 +9,9 @@ namespace TimeTracker.Data
     public interface IUserRepo
     {
         IEnumerable<User> GetAttendanceOfUser(string search);
+        IEnumerable<User> GetAttendanceOfUser();
         Task CreateUser(User user, UserCreateDTO requestedUser);
-        Task AddWorkedHours(User user,int userId);
+        Task AddWorkedHours(User user, int userId);
         Task<User> EditAttendanceOfUser(int? id);
         Task EditAttendanceOfUser(User user);
         Task<User> GetUserToDelete(int? id);
