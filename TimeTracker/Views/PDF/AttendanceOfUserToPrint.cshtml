@@ -1,0 +1,132 @@
+﻿@model IEnumerable<TimeTracker.DTOs.UserReadDTO>
+
+@{
+    ViewData["Title"] = "AttendanceOfUserToPrint";
+}
+
+<style>
+
+    div {
+        width: auto;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    table {
+        font-size: 18px;
+        width: auto;
+        height: auto;
+        border-right: 2px solid #708090;
+        border-left: 2px solid #708090;
+        border-top: 7px solid #708090;
+        border-bottom: 7px solid #708090;
+        background: #FFFAFA;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    th {
+        width: auto;
+        height: auto;
+        font-size: 18px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 4px solid;
+        border-right: 2px solid #708090;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+
+    td {
+        width: auto;
+        height: auto;
+        font-size: 16px;
+        font-weight: normal;
+        padding: 10px;
+        border-bottom: 2px solid;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+
+    h1 {
+        text-align: center;
+        line-height: 100%;
+        }
+
+    #ID {
+        border-bottom: 4px solid;
+        box-shadow: 0 6px 0 0 rgba(0,0,0,.15)
+    }
+</style>
+
+<div>
+
+    <h1>ATTENDANCE</h1>
+    <hr />
+
+    <table>
+        <thead>
+            <tr id="ID">
+                <th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Surname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartedWorkDayAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Break)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FinishedWorkDayAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalWorkedPerDay)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartedWorkDayAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Break)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinishedWorkDayAt)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalWorkedPerDay)
+                    <td />
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -18,6 +18,6 @@ public class PDFController : Controller
     public IActionResult GeneratePDF()
     {
         var attendanceOfUser = repository.GetAttendanceOfUser();
-        return new ViewAsPdf("~/Views/User/GetAttendanceOfUser.cshtml", mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
+        return new ViewAsPdf("~/Views/PDF/AttendanceOfUserToPrint.cshtml", mapper.Map<IEnumerable<UserReadDTO>>(attendanceOfUser));
     }
 }
