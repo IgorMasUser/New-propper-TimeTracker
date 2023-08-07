@@ -50,7 +50,7 @@
     h1 {
         text-align: center;
         line-height: 100%;
-        }
+    }
 
     #ID {
         border-bottom: 4px solid;
@@ -63,7 +63,7 @@
     <h1>ATTENDANCE</h1>
     <hr />
 
-    <table>
+    <table style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr id="ID">
                 <th>
@@ -94,11 +94,9 @@
         </thead>
 
         <tbody>
-
             @foreach (var item in Model)
             {
                 <tr>
-
                     <td>
                         @Html.DisplayFor(modelItem => item.UserId)
                     </td>
@@ -117,16 +115,15 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.FinishedWorkDayAt)
                     </td>
-
                     <td>
                         @Html.DisplayFor(modelItem => item.Date)
                     </td>
-
                     <td>
                         @Html.DisplayFor(modelItem => item.TotalWorkedPerDay)
-                    <td />
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
