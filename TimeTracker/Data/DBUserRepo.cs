@@ -198,6 +198,21 @@ namespace TimeTracker.Data
 
         }
 
+        public IEnumerable<User> GetAttendanceOfUser()
+        {
+            try
+            {
+                //var listOfUsers = db.User.Select(x => x).Where(y => y.Date != (DateTime)SqlDateTime.MinValue); //if we want to see only users with filled attendance
+                var listOfUsers = db.User.Select(x => x).Where(d => d.ApprovalStatus.Contains("RequestApproved"));
+                return listOfUsers.ToList();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return Enumerable.Empty<User>();
+            }
+        }
+
         public async Task<User> GetDetailsOfUser(int? id)
         {
             User user = null;
