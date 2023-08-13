@@ -72,7 +72,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        //[Authorize(Policy = "HR")]
+        [Authorize(Policy = "HR")]
         public async Task<IActionResult> ToRejectNewComer(Guid id)
         {
             var response = await toRejectNewComer.GetResponse<NewComerRequestRejected>(new
