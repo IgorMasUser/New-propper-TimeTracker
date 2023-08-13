@@ -19,6 +19,7 @@
 		<PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.0.5" />
 		<PackageReference Include="MassTransit.RabbitMQ" Version="8.0.12" />
 		<PackageReference Include="MassTransit.RabbitMq.Extensions.Hosting" Version="1.0.29" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.2" />

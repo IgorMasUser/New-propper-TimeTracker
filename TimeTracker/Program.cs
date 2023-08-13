@@ -1,6 +1,8 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Rotativa.AspNetCore;
 using StackExchange.Redis;
+using System.Reflection;
 using TimeTracker.Data;
 using TimeTracker.Extensions;
 using TimeTracker.GraphQL;
@@ -21,6 +23,8 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(opt =>
     ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("DockerRedisConnection")));
 builder.Services.AddGraphQLServer().AddQueryType<UserQuery>().AddMutationType<UserMutation>().AddFiltering().AddSorting();
+
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection("JWT"));
 var option = builder.Configuration.GetSection("JWT").Get<JWTOptions>();

@@ -1,70 +1,29 @@
-﻿using TimeTracker.Data;
-using TimeTracker.Models;
+﻿using MediatR;
+using TimeTracker.GraphQL;
 
-namespace TimeTracker.GraphQL
+public class UserMutation
 {
-    public class UserMutation
+    private readonly IMediator mediator;
+
+    public UserMutation(IMediator mediator)
     {
-        public async Task<AddUserPayload> AddUser([GraphQLNonNullType] AddUserInput input, [Service] ApplicationDbContext context)
-        {
-            var user = new User
-            {
-                Name = input.Name,
-                Surname = input.Surname,
-                UserId = input.UserId,
-                ApprovalStatus = input.ApprovalStatus,
-                ApprovalId = Guid.NewGuid(),
-                Date = input.Date,
-                Email = input.Email,
-                Role = input.Role,
-                Salary = input.Salary
-            };
+        this.mediator = mediator;
+    }
 
-            using (context)
-            {
-                context.Add(user);
-                await context.SaveChangesAsync();
-            }
-            return new AddUserPayload(user);
-        }
+    public async Task<AddUserPayload> AddUser(AddUserCommand input)
+    {
+        var newUser = await mediator.Send(input);
+        return new AddUserPayload(newUser);
+    }
 
-        public async Task<AddUserPayload> UpdateUser([GraphQLNonNullType] UpdateUserInput input, int? userId, [Service] ApplicationDbContext context)
-        {
-            using (context)
-            {
-                var foundUser = context.User.Where(x => x.UserId == userId).FirstOrDefault();
+    public async Task<AddUserPayload> UpdateUser(UpdateUserCommand input)
+    {
+        var updatedUser = await mediator.Send(input);
+        return new AddUserPayload(updatedUser);
+    }
 
-                foundUser.Name = input.Name;
-                foundUser.Surname = input.Surname;
-                foundUser.UserId = input.UserId;
-                foundUser.ApprovalStatus = input.ApprovalStatus;
-                foundUser.ApprovalId = Guid.NewGuid();
-                foundUser.Date = input.Date;
-                foundUser.Email = input.Email;
-                foundUser.Role = input.Role;
-                foundUser.Salary = input.Salary;
-
-                context.Update(foundUser);
-                await context.SaveChangesAsync();
-
-                return new AddUserPayload(foundUser);
-            }
-        }
-
-        public async Task<int> DeleteUser([GraphQLNonNullType] int? userId, [Service] ApplicationDbContext context)
-        {
-            using(context)
-            {
-                var userToDelete = context.User.Where(x => x.UserId == userId).FirstOrDefault();
-                if (userToDelete != null)
-                {
-                    context.User.Remove(userToDelete);
-                    await context.SaveChangesAsync();
-                    return userToDelete.UserId;
-                }
-            }
-
-            return 0;
-        }
+    public async Task<int> DeleteUser(DeleteUserCommand input)
+    {
+        return await mediator.Send(input);
     }
 }

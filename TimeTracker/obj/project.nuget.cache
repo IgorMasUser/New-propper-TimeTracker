@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "GosRR+vdZbqgiKEAglsH54mPPypQomvhn24Ctdopy01osC1PTOdtm0fcH8ZW572xlzKtq/IRWsxLJ3cc0zBdyw==",
+  "dgSpecHash": "to3IzJpYcplgN5AVuXhBlSc/zOyd/pqu4EXt2IpWaTqRs3nEcdcCCwqnTyGQd0GHQu+dmIwYsx7txLEj+LTffA==",
   "success": true,
   "projectFilePath": "E:\\MyProject\\New-propper-TimeTracker\\TimeTracker\\TimeTracker.csproj",
   "expectedPackageFiles": [
@@ -44,6 +44,9 @@
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.rabbitmq\\8.0.12\\masstransit.rabbitmq.8.0.12.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.rabbitmq.extensions.hosting\\1.0.29\\masstransit.rabbitmq.extensions.hosting.1.0.29.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\masstransit.redis\\8.0.3\\masstransit.redis.8.0.3.nupkg.sha512",
+    "C:\\Users\\Igor Maslov\\.nuget\\packages\\mediatr\\11.0.0\\mediatr.11.0.0.nupkg.sha512",
+    "C:\\Users\\Igor Maslov\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",
+    "C:\\Users\\Igor Maslov\\.nuget\\packages\\mediatr.extensions.microsoft.dependencyinjection\\11.1.0\\mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",
     "C:\\Users\\Igor Maslov\\.nuget\\packages\\messagepackanalyzer\\2.1.152\\messagepackanalyzer.2.1.152.nupkg.sha512",

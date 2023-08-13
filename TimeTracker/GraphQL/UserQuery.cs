@@ -1,4 +1,4 @@
-﻿using TimeTracker.Data;
+﻿using MediatR;
 using TimeTracker.Models;
 
 namespace TimeTracker.GraphQL
@@ -7,9 +7,11 @@ namespace TimeTracker.GraphQL
     {
         [UseFiltering]
         [UseSorting]
-        public IQueryable<User> GetUsers([Service] ApplicationDbContext context) //works
+        public async Task<IQueryable<User>> GetUsersAsync([Service] IMediator mediator)
         {
-            return context.User;
+            var query = new GetUsersQuery();
+            var users = await mediator.Send(query);
+            return users.AsQueryable();
         }
     }
 }
