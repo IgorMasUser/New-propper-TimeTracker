@@ -26,8 +26,8 @@ namespace Notification.Service.HostedServices
 
             bus.Topology.TryGetPublishAddress<IScheduledNotification>(out var sendEndpointUri);
             await bus.ScheduleRecurringSend(sendEndpointUri, new ScheduledNotificationInterval(), new ScheduledNotification { Value = notificationMessage });
-
         }
+
         public Task StopAsync(CancellationToken cancellationToken)
         {
             logger.LogInformation("Stopping bus");
